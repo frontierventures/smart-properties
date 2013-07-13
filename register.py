@@ -23,7 +23,9 @@ import json
 import mailer
 import os
 import pages
+import random
 import re
+import sys
 
 Email = mailer.Email
 
@@ -34,6 +36,9 @@ class Main(Resource):
 
         sessionUser = SessionManager(request).getSessionUser()
         sessionUser['page'] = 'register'
+
+        if not sessionUser['seed']:
+            sessionUser['seed'] = random.randint(0, sys.maxint)
 
         userId = sessionUser['id']
         if userId >= 1:
@@ -80,16 +85,17 @@ class Form(Element):
         if sessionUser.get('userBitcoinAddress'):
             userBitcoinAddress = sessionUser['userBitcoinAddress']
 
-        userFirst = ''
-        userLast = ''
+        #userFirst = ''
+        userNonce = str(sessionUser['seed'])
 
         slots = {}
         slots['htmlEmail'] = userEmail
         slots['htmlPassword'] = userPassword
         slots['htmlRepeatPassword'] = userRepeatPassword
         slots['htmlBitcoinAddress'] = userBitcoinAddress
-        slots['htmlFirst'] = userFirst
-        slots['htmlLast'] = userLast
+        slots['htmlNonce'] = userNonce
+        #slots['htmlFirst'] = userFirst
+        #slots['htmlLast'] = userLast
         yield tag.fillSlots(**slots)
 
     @renderer
@@ -171,4 +177,5 @@ class Action(Resource):
             activity.pushToDatabase('%s registered' % email)
 
             functions.makeLogin(request, newUser.id)
-            return redirectTo('../settings', request)
+            #return redirectTo('../settings', request)
+            return redirectTo('../', request)

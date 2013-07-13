@@ -1,0 +1,59 @@
+<div class="c12 inner-content" style="margin-top: 0px;" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <form action="../saveUser" method="POST" enctype="application/x-www-form-urlencoded">
+        <ul class="settings-list addnew-prod">
+            <li>
+                <div class="c12">
+                    <div class="c8">
+                        <h1 class="c12">User Information</h1>
+                    </div>
+                    <div style="float: right;">
+                        <a href="../addressBook" class="button" style="margin-top: 10px;">Manage Address Book</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <t:transparent t:render="notification" />            
+                <div class="c12" t:render="registrationDate">
+                    <div class="c3">
+                        <label for="">Registration Date:</label>
+                    </div>
+                    <div class="c9">
+                        <div class="productText"><t:slot name="htmlRegistrationDate" /></div>
+                    </div>
+                </div>
+                <div class="c12" t:render="email">
+                    <div class="c3">
+                        <label for="email">E-mail:</label>
+                    </div>
+                    <div class="c9">
+                        <div class="productText"><t:slot name="htmlEmail" /></div>
+                    </div>
+                </div>
+                <div class="c12" t:render="bitcoinAddress">
+                    <div class="c3">
+                        <label for="adressbitcoin">Bitcoin Address:</label>
+                    </div>
+                    <div class="c9">
+                        <input type="text" name="bitcoinAddress" id="adressbitcoin"><t:attr name="value"><t:slot name="htmlBitcoinAddress" /></t:attr></input>
+                    </div>
+                </div>
+                <div class="c12">
+                    <div class="c3">
+                        <label for="currency">Currency:</label>
+                    </div>
+                    <div class="c9">
+                        <select name="currencyId">
+                            <option t:render="currency">
+                                <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                                <t:slot name="inputCaption" />
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li class="full center">
+                <button class="button green medium" name="button" value="Update">Save User</button>
+            </li>
+        </ul>
+    </form>
+</div>

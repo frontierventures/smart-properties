@@ -27,7 +27,7 @@ class Main(Resource):
         except:
             status = 'active'
 
-        Page = pages.SummaryUsers('Coingig.com - Summary Users', 'summaryUsers', status)
+        Page = pages.SummaryUsers('User Summary', 'summaryUsers', status)
         Page.sessionUser = sessionUser
 
         print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
@@ -81,7 +81,8 @@ class Users(Element):
             slots = {}
             slots['htmlUserId'] = str(user.id)
             slots['htmlUserTimestamp'] = config.convertTimestamp(timestamp)
-            slots['htmlUserEmail'] = user.email
+            slots['htmlUserEmail'] = str(user.email)
+            slots['htmlUserIp'] = str(user.ip)
             self.user = user
             yield tag.clone().fillSlots(**slots)
 

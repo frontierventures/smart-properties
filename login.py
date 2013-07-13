@@ -126,12 +126,9 @@ class Action(Resource):
                 if userType == 1:
                     url = '../'
 
-                if userType > 1:
-                    store = db.query(StoreDirectory).filter(StoreDirectory.ownerId == user.id).first()
-                    url = '../%s' % store.name
-
                 if not isEmailVerified:
                     url = '../settings'
+                    url = '../'
 
                 if userType == 0:
                     url = '../summaryUsers'

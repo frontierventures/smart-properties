@@ -1,0 +1,36 @@
+<table class="c12 acctable invoice-table" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <thead>
+        <tr>
+            <th colspan="2">Shipping Information</th>
+        </tr>
+    </thead>
+    <tbody>
+        <form action="../saveTrackingNumber" method="POST" enctype="application/x-www-form-urlencoded">
+            <tr>
+                <td>
+                    <div class="actions">
+                        <select id="shippingCarrier" name="shippingCarrier" style="background: #ffffff;">
+                            <option t:render="shippingCarrier">
+                                <t:attr name="value"><t:slot name="htmlValue" /></t:attr>
+                                <t:slot name="htmlCaption" />
+                        </option></select>
+                    </div>
+                </td>
+                <td>
+                    <div t:render="trackingNumber">
+                        <input type="text" name="trackingNumber" size="32" placeholder="tracking number">
+                            <t:attr name="value"><t:slot name="htmlTrackingNumber" /></t:attr>
+                        </input>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="center">
+                        <button class="button green medium" name="button" value="Mark Shipped">Mark Shipped</button>
+                    </div>
+                </td>
+            </tr>
+        </form>
+    </tbody>
+</table>

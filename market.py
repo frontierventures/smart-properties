@@ -23,6 +23,7 @@ import collections
 class Main(Resource):
     topProductCounter = {}
     serverInfo = {"lastReset": 0, "visits": 0}
+
     def __init__(self, echoFactory):
         Resource.__init__(self)
         self.echoFactory = echoFactory
@@ -33,6 +34,10 @@ class Main(Resource):
         sessionUser = SessionManager(request).getSessionUser()
         sessionUser['page'] = 'home'
         sessionUser['ip'] = request.getClientIP()
+
+        if not sessionUser['seed']:
+            self.serverInfo['visits'] += 1
+            sessionUser['seed'] = random.randint(0, sys.maxint)
 
         Page = pages.Home('Home', 'home')
         Page.sessionUser = sessionUser
