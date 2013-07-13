@@ -4,14 +4,13 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, Store, User
+from data import Profile, User
 from data import db
 from sessions import SessionManager
 
 import config
 import json
 import pages
-import summaryStores
 
 
 class Main(Resource):
@@ -42,9 +41,9 @@ class Users(Element):
         users = db.query(User).order_by(User.loginTimestamp.desc())
         users = users.filter(User.status == status)
         if users.count() == 0:
-            template = 'templates/summaryUsers0.xml'
+            template = 'templates/elements/summaryUsers0.xml'
         else:
-            template = 'templates/summaryUsers1.xml'
+            template = 'templates/elements/summaryUsers1.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
         self.users = users

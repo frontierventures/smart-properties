@@ -9,6 +9,7 @@ import login
 import market
 import popups
 import register
+import summaryUsers
 
 
 class Page(Element):

@@ -12,6 +12,7 @@ import config
 import login
 import logout
 import register
+import summaryUsers
 
 
 class EchoProtocol(protocol.Protocol):
@@ -63,6 +64,7 @@ def assemble(root):
     root.putChild('loginAction', login.Action(echoFactory))
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
+    root.putChild('summaryUsers', summaryUsers.Main())
     return root
 
 root = assemble(root)
