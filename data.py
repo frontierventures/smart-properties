@@ -66,7 +66,6 @@ class Profile(Base):
     user = relationship("User", backref=backref("profiles", order_by=id))
 
     def __init__(self, createTimestamp, updateTimestamp, first, last, token, bitcoinAddress, unreadMessages):
-
         self.createTimestamp = createTimestamp
         self.updateTimestamp = updateTimestamp
         self.first = first
@@ -88,8 +87,7 @@ class User(Base):
     isEmailVerified = Column(Integer)
     ip = Column(String)
 
-    def __init__(self, status, type, loginTimestamp, email, password,
-                 isEmailVerified, ip):
+    def __init__(self, status, type, loginTimestamp, email, password, isEmailVerified, ip):
         self.status = status
         self.type = type
         self.loginTimestamp = loginTimestamp

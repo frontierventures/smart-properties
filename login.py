@@ -56,7 +56,7 @@ class Form(Element):
     def __init__(self, sessionUser, sessionResponse):
         self.sessionUser = sessionUser
         self.sessionResponse = sessionResponse
-        self.loader = XMLString(FilePath('templates/forms/loginForm.xml').getContent())
+        self.loader = XMLString(FilePath('templates/forms/login.xml').getContent())
 
     @renderer
     def form(self, request, tag):

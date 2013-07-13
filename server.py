@@ -64,7 +64,10 @@ def assemble(root):
     root.putChild('loginAction', login.Action(echoFactory))
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
+    root.putChild('registerAction', register.Action(echoFactory))
     root.putChild('summaryUsers', summaryUsers.Main())
+
+    root.putChild('assets', File("./assets"))
     return root
 
 root = assemble(root)
