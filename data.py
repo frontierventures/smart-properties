@@ -77,6 +77,31 @@ class Profile(Base):
         self.unreadMessages = unreadMessages
 
 
+class Property(Base):
+    __tablename__ = "properties"
+    id = Column(Integer, primary_key=True)
+    status = Column(String)
+    createTimestamp = Column(String)
+    updateTimestamp = Column(String)
+    title = Column(String(collation='NOCASE'))
+    description = Column(String)
+    imageCount = Column(Integer)
+    imageHash = Column(String)
+    units = Column(Integer)
+    pricePerUnit = Column(String)
+
+    def __init__(self, status, createTimestamp, updateTimestamp, title, description, imageHash, imageCount, units, pricePerUnit):
+        self.status = status
+        self.createTimestamp = createTimestamp
+        self.updateTimestamp = updateTimestamp
+        self.title = title
+        self.description = description
+        self.imageHash = imageHash
+        self.imageCount = imageCount
+        self.units = units
+        self.pricePerUnit = pricePerUnit
+
+
 class User(Base):
     __tablename__ = "users"
 

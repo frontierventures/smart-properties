@@ -10,6 +10,7 @@ import market
 import popups
 import register
 import settings
+import summaryProperties
 import summaryUsers
 
 
@@ -100,6 +101,16 @@ class Settings(Page):
         return settings.Form(self.sessionUser, self.sessionResponse)
 
 
+class SummaryProperties(Page):
+    def __init__(self, pageTitle, template, status):
+        Page.__init__(self, pageTitle, template)
+        self.status = status
+
+    @renderer
+    def users(self, request, tag):
+        return summaryProperties.Properties(self.status)
+
+
 class SummaryUsers(Page):
     def __init__(self, pageTitle, template, status):
         Page.__init__(self, pageTitle, template)
@@ -109,18 +120,11 @@ class SummaryUsers(Page):
     def users(self, request, tag):
         return summaryUsers.Users(self.status)
 
-    @renderer
-    def describeUserPopup(self, request, tag):
-        return popups.DescribeUser()
-
-    @renderer
-    def summaryUsersPopup(self, request, tag):
-        return popups.SummaryUsers()
-
 
 templates = {'inbox': 'templates/pages/inbox.xml',
              'login': 'templates/pages/login.xml',
              'home': 'templates/pages/home.xml',
              'register': 'templates/pages/register.xml',
              'settings': 'templates/pages/settings.xml',
+             'summaryProperties': 'templates/pages/summaryProperties.xml',
              'summaryUsers': 'templates/pages/summaryUsers.xml'}

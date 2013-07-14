@@ -13,6 +13,7 @@ import login
 import logout
 import register
 import settings
+import summaryProperties
 import summaryUsers
 
 
@@ -67,6 +68,7 @@ def assemble(root):
     root.putChild('register', register.Main())
     root.putChild('registerAction', register.Action(echoFactory))
     root.putChild('settings', settings.Main())
+    root.putChild('summaryProperties', summaryProperties.Main())
     root.putChild('summaryUsers', summaryUsers.Main())
     root.putChild('verifyMessage', settings.Action(echoFactory))
 

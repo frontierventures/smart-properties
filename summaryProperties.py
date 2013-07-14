@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, User
+from data import Profile, User, Property
 from data import db
 from sessions import SessionManager
 
@@ -27,7 +27,7 @@ class Main(Resource):
         except:
             status = 'active'
 
-        Page = pages.SummaryUsers('User Summary', 'summaryUsers', status)
+        Page = pages.SummaryProperties('Property Summary', 'summaryProperties', status)
         Page.sessionUser = sessionUser
 
         print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
@@ -35,11 +35,12 @@ class Main(Resource):
         return renderElement(request, Page)
 
 
-class Users(Element):
+class Properties(Element):
     def __init__(self, status):
         self.status = status
         users = db.query(User).order_by(User.loginTimestamp.desc())
         users = users.filter(User.status == status)
+
         if users.count() == 0:
             template = 'templates/elements/summaryUsers0.xml'
         else:
@@ -133,68 +134,4 @@ class Delete(Resource):
 
         db.commit()
         summaryStores.close(self.topProductCounter, userId)
-        return redirectTo('../summaryUsers', request)
-
-
-class LoadUser(Resource):
-    def render(self, request):
-
-        sessionUser = SessionManager(request).getSessionUser()
-        userType = sessionUser['type']
-        if userType != 0:
-            return redirectTo('../', request)
-
-        try:
-            userId = int(request.args.get('id')[0])
-        except:
-            return redirectTo('../', request)
-
-        profile = db.query(Profile).filter(Profile.userId == userId).first()
-        user = db.query(User).filter(User.id == userId).first()
-        store = db.query(Store).filter(Store.ownerId == userId).first()
-
-        jsonUser = {}
-        jsonUser['id'] = str(userId)
-        jsonUser['email'] = str(user.email)
-        jsonUser['first'] = str(profile.first)
-        jsonUser['last'] = str(profile.last)
-        jsonUser['currencyId'] = str(profile.currencyId)
-        jsonUser['unreadCount'] = str(profile.unreadCount)
-        jsonUser['bitcoinAddress'] = str(profile.bitcoinAddress)
-        jsonUser['type'] = str(user.type)
-        jsonUser['loginTimestamp'] = str(user.loginTimestamp)
-        jsonUser['isEmailVerified'] = str(user.isEmailVerified)
-        jsonUser['createTimestamp'] = str(profile.createTimestamp)
-        jsonUser['updateTimestamp'] = str(profile.updateTimestamp)
-        jsonUser['receivedSellOrders'] = str(profile.receivedSellOrders)
-        jsonUser['receivedBuyOrders'] = str(profile.receivedBuyOrders)
-        jsonUser['ip'] = str(user.ip)
-        jsonUser['store'] = str(store.name)
-        return json.dumps(jsonUser)
-
-
-from datetime import datetime
-import collections
-
-
-def convert(timestamp):
-    utc = datetime.utcfromtimestamp(timestamp)
-    format = "%Y %b %e"
-    return utc.strftime(format)
-
-
-class LoadUserSummary(Resource):
-    def render(self, request):
-
-        request.setHeader('Access-Control-Allow-Origin', '*')
-        users = db.query(User.loginTimestamp).distinct()
-        timestamps = [user.loginTimestamp for user in users]
-        dates = [convert(float(timestamp)) for timestamp in timestamps]
-        dateCounter = collections.Counter(dates)
-        print dates, dateCounter
-
-        sessionData = []
-        for key in sorted(dateCounter.keys()):
-            sessionData.append({"letter": key, "frequency": dateCounter[key]})
-            print key
-        return json.dumps(sessionData)
+        return redirectTo('../summaryProperties', request)
