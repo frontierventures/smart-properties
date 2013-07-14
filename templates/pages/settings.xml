@@ -1,38 +1,81 @@
-<html xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+<html lang="en" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
     <head>
         <meta charset="utf-8" />
         <title t:render="title"><t:slot name="htmlPageTitle" /></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="" />
-        <link rel="stylesheet" href="../styles/normalize.min.css" />
-        <link rel="stylesheet" href="../styles/main.css" />
-        <link rel="stylesheet" href="../styles/notifications.css" />
-        <script type="text/javascript" src="../scripts/head.js"></script>
-        <script type="text/javascript" src="//use.typekit.net/uis4jqg.js"></script>
-        <script type="text/javascript" src="../scripts/typeKit.js"></script>
-    </head>
-    <body>
-        <div class="wfull headbg">
-            <t:transparent t:render="header" />            
-        </div>
-        <t:transparent t:render="settings" />            
-        <t:transparent t:render="footer" />            
-        <div style="display:none">
-            <div id="settingsPopup" class="colorbox-zone">
-            </div>
-        </div>
-        <div style="display:none">
-            <t:transparent t:render="verifyEmailPopup" />
-            <t:transparent t:render="becomeAffiliatePopup" />
-            <t:transparent t:render="helpEscrowPopup" />
-        </div>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script type="text/javascript" src="../scripts/windowJQuery.js"></script>
-        <script type="text/javascript" src="../scripts/jquery-ui.js"></script>
-        <script type="text/javascript" src="../scripts/jquery.bxslider.min.js"></script>
-        <script type="text/javascript" src="../scripts/main.js"></script>
-        <script type="text/javascript" src="../scripts/jquery.colorbox-min.js"></script>
-        <script type="text/javascript" src="../scripts/formStore.js"></script>
-        <script type="text/javascript" src="../scripts/settings.js"></script>
-        <script type="text/javascript" src="../scripts/help.js"></script>
-    </body>
+        <meta name="author" content="" />
+
+        <!-- Le styles -->
+        <link href="../assets/css/bootstrap.css" rel="stylesheet" />
+        <style type="text/css">
+            body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+            }
+
+            .form-signin {
+            max-width: 300px;
+            padding: 19px 29px 29px;
+            margin: 0 auto 20px;
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            }
+            .form-signin .form-signin-heading,
+            .form-signin .checkbox {
+            margin-bottom: 10px;
+            }
+            .form-signin input[type="text"],
+            .form-signin input[type="password"] {
+            font-size: 16px;
+            height: auto;
+            margin-bottom: 15px;
+            padding: 7px 9px;
+            }
+
+        </style>
+        <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet" />
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png" />
+    <link rel="shortcut icon" href="../assets/ico/favicon.png" />
+</head>
+
+<body>
+
+    <t:transparent t:render="settingsForm" />            
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/bootstrap-transition.js"></script>
+    <script src="../assets/js/bootstrap-alert.js"></script>
+    <script src="../assets/js/bootstrap-modal.js"></script>
+    <script src="../assets/js/bootstrap-dropdown.js"></script>
+    <script src="../assets/js/bootstrap-scrollspy.js"></script>
+    <script src="../assets/js/bootstrap-tab.js"></script>
+    <script src="../assets/js/bootstrap-tooltip.js"></script>
+    <script src="../assets/js/bootstrap-popover.js"></script>
+    <script src="../assets/js/bootstrap-button.js"></script>
+    <script src="../assets/js/bootstrap-collapse.js"></script>
+    <script src="../assets/js/bootstrap-carousel.js"></script>
+    <script src="../assets/js/bootstrap-typeahead.js"></script>
+
+</body>
 </html>

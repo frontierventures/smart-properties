@@ -9,6 +9,7 @@ import login
 import market
 import popups
 import register
+import settings
 import summaryUsers
 
 
@@ -89,6 +90,16 @@ class Home(Page):
         self.pageTitle = pageTitle
 
 
+class Settings(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+    @renderer
+    def settingsForm(self, request, tag):
+        return settings.Form(self.sessionUser, self.sessionResponse)
+
+
 class SummaryUsers(Page):
     def __init__(self, pageTitle, template, status):
         Page.__init__(self, pageTitle, template)
@@ -111,4 +122,5 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'login': 'templates/pages/login.xml',
              'home': 'templates/pages/home.xml',
              'register': 'templates/pages/register.xml',
+             'settings': 'templates/pages/settings.xml',
              'summaryUsers': 'templates/pages/summaryUsers.xml'}

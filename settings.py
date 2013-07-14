@@ -35,14 +35,14 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'register'
+        sessionUser['page'] = 'settings'
 
-        if sessionUser['id'] >= 1:
+        if sessionUser['id'] == 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
-        Page = pages.Register('Register', 'register')
+        Page = pages.Settings('Settings', 'settings')
         Page.sessionUser = sessionUser
         Page.sessionResponse = sessionResponse
 
@@ -55,32 +55,29 @@ class Main(Resource):
 
 
 class Form(Element):
-    loader = XMLString(FilePath('templates/forms/register.xml').getContent())
+    loader = XMLString(FilePath('templates/forms/settings.xml').getContent())
 
     def __init__(self, sessionUser, sessionResponse):
         self.sessionUser = sessionUser
         self.sessionResponse = sessionResponse
+        self.profile = db.query(Profile).order_by(Profile.id == sessionUser['id']).first()
 
     @renderer
     def form(self, request, tag):
         sessionUser = self.sessionUser
 
-        userEmail = ''
-        if sessionUser.get('userEmail'):
-            userEmail = sessionUser['userEmail']
+        userBitcoinAddress = ''
+        if sessionUser.get('userBitcoinAddress'):
+            userBitcoinAddress = sessionUser['userBitcoinAddress']
 
-        userPassword = ''
-        if sessionUser.get('userPassword'):
-            userPassword = sessionUser['userPassword']
-
-        userRepeatPassword = ''
-        if sessionUser.get('userRepeatPassword'):
-            userRepeatPassword = sessionUser['userRepeatPassword']
+        userSignature = ''
+        if sessionUser.get('userSignature'):
+            userSignature = sessionUser['userSignature']
 
         slots = {}
-        slots['htmlEmail'] = userEmail
-        slots['htmlPassword'] = userPassword
-        slots['htmlRepeatPassword'] = userRepeatPassword
+        slots['htmlNonce'] = self.profile.seed
+        slots['htmlBitcoinAddress'] = userBitcoinAddress
+        slots['htmlSignature'] = userSignature
         yield tag.fillSlots(**slots)
 
     @renderer
@@ -105,11 +102,13 @@ class Action(Resource):
         email = request.args.get('userEmail')[0]
         password = request.args.get('userPassword')[0]
         repeatPassword = request.args.get('userRepeatPassword')[0]
+        bitcoinAddress = request.args.get('userBitcoinAddress')[0]
 
         sessionUser = SessionManager(request).getSessionUser()
         sessionUser['userEmail'] = email
         sessionUser['userPassword'] = password
         sessionUser['userRepeatPassword'] = repeatPassword
+        sessionUser['userBitcoinAddress'] = bitcoinAddress
 
         if error.email(request, email):
             return redirectTo('../register', request)
@@ -130,6 +129,9 @@ class Action(Resource):
         if error.mismatchPassword(request, password, repeatPassword):
             return redirectTo('../register', request)
 
+        if error.bitcoinAddress(request, bitcoinAddress):
+            return redirectTo('../register', request)
+
         if not request.args.get('isTermsChecked'):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
             return redirectTo('../register', request)
@@ -142,7 +144,7 @@ class Action(Resource):
             newUser = User("active", 2, timestamp, email, password, 0, '')
             
             seed = random.randint(0, sys.maxint)
-            newProfile = Profile(timestamp, timestamp, '', '', token, '', seed, 0)
+            newProfile = Profile(timestamp, timestamp, '', '', token, bitcoinAddress, seed, 0)
             newUser.profiles = [newProfile]
 
             db.add(newUser)
@@ -159,4 +161,5 @@ class Action(Resource):
             activity.pushToDatabase('%s registered' % email)
 
             functions.makeLogin(request, newUser.id)
-            return redirectTo('../settings', request)
+            #return redirectTo('../settings', request)
+            return redirectTo('../', request)

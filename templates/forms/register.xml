@@ -4,8 +4,6 @@
         <input type="text" class="input-block-level" placeholder="Email address" name="userEmail"><t:attr name="value"><t:slot name="htmlEmail" /></t:attr></input>
         <input type="password" class="input-block-level" placeholder="Password" name="userPassword"><t:attr name="value"><t:slot name="htmlPassword" /></t:attr></input>
         <input type="password" class="input-block-level" placeholder="Repeat Password" name="userRepeatPassword"><t:attr name="value"><t:slot name="htmlPassword" /></t:attr></input>
-        <input type="text" class="input-block-level" placeholder="Bitcoin address" name="userBitcoinAddress"><t:attr name="value"><t:slot name="htmlBitcoinAddress" /></t:attr></input>
-        <div style="text-align: center"><t:slot name="htmlNonce" /></div>
         <label class="checkbox">
             <input type="checkbox" value="remember-me" name="isTermsChecked"/> I agree to the <a href="../terms">Terms of Use</a> 
         </label>

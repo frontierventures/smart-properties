@@ -36,28 +36,20 @@ class Header(Element):
             XMLString(FilePath('templates/elements/header2.xml').getContent())]
 
     def __init__(self, sessionUser):
-        userId = sessionUser['id']
-        userType = sessionUser['type']
-        if userId == 0:
+        self.sessionUser = sessionUser
+        
+        if self.sessionUser['id'] == 0:
             self.loader = self.html[0]
         else:
             self.loader = self.html[1]
 
-        if userType == 0:
+        if self.sessionUser['type'] == 0:
             self.loader = self.html[2]
-
-        self.profile = db.query(Profile).filter(Profile.userId == userId).first()
 
     @renderer
     def first(self, request, tag):
-        profile = self.profile
-        first = profile.first
-
-        if not first:
-            first = 'seller'
-
         slots = {}
-        slots['htmlUserFirst'] = first
+        slots['htmlUserFirst'] = self.sessionUser['email']
         return tag.fillSlots(**slots)
 
 
