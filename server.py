@@ -68,6 +68,7 @@ def assemble(root):
     root.putChild('registerAction', register.Action(echoFactory))
     root.putChild('settings', settings.Main())
     root.putChild('summaryUsers', summaryUsers.Main())
+    root.putChild('verifyMessage', settings.Action(echoFactory))
 
     root.putChild('assets', File("./assets"))
     return root

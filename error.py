@@ -64,6 +64,15 @@ def bitcoinAddress(request, value):
         return True
 
 
+def signature(request, value):
+    if not value:
+        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.BITCOIN_ADDRESS[0]})
+        return True
+    elif not re.match(definitions.REGEX_BITCOIN_ADDRESS, value):
+        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.BITCOIN_ADDRESS[1]})
+        return True
+
+
 def storeName(request, value):
     if not value:
         SessionManager(request).setSessionResponse({'class': 1, 'form': 2, 'text': definitions.STORE_NAME[0]})
