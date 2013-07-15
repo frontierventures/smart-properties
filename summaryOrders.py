@@ -62,12 +62,12 @@ class Orders(Element):
         statuses = {'open': 'Pending',
                     'deleted': 'Deleted'}
         slots = {}
-        slots['htmlPropertyStatus'] = statuses[self.status]
-        slots['htmlPropertyCount'] = str(self.orders.count())
+        slots['htmlOrderStatus'] = statuses[self.status]
+        slots['htmlOrderCount'] = str(self.orders.count())
         yield tag.clone().fillSlots(**slots)
 
     @renderer
-    def propertyStatus(self, request, tag):
+    def orderStatus(self, request, tag):
         statuses = ['open', 'deleted']
 
         for status in statuses:
@@ -90,6 +90,8 @@ class Orders(Element):
             slots = {}
             slots['htmlOrderId'] = str(order.id)
             slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
+            slots['htmlInvestorId'] = str(order.investorId) 
+            slots['htmlUnits'] = str(order.units) 
             self.order = order
             yield tag.clone().fillSlots(**slots)
 

@@ -105,6 +105,7 @@ class Properties(Element):
             slots['htmlPropertyId'] = str(property.id)
             slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
             slots['htmlTitle'] = str(property.title)
+            slots['htmlPropertyUrl'] = '../%s' % str(property.id)
             slots['htmlUnits'] = str(property.units)
             slots['htmlPricePerUnit'] = str(property.pricePerUnit)
             self.property = property

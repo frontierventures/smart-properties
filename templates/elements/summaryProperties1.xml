@@ -29,7 +29,12 @@
                 <tr t:render="row">
                     <td style="text-align:center"><t:slot name="htmlTimestamp" /></td>
                     <td style="text-align:center"><t:slot name="htmlPropertyId" /></td>
-                    <td style="text-align:center"><t:slot name="htmlTitle" /></td>
+                    <td style="text-align:center">
+                        <a>
+                            <t:attr name="href"><t:slot name="htmlPropertyUrl" /></t:attr>
+                            <t:slot name="htmlTitle" />
+                        </a>
+                    </td>
                     <td style="text-align:center"><t:slot name="htmlUnits" /></td>
                     <td style="text-align:center"><t:slot name="htmlPricePerUnit" /></td>
                     <td style="text-align:center"><t:slot name="htmlPropertyId" /></td>
