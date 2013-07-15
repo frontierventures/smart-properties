@@ -11,6 +11,7 @@ import forms
 import popups
 import register
 import settings
+import summaryOrders
 import summaryProperties
 import summaryUsers
 
@@ -53,6 +54,16 @@ class AddProperty(Page):
     @renderer
     def addPropertyForm(self, request, tag):
         return forms.AddProperty(self.sessionUser, self.sessionProperty, self.sessionResponse)
+
+
+class BuyProperty(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+    @renderer
+    def buyPropertyForm(self, request, tag):
+        return forms.BuyProperty(self.sessionResponse, self.sessionOrder)
 
 
 class Inbox(Page):
@@ -122,6 +133,16 @@ class SummaryProperties(Page):
         return summaryProperties.Properties(self.status)
 
 
+class SummaryOrders(Page):
+    def __init__(self, pageTitle, template, status):
+        Page.__init__(self, pageTitle, template)
+        self.status = status
+
+    @renderer
+    def orders(self, request, tag):
+        return summaryOrders.Orders(self.status)
+
+
 class SummaryUsers(Page):
     def __init__(self, pageTitle, template, status):
         Page.__init__(self, pageTitle, template)
@@ -136,7 +157,9 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'login': 'templates/pages/login.xml',
              'home': 'templates/pages/home.xml',
              'addProperty': 'templates/pages/addProperty.xml',
+             'buyProperty': 'templates/pages/buyProperty.xml',
              'register': 'templates/pages/register.xml',
              'settings': 'templates/pages/settings.xml',
              'summaryProperties': 'templates/pages/summaryProperties.xml',
+             'summaryOrders': 'templates/pages/summaryOrders.xml',
              'summaryUsers': 'templates/pages/summaryUsers.xml'}

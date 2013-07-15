@@ -18,6 +18,7 @@ import pages
 import random
 import sys
 import collections
+import property
 
 
 class Main(Resource):
@@ -28,6 +29,15 @@ class Main(Resource):
         Resource.__init__(self)
         self.echoFactory = echoFactory
         self.serverInfo['lastReset'] = config.createTimestamp()
+
+    def getChild(self, name, request):
+        #storeDirectoryItem = db.query(StoreDirectory).filter(StoreDirectory.name == name).first()
+
+        #if storeDirectoryItem:
+        #    ownerId = storeDirectoryItem.ownerId
+        return property.Main(name)
+        #else:
+        #    return notFound.Main(0)
 
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)

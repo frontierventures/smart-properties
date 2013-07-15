@@ -51,6 +51,31 @@ class Message(Base):
         self.body = body
 
 
+class Order(Base):
+    __tablename__ = "orders"
+    id = Column(Integer, primary_key=True)
+    status = Column(String)
+    createTimestamp = Column(String)
+    updateTimestamp = Column(String)
+    propertyId = Column(Integer)
+    propertyTitle = Column(String)
+    units = Column(Integer)
+    pricePerUnit = Column(String)
+    total = Column(String)
+    paymentAddress = Column(String)
+
+    def __init__(self, status, createTimestamp, updateTimestamp, propertyId, propertyTitle, units, pricePerUnit, total, paymentAddress):
+        self.status = status
+        self.createTimestamp = createTimestamp
+        self.updateTimestamp = updateTimestamp
+        self.propertyId = propertyId
+        self.propertyTitle = propertyTitle
+        self.units = units
+        self.pricePerUnit = pricePerUnit
+        self.total = total
+        self.paymentAddress = paymentAddress
+
+
 class Profile(Base):
     __tablename__ = "profiles"
     id = Column(Integer, primary_key=True)

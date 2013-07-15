@@ -1,6 +1,5 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
     <div style="width: 100%;">
         <h1>None found</h1>
-        <a href="../summaryProperties?action=add">Add</a>
     </div>
 </div>

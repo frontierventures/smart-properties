@@ -48,22 +48,20 @@ class AddProperty(Element):
         if sessionProperty.get('description'):
             propertyDescription = sessionProperty['description']
 
-        propertyStock = 1
-        if sessionProperty.get('stock'):
-            propertyStock = sessionProperty['stock']
+        propertyUnits = 0
+        if sessionProperty.get('units'):
+            propertyUnits = sessionProperty['units']
 
-        propertyPrice = ''
-        if sessionProperty.get('price'):
-            propertyPrice = sessionProperty['price']
-
-        sellerNote = ''
-        if sessionProperty.get('note'):
-            sellerNote = sessionProperty['note']
+        propertyPricePerUnit = 0
+        if sessionProperty.get('pricePerUnit'):
+            propertyPricePerUnit = sessionProperty['pricePerUnit']
 
         slots = {}
         slots['htmlPropertyId'] = str(0)
         slots['htmlTitle'] = str(propertyName)
         slots['htmlDescription'] = str(propertyDescription)
+        slots['htmlUnits'] = str(propertyUnits)
+        slots['htmlPricePerUnit'] = str(propertyPricePerUnit)
         yield tag.fillSlots(**slots)
 
     @renderer
@@ -75,126 +73,24 @@ class AddProperty(Element):
             return Notification(sessionResponse)
 
 
-class FormBuy(Element):
-    def __init__(self, sessionOrder, sessionResponse):
-        self.sessionOrder = sessionOrder
+class BuyProperty(Element):
+    def __init__(self, sessionResponse, sessionOrder):
         self.sessionResponse = sessionResponse
-        product = db.query(PhysicalProduct).filter(PhysicalProduct.id == sessionOrder['productId']).first()
+        self.sessionOrder = sessionOrder
 
-        if product.imageCount == 0:
-            template = 'templates/forms/buyProductFormWithoutImage.xml'
-        else:
-            template = 'templates/forms/buyProductFormWithImage.xml'
+        propertyObject = db.query(Property).filter(Property.id == sessionOrder['propertyId']).first()
 
-        self.loader = XMLString(FilePath(template).getContent())
-        self.product = product
+        self.loader = XMLString(FilePath('templates/forms/buyProperty.xml').getContent())
+        self.propertyObject = propertyObject
 
     @renderer
-    def view(self, request, tag):
-        product = self.product
-
-        store = db.query(StoreDirectory).filter(StoreDirectory.ownerId == product.sellerId).first()
-        profile = db.query(Profile).filter(Profile.userId == product.sellerId).first()
-
-        price = db.query(Price).filter(Price.currencyId == product.currencyId).first()
-        price = str(functions.calculate(price.last, product.price))
-        
-        productImage = '%s/%s_1_m.jpg' % (config.cdn, product.imageHash)
-
-
+    def details(self, request, tag):
         slots = {}
-        slots['htmlProductId'] = str(product.id)
-        slots['htmlProductName'] = str(product.name)
-        slots['htmlStoreName'] = str(store.name)
-        slots['htmlReceivedCount'] = str(profile.receivedSellOrders)
-        slots['htmlStoreUrl'] = '../%s' % str(store.name)
-        #slots['htmlProductPrice'] = str(price)
-        slots['htmlProductImage'] = productImage
-        slots['htmlProductPrice'] = "%.4f" % float(price)
-        slots['htmlProductPriceFiat'] = str(product.currencyId + " %.2f" % float(product.price))
-        slots['htmlProductStock'] = str(product.stock)
-        slots['htmlProductQuantity'] = str(self.sessionOrder['quantity'])
+        slots['htmlPropertyId'] = str(self.propertyObject.id)
+        slots['htmlTitle'] = str(self.propertyObject.title)
+        slots['htmlDescription'] = str(self.propertyObject.description) 
+        slots['htmlUnits'] = str(self.propertyObject.units) 
         return tag.fillSlots(**slots)
-
-    @renderer
-    def country(self, request, tag):
-        rates = db.query(Shipping).filter(Shipping.productId == self.product.id).order_by(Shipping.countryId)
-
-        indices = []
-        for rate in rates:
-            indices.append(rate.countryId)
-
-        index = min(indices)
-
-        for rate in rates:
-            countryId = rate.countryId
-            thisTagShouldBeChecked = False
-            if countryId == index:
-                thisTagShouldBeChecked = True
-
-            slots = {}
-            slots['inputValue'] = str(countryId)
-            slots['inputCaption'] = definitions.countries[int(countryId)]
-
-            newTag = tag.clone().fillSlots(**slots)
-            if thisTagShouldBeChecked:
-                newTag(selected='yes')
-            yield newTag
-
-    @renderer
-    def notification(self, request, tag):
-        sessionResponse = self.sessionResponse
-        if not sessionResponse['text']:
-            return []
-        else:
-            return commonElements.Notification(sessionResponse)
-
-    @renderer
-    def description(self, request, tag):
-        BlogGrammar = makeGrammar(descriptions.blog_grammar, {"tags": tags})
-        output = BlogGrammar(self.product.description).paragraphs()
-        return tag(output)
-
-    @renderer
-    def image(self, request, tag):
-        product = self.product
-        imageCount = product.imageCount
-        imageId = 1
-        while imageId <= imageCount:
-            #productImageTiny = '../images/products/%s/%s_%s_tiny.jpg' % (product.sellerId, product.id, imageId)
-            #productImage = '../images/products/%s/%s_%s_m.jpg' % (product.sellerId, product.id, imageId)
-
-            productImage = '%s/%s_%s_m.jpg' % (config.cdn, product.imageHash, imageId)
-            productImageTiny = '%s/%s_%s_tiny.jpg' % (config.cdn, product.imageHash, imageId)
-            slots = {}
-            slots['htmlProductImageSwap'] = productImage
-            slots['htmlProductImageTiny'] = productImageTiny
-            imageId += 1
-            newTag = tag.clone().fillSlots(**slots)
-            yield newTag
-
-    @renderer
-    def escrow(self, request, tag):
-        store = db.query(Store).filter(Store.ownerId == self.product.sellerId).first()
-        if store.isEscrowOn == 0:
-            return []
-        else:
-            return EscrowCell()
-
-    @renderer
-    def soldBy(self, request, tag):
-        return SoldBy(self.product)
-
-
-class EscrowCell(Element):
-    html = XMLString('''
-                     <a href="../helpEscrow" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
-                     <img src="../images/escrow_badge.png" style="margin: 0px;" />
-                     </a>
-                       ''')
-
-    def __init__(self):
-        self.loader = self.html
 
 
 class FormEdit(Element):
@@ -359,39 +255,6 @@ class Notification(Element):
         slots['htmlMessageClass'] = messageClass[index]
         slots['htmlMessageText'] = sessionResponse['text']
         return tag.fillSlots(**slots)
-
-
-class SoldBy(Element):
-    xml =  [''] * 2
-    xml[0] = XMLString('''
-                       <small t:render="soldBy" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">Sold By <a><t:attr name="href"><t:slot name="htmlStoreUrl" /></t:attr><t:slot name="htmlStoreName" /></a></small>
-                       ''')
-    xml[1] = XMLString('''
-                       <small t:render="soldBy" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">Sold By <a><t:attr name="href"><t:slot name="htmlStoreUrl" /></t:attr><t:slot name="htmlStoreName" /></a> (<t:slot name="htmlReceivedCount" />)</small>
-                       ''')
-
-    def __init__(self, product):
-        self.profile = db.query(Profile).filter(Profile.userId == product.sellerId).first()
-        self.store = db.query(StoreDirectory).filter(StoreDirectory.ownerId == product.sellerId).first()
-
-        if self.profile.receivedSellOrders == 0:
-            self.loader = self.xml[0]
-        else:
-            self.loader = self.xml[1]
-
-    @renderer
-    def soldBy(self, request, tag):
-        slots = {}
-
-        slots['htmlStoreName'] = str(self.store.name)
-        if self.profile.receivedSellOrders != 0:
-            slots['htmlStoreName'] = str(self.store.name)
-            slots['htmlReceivedCount'] = str(self.profile.receivedSellOrders)
-
-        slots['htmlStoreUrl'] = '../%s' % str(self.store.name)
-        yield tag.fillSlots(**slots)
-
-
 
 
 class ProductImage():

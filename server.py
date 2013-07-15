@@ -13,6 +13,7 @@ import login
 import logout
 import register
 import settings
+import summaryOrders
 import summaryProperties
 import summaryUsers
 
@@ -69,9 +70,11 @@ def assemble(root):
     root.putChild('registerAction', register.Action(echoFactory))
     root.putChild('settings', settings.Main())
     root.putChild('summaryProperties', summaryProperties.Main())
+    root.putChild('summaryOrders', summaryOrders.Main())
     root.putChild('summaryUsers', summaryUsers.Main())
     root.putChild('verifyMessage', settings.Action(echoFactory))
     root.putChild('addProperty', actions.AddProperty())
+    root.putChild('buyProperty', actions.BuyProperty())
 
     root.putChild('assets', File("./assets"))
     return root
