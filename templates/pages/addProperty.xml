@@ -39,7 +39,6 @@
             margin-bottom: 15px;
             padding: 7px 9px;
             }
-
         </style>
         <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet" />
 
@@ -56,6 +55,7 @@
     <link rel="shortcut icon" href="../assets/ico/favicon.png" />
 </head>
 <body>
+    <t:transparent t:render="header" />            
     <t:transparent t:render="addPropertyForm" />            
     <!-- Le javascript
     ================================================== -->

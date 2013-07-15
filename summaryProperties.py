@@ -20,6 +20,7 @@ class Main(Resource):
 
         sessionUser = SessionManager(request).getSessionUser()
         userType = sessionUser['type']
+
         if userType != 0:
             return redirectTo('../', request)
 
@@ -29,7 +30,7 @@ class Main(Resource):
         try:
             status = request.args.get('status')[0]
         except:
-            status = 'active'
+            status = 'available'
 
         try:
             action = request.args.get('action')[0]
@@ -72,16 +73,16 @@ class Properties(Element):
 
     @renderer
     def count(self, request, tag):
-        statuses = {'active': 'Active',
+        statuses = {'available': 'Active',
                     'deleted': 'Deleted'}
         slots = {}
-        slots['htmlUserStatus'] = statuses[self.status]
-        slots['htmlUserCount'] = str(self.properties.count())
+        slots['htmlPropertyStatus'] = statuses[self.status]
+        slots['htmlPropertyCount'] = str(self.properties.count())
         yield tag.clone().fillSlots(**slots)
 
     @renderer
-    def userStatus(self, request, tag):
-        statuses = ['active', 'deleted']
+    def propertyStatus(self, request, tag):
+        statuses = ['available', 'deleted']
 
         for status in statuses:
             thisTagShouldBeSelected = False
@@ -98,19 +99,22 @@ class Properties(Element):
     @renderer
     def row(self, request, tag):
         for property in self.properties:
-            timestamp = float(property.loginTimestamp)
+            timestamp = float(property.createTimestamp)
 
             slots = {}
-            slots['htmlUserId'] = str(property.id)
-            slots['htmlUserTimestamp'] = config.convertTimestamp(timestamp)
+            slots['htmlPropertyId'] = str(property.id)
+            slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
+            slots['htmlTitle'] = str(property.title)
+            slots['htmlUnits'] = str(property.units)
+            slots['htmlPricePerUnit'] = str(property.pricePerUnit)
             self.property = property
             yield tag.clone().fillSlots(**slots)
 
     @renderer
     def action(self, request, tag):
         actions = {}
-        actions[config.createTimestamp()] = ['View', 'ticon view hint hint--top hint--rounded', '../describeUser']
-        actions[config.createTimestamp()] = ['Delete', 'ticon delete hint hint--top hint--rounded', '../deleteUser?id=%s' % self.user.id]
+        actions[config.createTimestamp()] = ['View', 'ticon view hint hint--top hint--rounded', '../describeProperty']
+        actions[config.createTimestamp()] = ['Delete', 'ticon delete hint hint--top hint--rounded', '../deleteProperty?id=%s' % self.property.id]
 
         for key in sorted(actions.keys()):
             slots = {}

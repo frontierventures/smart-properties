@@ -6,7 +6,7 @@ from twisted.web.server import Request, Site, Session
 from twisted.web.static import File
 from twisted.python import log
 
-
+import actions
 import market
 import config
 import login
@@ -71,6 +71,7 @@ def assemble(root):
     root.putChild('summaryProperties', summaryProperties.Main())
     root.putChild('summaryUsers', summaryUsers.Main())
     root.putChild('verifyMessage', settings.Action(echoFactory))
+    root.putChild('addProperty', actions.AddProperty())
 
     root.putChild('assets', File("./assets"))
     return root

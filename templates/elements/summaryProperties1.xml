@@ -1,31 +1,48 @@
-<div class="grid w980" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
-    <div class="content-full">
-        <div class="c3">
-            <ul class="sidebar-menu">
-                <li><a href="../summaryProducts"><i class="iside mprod"></i>Products</a></li>
-                <li><a href="../summaryOrders"><i class="iside msell"></i>Orders</a></li>
-                <li><a class="active" href="../summaryUsers"><i class="iside msell"></i>Users</a></li>
-                <li><a href="../summarySessions"><i class="iside msell"></i>Sessions</a></li>
-                <li><a href="../summaryStores"><i class="iside msell"></i>Stores</a></li>
-                <li><a href="../summaryPayments"><i class="iside msettings"></i>Payments</a></li>
-                <li><a href="../summaryPublishers"><i class="iside msell"></i>Publishers</a></li>
-            </ul>
-        </div>
-        <div class="c9">
-            <div class="c12 actions" t:render="count">
-                <h1 class="c7"><t:slot name="htmlUserStatus" /> Users (<t:slot name="htmlUserCount" />)</h1>
-                <div>
-                    <select name="userStatus" id="userStatus" style="margin-top: 10px;">
-                        <option t:render="userStatus">
-                            <t:attr name="value"><t:slot name="inputValue" /></t:attr>
-                            <t:slot name="inputCaption" />
-                        </option>
-                    </select>
-                </div>
-            </div>
-		<div class="search-no-products">
-			<h2>No orders found</h2>
-		</div>
-        </div>
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div style="width: 100%;">
+        <span style="float:left">
+            <h1 t:render="count"><t:slot name="htmlPropertyStatus" /> Properties (<t:slot name="htmlPropertyCount" />)</h1>
+            <a href="../summaryProperties?action=add">Add</a>
+        </span>
+        <span style="float:right">
+            <select name="propertyStatus" id="propertyStatus">
+                <option t:render="propertyStatus">
+                    <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                    <t:slot name="inputCaption" />
+                </option>
+            </select>
+        </span>
+    </div>
+    <div>
+        <table style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Create Date</th>
+                    <th>PropertyId</th>
+                    <th>Title</th>
+                    <th>Units</th>
+                    <th>Price Per Unit</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t:render="row">
+                    <td style="text-align:center"><t:slot name="htmlTimestamp" /></td>
+                    <td style="text-align:center"><t:slot name="htmlPropertyId" /></td>
+                    <td style="text-align:center"><t:slot name="htmlTitle" /></td>
+                    <td style="text-align:center"><t:slot name="htmlUnits" /></td>
+                    <td style="text-align:center"><t:slot name="htmlPricePerUnit" /></td>
+                    <td style="text-align:center"><t:slot name="htmlPropertyId" /></td>
+                    <td style="text-align:center">
+                        <a t:render="action">
+                            <t:attr name="id"><t:slot name="htmlId" /></t:attr>
+                            <t:attr name="data-hint"><t:slot name="htmlHint" /></t:attr>
+                            <t:attr name="class"><t:slot name="htmlClass" /></t:attr>
+                            <t:attr name="href"><t:slot name="htmlUrl" /></t:attr>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
