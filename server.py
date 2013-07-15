@@ -7,10 +7,11 @@ from twisted.web.static import File
 from twisted.python import log
 
 import actions
-import market
 import config
 import login
 import logout
+import market
+import orders
 import register
 import settings
 import summaryOrders
@@ -69,6 +70,7 @@ def assemble(root):
     root.putChild('register', register.Main())
     root.putChild('registerAction', register.Action(echoFactory))
     root.putChild('settings', settings.Main())
+    root.putChild('orders', orders.Main())
     root.putChild('summaryProperties', summaryProperties.Main())
     root.putChild('summaryOrders', summaryOrders.Main())
     root.putChild('summaryUsers', summaryUsers.Main())

@@ -4,10 +4,11 @@ from twisted.python.filepath import FilePath
 
 
 import elements
+import forms
 import inbox
 import login
 import market
-import forms
+import orders
 import popups
 import register
 import settings
@@ -113,6 +114,16 @@ class Home(Page):
         self.pageTitle = pageTitle
 
 
+class Orders(Page):
+    def __init__(self, pageTitle, template, status):
+        Page.__init__(self, pageTitle, template)
+        self.status = status
+
+    @renderer
+    def orders(self, request, tag):
+        return orders.Orders(self.sessioUser, self.status)
+
+
 class Settings(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
@@ -158,6 +169,7 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'home': 'templates/pages/home.xml',
              'addProperty': 'templates/pages/addProperty.xml',
              'buyProperty': 'templates/pages/buyProperty.xml',
+             'orders': 'templates/pages/orders.xml',
              'register': 'templates/pages/register.xml',
              'settings': 'templates/pages/settings.xml',
              'summaryProperties': 'templates/pages/summaryProperties.xml',
