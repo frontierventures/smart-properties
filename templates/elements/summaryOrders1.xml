@@ -17,6 +17,7 @@
             <thead>
                 <tr>
                     <th>Create Date</th>
+                    <th>Status</th>
                     <th>OrderId</th>
                     <th>InvestorId</th>
                     <th>Units</th>
@@ -26,6 +27,7 @@
             <tbody>
                 <tr t:render="row">
                     <td style="text-align:center"><t:slot name="htmlTimestamp" /></td>
+                    <td style="text-align:center"><t:slot name="htmlStatus" /></td>
                     <td style="text-align:center"><t:slot name="htmlOrderId" /></td>
                     <td style="text-align:center"><t:slot name="htmlInvestorId" /></td>
                     <td style="text-align:center"><t:slot name="htmlUnits" /></td>

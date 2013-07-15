@@ -19,9 +19,8 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         sessionUser = SessionManager(request).getSessionUser()
-        userType = sessionUser['type']
 
-        if userType != 0:
+        if sessionUser['type'] != 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
@@ -30,7 +29,7 @@ class Main(Resource):
         try:
             status = request.args.get('status')[0]
         except:
-            status = 'open'
+            status = 'pending'
 
         Page = pages.SummaryOrders('Orders Summary', 'summaryOrders', status)
         Page.sessionUser = sessionUser
@@ -46,8 +45,14 @@ class Main(Resource):
 class Orders(Element):
     def __init__(self, status):
         self.status = status
-        orders = db.query(Order).order_by(Order.createTimestamp.desc())
-        orders = orders.filter(Order.status == status)
+
+        orders = db.query(Order)
+        if status == 'pending':
+            orders = orders.filter(Order.status.in_(['open', 'paid'])).order_by(Order.updateTimestamp.desc())
+        if status == 'canceled':
+            orders = orders.filter(Order.status == 'canceled').order_by(Order.updateTimestamp.desc())
+        if status == 'complete':
+            orders = orders.filter(Order.status == 'received').order_by(Order.updateTimestamp.desc())
 
         if orders.count() == 0:
             template = 'templates/elements/summaryOrders0.xml'
@@ -59,8 +64,10 @@ class Orders(Element):
 
     @renderer
     def count(self, request, tag):
-        statuses = {'open': 'Pending',
-                    'deleted': 'Deleted'}
+        statuses = {'pending': 'Pending',
+                    'canceled': 'Canceled',
+                    'complete': 'Complete'}
+
         slots = {}
         slots['htmlOrderStatus'] = statuses[self.status]
         slots['htmlOrderCount'] = str(self.orders.count())
@@ -68,15 +75,19 @@ class Orders(Element):
 
     @renderer
     def orderStatus(self, request, tag):
-        statuses = ['open', 'deleted']
+        statuses = {'pending': 'Pending',
+                    'canceled': 'Canceled',
+                    'complete': 'Complete'}
 
-        for status in statuses:
+        for key in statuses:
             thisTagShouldBeSelected = False
-            if status == self.status:
+
+            if key == self.status:
                 thisTagShouldBeSelected = True
+
             slots = {}
-            slots['inputValue'] = status
-            slots['inputCaption'] = status
+            slots['inputValue'] = key
+            slots['inputCaption'] = statuses[key]
             newTag = tag.clone().fillSlots(**slots)
             if thisTagShouldBeSelected:
                 newTag(selected='yes')
@@ -88,6 +99,7 @@ class Orders(Element):
             timestamp = float(order.createTimestamp)
 
             slots = {}
+            slots['htmlStatus'] = str(order.status)
             slots['htmlOrderId'] = str(order.id)
             slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
             slots['htmlInvestorId'] = str(order.investorId) 
