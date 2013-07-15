@@ -83,17 +83,17 @@ class SessionManager():
         sessionObject.search = {'seed': seed, 'isTabOpen': False, 'query': '', 'sort': 'top', 'categoryId': '', 'index': 1}
         print "%ssessionSearch cleared%s" % (config.color.BLUE, config.color.ENDC)
 
-    def getSessionProduct(self):
+    def getSessionProperty(self):
         sessionObject = ISessionObject(self.session)
-        return sessionObject.product
+        return sessionObject.propertyDict
 
-    def setSessionProduct(self, product):
+    def setSessionProperty(self, propertyDict):
         sessionObject = ISessionObject(self.session)
-        sessionObject.product = product
+        sessionObject.propertyDict = propertyDict
 
-    def clearSessionProduct(self):
+    def clearSessionProperty(self):
         sessionObject = ISessionObject(self.session)
-        sessionObject.product = {'id': 0}
+        sessionObject.propertyDict = {'id': 0}
         print "%ssessionProduct cleared%s" % (config.color.BLUE, config.color.ENDC)
 
     def getSessionOrder(self):
@@ -174,7 +174,7 @@ class SessionManager():
 class ISessionObject(Interface):
     user = Attribute('')
     search = Attribute('')
-    product = Attribute('')
+    propertyDict = Attribute('')
     order = Attribute('')
     store = Attribute('')
     review = Attribute('')
@@ -191,7 +191,7 @@ class SessionObject(object):
         self.user = {'id': 0, 'type': 1, 'seed': 0, 'visit': 0, 'currencyId': 0}
         seed = random.randint(0, sys.maxint)
         self.search = {'seed': seed, 'isTabOpen': False, 'query': '', 'sort': 'top', 'categoryId': '', 'index': 1}
-        self.product = {'id': 0}
+        self.propertyDict = {'id': 0}
         self.order = {'id': 0}
         self.store = {'id': 0}
         self.review = {'id': 0}

@@ -10,9 +10,10 @@ class Main(Resource):
         session = request.getSession()
         SessionManager(request).clearSessionUser()
         SessionManager(request).clearSessionSearch()
-        SessionManager(request).clearSessionProduct()
+        SessionManager(request).clearSessionProperty()
         SessionManager(request).clearSessionStore()
         SessionManager(request).clearSessionOrder()
+
         try:
             SessionManager(request).remove(session)
         except:

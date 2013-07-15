@@ -10,6 +10,7 @@ from sessions import SessionManager
 
 import config
 import json
+import forms
 import pages
 
 
@@ -22,15 +23,35 @@ class Main(Resource):
         if userType != 0:
             return redirectTo('../', request)
 
+        sessionResponse = SessionManager(request).getSessionResponse()
+        sessionProperty = SessionManager(request).getSessionProperty()
+
         try:
             status = request.args.get('status')[0]
         except:
             status = 'active'
 
-        Page = pages.SummaryProperties('Property Summary', 'summaryProperties', status)
-        Page.sessionUser = sessionUser
+        try:
+            action = request.args.get('action')[0]
+        except:
+            action = ''
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        if not action:
+            Page = pages.SummaryProperties('Property Summary', 'summaryProperties', status)
+            Page.sessionUser = sessionUser
+            print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+
+        if action == 'add':
+            Page = pages.AddProperty('Add Property', 'addProperty')
+            Page.sessionUser = sessionUser
+            Page.sessionResponse = sessionResponse
+            Page.sessionProperty = sessionProperty
+
+            print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+            print "%ssessionProperty: %s%s" % (config.color.BLUE, sessionProperty, config.color.ENDC)
+            print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
+            SessionManager(request).clearSessionResponse()
+
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
 
@@ -38,16 +59,16 @@ class Main(Resource):
 class Properties(Element):
     def __init__(self, status):
         self.status = status
-        users = db.query(User).order_by(User.loginTimestamp.desc())
-        users = users.filter(User.status == status)
+        properties = db.query(Property).order_by(Property.createTimestamp.desc())
+        properties = properties.filter(Property.status == status)
 
-        if users.count() == 0:
-            template = 'templates/elements/summaryUsers0.xml'
+        if properties.count() == 0:
+            template = 'templates/elements/summaryProperties0.xml'
         else:
-            template = 'templates/elements/summaryUsers1.xml'
+            template = 'templates/elements/summaryProperties1.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
-        self.users = users
+        self.properties = properties
 
     @renderer
     def count(self, request, tag):
@@ -55,7 +76,7 @@ class Properties(Element):
                     'deleted': 'Deleted'}
         slots = {}
         slots['htmlUserStatus'] = statuses[self.status]
-        slots['htmlUserCount'] = str(self.users.count())
+        slots['htmlUserCount'] = str(self.properties.count())
         yield tag.clone().fillSlots(**slots)
 
     @renderer
@@ -76,19 +97,13 @@ class Properties(Element):
 
     @renderer
     def row(self, request, tag):
-        for user in self.users:
-            timestamp = float(user.loginTimestamp)
-
-            profile = db.query(Profile).filter(Profile.id == user.id).first()
+        for property in self.properties:
+            timestamp = float(property.loginTimestamp)
 
             slots = {}
-            slots['htmlUserId'] = str(user.id)
+            slots['htmlUserId'] = str(property.id)
             slots['htmlUserTimestamp'] = config.convertTimestamp(timestamp)
-            slots['htmlUserEmail'] = str(user.email)
-            slots['htmlUserIp'] = str(user.ip)
-            slots['htmlUserSeed'] = str(profile.seed)
-            slots['htmlUserBitcoinAddress'] = str(profile.bitcoinAddress)
-            self.user = user
+            self.property = property
             yield tag.clone().fillSlots(**slots)
 
     @renderer
@@ -99,7 +114,7 @@ class Properties(Element):
 
         for key in sorted(actions.keys()):
             slots = {}
-            slots['htmlId'] = str(self.user.id)
+            slots['htmlId'] = str(self.property.id)
             slots['htmlHint'] = actions[key][0]
             slots['htmlClass'] = actions[key][1]
             slots['htmlUrl'] = actions[key][2]

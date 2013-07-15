@@ -7,6 +7,7 @@ import elements
 import inbox
 import login
 import market
+import forms
 import popups
 import register
 import settings
@@ -16,7 +17,7 @@ import summaryUsers
 
 class Page(Element):
     sessionOrder = {}
-    sessionProduct = {}
+    sessionProperty = {}
     sessionResponse = {}
     sessionReview = {}
     sessionUser = {}
@@ -42,6 +43,16 @@ class Page(Element):
     @renderer
     def helpPopup(self, request, tag):
         return popups.Help()
+
+
+class AddProperty(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+    @renderer
+    def addPropertyForm(self, request, tag):
+        return forms.AddProperty(self.sessionUser, self.sessionProperty, self.sessionResponse)
 
 
 class Inbox(Page):
@@ -124,6 +135,7 @@ class SummaryUsers(Page):
 templates = {'inbox': 'templates/pages/inbox.xml',
              'login': 'templates/pages/login.xml',
              'home': 'templates/pages/home.xml',
+             'addProperty': 'templates/pages/addProperty.xml',
              'register': 'templates/pages/register.xml',
              'settings': 'templates/pages/settings.xml',
              'summaryProperties': 'templates/pages/summaryProperties.xml',
