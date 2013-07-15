@@ -29,7 +29,7 @@ class Main(Resource):
         except:
             status = 'open'
 
-        Page = pages.SummaryOrders('Orders', 'orders', status)
+        Page = pages.Orders('Orders', 'orders', status)
         Page.sessionUser = sessionUser
 
         print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
@@ -90,8 +90,10 @@ class Orders(Element):
             slots = {}
             slots['htmlOrderId'] = str(order.id)
             slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
-            slots['htmlInvestorId'] = str(order.investorId) 
+            slots['htmlTitle'] = str(order.propertyTitle) 
             slots['htmlUnits'] = str(order.units) 
+            slots['htmlPricePerUnit'] = str(order.pricePerUnit) 
+            slots['htmlTotal'] = str(order.total) 
             self.order = order
             yield tag.clone().fillSlots(**slots)
 

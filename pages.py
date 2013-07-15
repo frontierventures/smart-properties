@@ -11,6 +11,7 @@ import market
 import orders
 import popups
 import register
+import receipt
 import settings
 import summaryOrders
 import summaryProperties
@@ -121,7 +122,7 @@ class Orders(Page):
 
     @renderer
     def orders(self, request, tag):
-        return orders.Orders(self.sessioUser, self.status)
+        return orders.Orders(self.sessionUser, self.status)
 
 
 class Settings(Page):
@@ -132,6 +133,15 @@ class Settings(Page):
     @renderer
     def settingsForm(self, request, tag):
         return settings.Form(self.sessionUser, self.sessionResponse)
+
+
+class Receipt(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+
+    @renderer
+    def receipt(self, request, tag):
+        return receipt.Receipt(self.sessionOrder)
 
 
 class SummaryProperties(Page):
@@ -171,6 +181,7 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'buyProperty': 'templates/pages/buyProperty.xml',
              'orders': 'templates/pages/orders.xml',
              'register': 'templates/pages/register.xml',
+             'receipt': 'templates/pages/receipt.xml',
              'settings': 'templates/pages/settings.xml',
              'summaryProperties': 'templates/pages/summaryProperties.xml',
              'summaryOrders': 'templates/pages/summaryOrders.xml',

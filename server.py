@@ -13,6 +13,7 @@ import logout
 import market
 import orders
 import register
+import receipt
 import settings
 import summaryOrders
 import summaryProperties
@@ -71,6 +72,7 @@ def assemble(root):
     root.putChild('registerAction', register.Action(echoFactory))
     root.putChild('settings', settings.Main())
     root.putChild('orders', orders.Main())
+    root.putChild('receipt', receipt.Main())
     root.putChild('summaryProperties', summaryProperties.Main())
     root.putChild('summaryOrders', summaryOrders.Main())
     root.putChild('summaryUsers', summaryUsers.Main())

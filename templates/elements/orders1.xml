@@ -18,8 +18,10 @@
                 <tr>
                     <th>Create Date</th>
                     <th>OrderId</th>
-                    <th>InvestorId</th>
+                    <th>Title</th>
                     <th>Units</th>
+                    <th>Price Per Unit</th>
+                    <th>Total</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -27,8 +29,10 @@
                 <tr t:render="row">
                     <td style="text-align:center"><t:slot name="htmlTimestamp" /></td>
                     <td style="text-align:center"><t:slot name="htmlOrderId" /></td>
-                    <td style="text-align:center"><t:slot name="htmlInvestorId" /></td>
+                    <td style="text-align:center"><t:slot name="htmlTitle" /></td>
                     <td style="text-align:center"><t:slot name="htmlUnits" /></td>
+                    <td style="text-align:center"><t:slot name="htmlPricePerUnit" /></td>
+                    <td style="text-align:center"><t:slot name="htmlTotal" /></td>
                     <td style="text-align:center">
                         <a t:render="action">
                             <t:attr name="id"><t:slot name="htmlId" /></t:attr>

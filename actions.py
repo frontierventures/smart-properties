@@ -19,6 +19,7 @@ import decimal
 import definitions
 #import descriptions
 import error
+import receipt
 import functions
 import hashlib
 import inspect
@@ -123,4 +124,6 @@ class BuyProperty(Resource):
             db.add(order)
             db.commit()
 
-            return redirectTo('../', request)
+            sessionOrder['id'] = order.id
+
+            return redirectTo('../receipt', request)
