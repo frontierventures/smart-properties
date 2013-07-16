@@ -106,8 +106,10 @@ class Properties(Element):
             slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
             slots['htmlTitle'] = str(property.title)
             slots['htmlPropertyUrl'] = '../%s' % str(property.id)
+            slots['htmlDownpaymentFiat'] = str(property.downpayment)
             slots['htmlUnits'] = str(property.units)
-            slots['htmlPricePerUnit'] = str(property.pricePerUnit)
+            slots['htmlPricePerUnitFiat'] = str(float(property.downpayment) / float(property.units))
+            slots['htmlPricePerUnitBTC'] = str(float(property.downpayment) / float(property.units))
             self.property = property
             yield tag.clone().fillSlots(**slots)
 

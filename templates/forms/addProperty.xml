@@ -3,9 +3,9 @@
         <h2 class="form-signin-heading">Please add property</h2>
         <input type="hidden" name="propertyId"><t:attr name="value"><t:slot name="htmlPropertyId" /></t:attr></input>
         <input type="text" name="propertyTitle" placeholder="Property title"><t:attr name="value"><t:slot name="htmlTitle" /></t:attr></input>
-        <textarea type="text" name="propertyDescription" placeholder="Property decription" cols="30" rows="10" style="height: 160px;"><t:slot name="htmlDescription" /></textarea>
+        <textarea type="text" name="propertyDescription" placeholder="Property description" cols="30" rows="10" style="height: 160px;"><t:slot name="htmlDescription" /></textarea>
+        <input type="text" name="propertyDownpayment" placeholder="Downpayment"><t:attr name="value"><t:slot name="htmlDownpayment" /></t:attr></input>
         <input type="text" name="propertyUnits" placeholder="Units"><t:attr name="value"><t:slot name="htmlUnits" /></t:attr></input>
-        <input type="text" name="propertyPricePerUnit" placeholder="Price per unit"><t:attr name="value"><t:slot name="htmlPricePerUnit" /></t:attr></input>
         <button name="button" value="Save" class="btn btn-large btn-primary" type="submit">Save Property</button>
     </form>
 </div>

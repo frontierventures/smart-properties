@@ -48,20 +48,20 @@ class AddProperty(Element):
         if sessionProperty.get('description'):
             propertyDescription = sessionProperty['description']
 
-        propertyUnits = 0
+        propertyUnits = '' 
         if sessionProperty.get('units'):
             propertyUnits = sessionProperty['units']
 
-        propertyPricePerUnit = 0
-        if sessionProperty.get('pricePerUnit'):
-            propertyPricePerUnit = sessionProperty['pricePerUnit']
+        propertyDownpayment = '' 
+        if sessionProperty.get('propertyDownpayment'):
+            propertyDownpayment = sessionProperty['downpayment']
 
         slots = {}
         slots['htmlPropertyId'] = str(0)
         slots['htmlTitle'] = str(propertyName)
         slots['htmlDescription'] = str(propertyDescription)
+        slots['htmlDownpayment'] = str(propertyDownpayment)
         slots['htmlUnits'] = str(propertyUnits)
-        slots['htmlPricePerUnit'] = str(propertyPricePerUnit)
         yield tag.fillSlots(**slots)
 
     @renderer

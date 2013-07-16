@@ -47,13 +47,13 @@ class AddProperty(Resource):
 
         title = request.args.get('propertyTitle')[0]
         description = request.args.get('propertyDescription')[0]
+        downpayment = request.args.get('propertyDownpayment')[0]
         units = request.args.get('propertyUnits')[0]
-        pricePerUnit = request.args.get('propertyPricePerUnit')[0]
 
         sessionProperty['title'] = title
         sessionProperty['description'] = description
+        sessionProperty['downpayment'] = downpayment
         sessionProperty['units'] = units
-        sessionProperty['pricePerUnit'] = pricePerUnit
 
         #if error.propertyTitle(request, propertyTitle):
         #    return redirectTo(url, request)
@@ -66,7 +66,7 @@ class AddProperty(Resource):
 
             timestamp = config.createTimestamp()
 
-            propertyObject = Property(status, timestamp, timestamp, title, description, '', '', units, pricePerUnit)
+            propertyObject = Property(status, timestamp, timestamp, title, description, '', '', downpayment, units)
 
             db.add(propertyObject)
             db.commit()

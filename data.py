@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker, relationship, backref
 
 import config
 import encryptor
-
+import definitions
 import decimal
 D = decimal.Decimal
 
@@ -78,6 +78,19 @@ class Order(Base):
         self.paymentAddress = paymentAddress
 
 
+class Price(Base):
+    __tablename__ = "prices"
+    id = Column(Integer, primary_key=True)
+    timestamp = Column(String)
+    currencyId = Column(Integer)
+    last = Column(String)
+
+    def __init__(self, timestamp, currencyId, last):
+        self.timestamp = timestamp
+        self.currencyId = currencyId
+        self.last = last
+
+
 class Profile(Base):
     __tablename__ = "profiles"
     id = Column(Integer, primary_key=True)
@@ -114,10 +127,10 @@ class Property(Base):
     description = Column(String)
     imageCount = Column(Integer)
     imageHash = Column(String)
+    downpayment = Column(String)
     units = Column(Integer)
-    pricePerUnit = Column(String)
 
-    def __init__(self, status, createTimestamp, updateTimestamp, title, description, imageHash, imageCount, units, pricePerUnit):
+    def __init__(self, status, createTimestamp, updateTimestamp, title, description, imageHash, imageCount, downpayment, units):
         self.status = status
         self.createTimestamp = createTimestamp
         self.updateTimestamp = updateTimestamp
@@ -125,8 +138,8 @@ class Property(Base):
         self.description = description
         self.imageHash = imageHash
         self.imageCount = imageCount
+        self.downpayment = downpayment
         self.units = units
-        self.pricePerUnit = pricePerUnit
 
 
 class User(Base):
@@ -155,6 +168,12 @@ def reset():
     Base.metadata.create_all(engine)
 
     timestamp = config.createTimestamp()
+
+    for currency in definitions.currencies:
+        price = db.query(Price).filter(Price.currencyId == currency).first()
+        if not price:
+            newPrice = Price(timestamp, currency, 1)
+            db.add(newPrice)
 
     user = db.query(User).filter(User.email == '0@0.0').first()
     if not user:

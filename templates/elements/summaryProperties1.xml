@@ -20,8 +20,10 @@
                     <th>Create Date</th>
                     <th>PropertyId</th>
                     <th>Title</th>
+                    <th>Downpayment (USD)</th>
                     <th>Units</th>
-                    <th>Price Per Unit</th>
+                    <th>Price Per Unit (USD)</th>
+                    <th>Price Per Unit (BTC)</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -35,9 +37,10 @@
                             <t:slot name="htmlTitle" />
                         </a>
                     </td>
+                    <td style="text-align:center"><t:slot name="htmlDownpaymentFiat" /></td>
                     <td style="text-align:center"><t:slot name="htmlUnits" /></td>
-                    <td style="text-align:center"><t:slot name="htmlPricePerUnit" /></td>
-                    <td style="text-align:center"><t:slot name="htmlPropertyId" /></td>
+                    <td style="text-align:center"><t:slot name="htmlPricePerUnitFiat" /></td>
+                    <td style="text-align:center"><t:slot name="htmlPricePerUnitBTC" /></td>
                     <td style="text-align:center">
                         <a t:render="action">
                             <t:attr name="id"><t:slot name="htmlId" /></t:attr>

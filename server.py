@@ -8,12 +8,13 @@ from twisted.python import log
 
 import actions
 import config
+import exchange
 import login
 import logout
 import market
 import orders
-import register
 import receipt
+import register
 import settings
 import summaryOrders
 import summaryProperties
@@ -79,6 +80,7 @@ def assemble(root):
     root.putChild('verifyMessage', settings.Action(echoFactory))
     root.putChild('addProperty', actions.AddProperty())
     root.putChild('buyProperty', actions.BuyProperty())
+    root.putChild('exchange', exchange.Main())
 
     root.putChild('assets', File("./assets"))
     return root
