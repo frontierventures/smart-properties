@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, User, Property
+from data import Price, Profile, User, Property
 from data import db
 from sessions import SessionManager
 
@@ -101,15 +101,21 @@ class Properties(Element):
         for property in self.properties:
             timestamp = float(property.createTimestamp)
 
+            price = db.query(Price).filter(Price.currencyId == 'USD').first()
+
+            downpaymentBTC = float(property.downpayment) / float(price.last)
+            pricePerUnitBTC = (float(property.downpayment) / float(price.last)) / float(property.units)
+
             slots = {}
             slots['htmlPropertyId'] = str(property.id)
             slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
             slots['htmlTitle'] = str(property.title)
             slots['htmlPropertyUrl'] = '../%s' % str(property.id)
             slots['htmlDownpaymentFiat'] = str(property.downpayment)
+            slots['htmlDownpaymentBTC'] = "%.4f" % downpaymentBTC 
             slots['htmlUnits'] = str(property.units)
             slots['htmlPricePerUnitFiat'] = str(float(property.downpayment) / float(property.units))
-            slots['htmlPricePerUnitBTC'] = str(float(property.downpayment) / float(property.units))
+            slots['htmlPricePerUnitBTC'] =  "%.4f" % pricePerUnitBTC
             self.property = property
             yield tag.clone().fillSlots(**slots)
 

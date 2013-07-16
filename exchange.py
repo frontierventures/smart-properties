@@ -18,7 +18,7 @@ class Main(Resource):
         request.write("<body>\n")
         timestamp = config.createTimestamp()
         prices = db.query(Price).order_by(Price.timestamp.desc())
-        request.write("<table>\n")
+        request.write("<table style=\"width: 100%\">\n")
         request.write("<tr>\n")
         request.write("<td><b>Timestamp</b></td>\n")
         request.write("<td><b>Currency</b></td>\n")
