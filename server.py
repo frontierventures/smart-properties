@@ -9,10 +9,12 @@ from twisted.python import log
 import actions
 import config
 import exchange
+import home
 import login
 import logout
 import market
 import orders
+import profile
 import receipt
 import register
 import settings
@@ -62,7 +64,7 @@ factory = WebSocketFactory(echoFactory)
 wsService = internet.TCPServer(8090, factory)
 wsService.setServiceParent(application)
 
-root = market.Main(echoFactory)
+root = home.Main(echoFactory)
 root.putChild('', root)
 
 def assemble(root):
@@ -73,6 +75,7 @@ def assemble(root):
     root.putChild('registerAction', register.Action(echoFactory))
     root.putChild('settings', settings.Main())
     root.putChild('orders', orders.Main())
+    root.putChild('profile', profile.Main())
     root.putChild('receipt', receipt.Main())
     root.putChild('summaryProperties', summaryProperties.Main())
     root.putChild('summaryOrders', summaryOrders.Main())
@@ -81,6 +84,7 @@ def assemble(root):
     root.putChild('addProperty', actions.AddProperty())
     root.putChild('buyProperty', actions.BuyProperty())
     root.putChild('exchange', exchange.Main())
+    root.putChild('market', market.Main())
 
     root.putChild('assets', File("./assets"))
     return root

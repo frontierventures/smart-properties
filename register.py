@@ -142,7 +142,7 @@ class Action(Resource):
             newUser = User("active", 2, timestamp, email, password, 0, '')
             
             seed = random.randint(0, sys.maxint)
-            newProfile = Profile(timestamp, timestamp, '', '', token, '', seed, 0)
+            newProfile = Profile(timestamp, timestamp, '', '', token, '', seed, 0, 0)
             newUser.profiles = [newProfile]
 
             db.add(newUser)

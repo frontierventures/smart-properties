@@ -57,31 +57,3 @@ class Main(Resource):
             SessionManager(request).clearSessionResponse()
             request.write('<!DOCTYPE html>\n')
             return renderElement(request, Page)
-
-        #if userId == 0:
-        #    return redirectTo('../', request)
-
-        #if action == 'editDetails':
-        #    product = db.query(CatalogItem).filter(CatalogItem.productId == self.productId).first()
-
-        #    sessionProduct = SessionManager(request).getSessionProduct()
-        #    sessionProduct['id'] = self.productId
-        #    sessionProduct['categoryId'] = product.categoryId
-        #    sessionProduct['name'] = product.name
-        #    #sessionProduct['description'] = product.description
-        #    sessionProduct['price'] = product.price
-
-        #    if product.sellerId != sessionUser['id']:
-        #        return redirectTo('../', request)
-
-        #    Page = pages.EditProduct('Edit Product', 'editProduct')
-        #    Page.sessionUser = sessionUser
-        #    Page.sessionResponse = sessionResponse
-        #    Page.sessionProduct = sessionProduct
-
-        #    print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
-        #    print "sessionProduct: %s" % sessionProduct
-        #    print "sessionResponse: %s" % sessionResponse
-        #    SessionManager(request).clearSessionResponse()
-        #    request.write('<!DOCTYPE html>\n')
-        #    return renderElement(request, Page)

@@ -22,31 +22,35 @@ import property
 
 
 class Main(Resource):
+    topProductCounter = {}
+    serverInfo = {"lastReset": 0, "visits": 0}
+
+    def __init__(self, echoFactory):
+        Resource.__init__(self)
+        self.echoFactory = echoFactory
+        self.serverInfo['lastReset'] = config.createTimestamp()
+
+    def getChild(self, name, request):
+        #storeDirectoryItem = db.query(StoreDirectory).filter(StoreDirectory.name == name).first()
+
+        #if storeDirectoryItem:
+        #    ownerId = storeDirectoryItem.ownerId
+        return property.Main(name)
+        #else:
+        #    return notFound.Main(0)
+
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
         sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'market'
+        sessionUser['page'] = 'home'
+        sessionUser['ip'] = request.getClientIP()
 
-        try:
-            status = request.args.get('status')[0]
-        except:
-            status = 'pending'
+        if not sessionUser['seed']:
+            self.serverInfo['visits'] += 1
+            sessionUser['seed'] = random.randint(0, sys.maxint)
 
-        Page = pages.Market('Market', 'market', status)
+        Page = pages.Home('Home', 'home')
         Page.sessionUser = sessionUser
 
         print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
         return renderElement(request, Page)
-
-
-class Assets(Element):
-    def __init__(self, status):
-        self.status = status
-
-        if self.status == 'pending':
-            template = 'templates/elements/assets0.xml'
-
-        if self.status == 'trading':
-            template = 'templates/elements/assets1.xml'
-
-        self.loader = XMLString(FilePath(template).getContent())

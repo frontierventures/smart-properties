@@ -101,12 +101,13 @@ class Profile(Base):
     token = Column(String)
     bitcoinAddress = Column(String)
     seed = Column(String)
+    shares = Column(String)
     unreadMessages = Column(Integer)
 
     userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", backref=backref("profiles", order_by=id))
 
-    def __init__(self, createTimestamp, updateTimestamp, first, last, token, bitcoinAddress, seed, unreadMessages):
+    def __init__(self, createTimestamp, updateTimestamp, first, last, token, bitcoinAddress, seed, shares, unreadMessages):
         self.createTimestamp = createTimestamp
         self.updateTimestamp = updateTimestamp
         self.first = first
@@ -114,6 +115,7 @@ class Profile(Base):
         self.token = token
         self.bitcoinAddress = bitcoinAddress
         self.seed = seed
+        self.shares = shares
         self.unreadMessages = unreadMessages
 
 
@@ -179,7 +181,7 @@ def reset():
     if not user:
         password = encryptor.hashPassword("0")
         admin = User("active", 0, timestamp, "0@0.0", password, 1, '')
-        newProfile = Profile(timestamp, timestamp, '', '', '', '', '', 0)
+        newProfile = Profile(timestamp, timestamp, 'admin', 'admin', '', '', '', 1000, 0)
         admin.profiles = [newProfile]
         db.add(admin)
 

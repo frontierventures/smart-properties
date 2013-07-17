@@ -8,10 +8,12 @@ import forms
 import inbox
 import login
 import market
+import market
 import orders
 import popups
-import register
+import profile
 import receipt
+import register
 import settings
 import summaryOrders
 import summaryProperties
@@ -115,6 +117,17 @@ class Home(Page):
         self.pageTitle = pageTitle
 
 
+class Market(Page):
+    def __init__(self, pageTitle, template, status):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+        self.status = status
+
+    @renderer
+    def assets(self, request, tag):
+        return market.Assets(self.status)
+
+
 class Orders(Page):
     def __init__(self, pageTitle, template, status):
         Page.__init__(self, pageTitle, template)
@@ -123,6 +136,15 @@ class Orders(Page):
     @renderer
     def orders(self, request, tag):
         return orders.Orders(self.sessionUser, self.status)
+
+
+class Profile(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+
+    @renderer
+    def details(self, request, tag):
+        return profile.Details(self.sessionUser)
 
 
 class Settings(Page):
@@ -177,9 +199,11 @@ class SummaryUsers(Page):
 templates = {'inbox': 'templates/pages/inbox.xml',
              'login': 'templates/pages/login.xml',
              'home': 'templates/pages/home.xml',
+             'market': 'templates/pages/market.xml',
              'addProperty': 'templates/pages/addProperty.xml',
              'buyProperty': 'templates/pages/buyProperty.xml',
              'orders': 'templates/pages/orders.xml',
+             'profile': 'templates/pages/profile.xml',
              'register': 'templates/pages/register.xml',
              'receipt': 'templates/pages/receipt.xml',
              'settings': 'templates/pages/settings.xml',

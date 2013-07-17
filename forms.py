@@ -31,10 +31,35 @@ D = decimal.Decimal
 class AddProperty(Element):
     def __init__(self, sessionUser, sessionProperty, sessionResponse):
         self.sellerId = sessionUser['id']
-        self.currencyId = sessionUser['currencyId']
+        #self.currencyId = sessionUser['currencyId']
         self.sessionProperty = sessionProperty
         self.sessionResponse = sessionResponse
         self.loader = XMLString(FilePath('templates/forms/addProperty.xml').getContent())
+
+    @renderer
+    def status(self, request, tag):
+        sessionProperty = self.sessionProperty
+        statuses = {'pending': 'Pending',
+                    'trading': 'Trading'}
+
+
+        propertyStatus = 'pending'
+        if sessionProperty.get('status'):
+            propertyStatus = sessionProperty['status'] 
+
+        for key in statuses: 
+            thisTagShouldBeSelected = False
+
+            if key == propertyStatus:
+                thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['inputValue'] = key
+            slots['inputCaption'] = statuses[key]
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='')
+            yield newTag
 
     @renderer
     def inputs(self, request, tag):

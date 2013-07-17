@@ -1,6 +1,12 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="inputs">
     <form class="form-signin" action="../addProperty" method="POST" enctype="application/x-www-form-urlencoded">
         <h2 class="form-signin-heading">Please add property</h2>
+        <select name="propertyStatus">
+            <option t:render="status">
+                <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                <t:slot name="inputCaption" />
+            </option>
+        </select>
         <input type="hidden" name="propertyId"><t:attr name="value"><t:slot name="htmlPropertyId" /></t:attr></input>
         <input type="text" name="propertyTitle" placeholder="Property title"><t:attr name="value"><t:slot name="htmlTitle" /></t:attr></input>
         <textarea type="text" name="propertyDescription" placeholder="Property description" cols="30" rows="10" style="height: 160px;"><t:slot name="htmlDescription" /></textarea>
