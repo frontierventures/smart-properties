@@ -3,12 +3,11 @@ from twisted.web.template import Element, renderer, XMLString
 from twisted.python.filepath import FilePath
 
 
+import assets
 import elements
 import forms
 import inbox
 import login
-import market
-import market
 import orders
 import popups
 import profile
@@ -117,7 +116,7 @@ class Home(Page):
         self.pageTitle = pageTitle
 
 
-class Market(Page):
+class Assets(Page):
     def __init__(self, pageTitle, template, status):
         Page.__init__(self, pageTitle, template)
         self.pageTitle = pageTitle
@@ -125,7 +124,7 @@ class Market(Page):
 
     @renderer
     def assets(self, request, tag):
-        return market.Assets(self.status)
+        return assets.Assets(self.status)
 
 
 class Orders(Page):
@@ -199,7 +198,7 @@ class SummaryUsers(Page):
 templates = {'inbox': 'templates/pages/inbox.xml',
              'login': 'templates/pages/login.xml',
              'home': 'templates/pages/home.xml',
-             'market': 'templates/pages/market.xml',
+             'assets': 'templates/pages/assets.xml',
              'addProperty': 'templates/pages/addProperty.xml',
              'buyProperty': 'templates/pages/buyProperty.xml',
              'orders': 'templates/pages/orders.xml',

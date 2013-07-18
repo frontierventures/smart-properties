@@ -40,8 +40,7 @@ class AddProperty(Element):
     def status(self, request, tag):
         sessionProperty = self.sessionProperty
         statuses = {'pending': 'Pending',
-                    'trading': 'Trading'}
-
+                    'closed': 'Closed'}
 
         propertyStatus = 'pending'
         if sessionProperty.get('status'):

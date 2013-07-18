@@ -12,7 +12,7 @@ import exchange
 import home
 import login
 import logout
-import market
+import assets
 import orders
 import profile
 import receipt
@@ -84,9 +84,9 @@ def assemble(root):
     root.putChild('addProperty', actions.AddProperty())
     root.putChild('buyProperty', actions.BuyProperty())
     root.putChild('exchange', exchange.Main())
-    root.putChild('market', market.Main())
+    root.putChild('assets', assets.Main())
 
-    root.putChild('assets', File("./assets"))
+    root.putChild('resources', File("./resources"))
     return root
 
 root = assemble(root)

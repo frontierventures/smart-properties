@@ -62,7 +62,7 @@ class AddProperty(Resource):
         #    return redirectTo(url, request)
 
         if request.args.get('button')[0] == 'Save':
-            status = 'available'
+            status = 'pending'
 
             timestamp = config.createTimestamp()
 

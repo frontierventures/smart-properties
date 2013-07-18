@@ -128,7 +128,7 @@ class Action(Resource):
 
                 if not isEmailVerified:
                     url = '../settings'
-                    url = '../'
+                    url = '../assets'
 
                 if userType == 0:
                     url = '../summaryUsers'

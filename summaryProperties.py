@@ -30,7 +30,7 @@ class Main(Resource):
         try:
             status = request.args.get('status')[0]
         except:
-            status = 'available'
+            status = 'pending'
 
         try:
             action = request.args.get('action')[0]
@@ -73,8 +73,10 @@ class Properties(Element):
 
     @renderer
     def count(self, request, tag):
-        statuses = {'available': 'Active',
-                    'deleted': 'Deleted'}
+        statuses = {'pending': 'Pending',
+                    'cancelled': 'Cancelled',
+                    'closed': 'Closed'}
+
         slots = {}
         slots['htmlPropertyStatus'] = statuses[self.status]
         slots['htmlPropertyCount'] = str(self.properties.count())
@@ -82,15 +84,19 @@ class Properties(Element):
 
     @renderer
     def propertyStatus(self, request, tag):
-        statuses = ['available', 'deleted']
+        statuses = {'pending': 'Pending',
+                    'cancelled': 'Cancelled',
+                    'closed': 'Closed'}
 
-        for status in statuses:
+        for key in statuses:
             thisTagShouldBeSelected = False
-            if status == self.status:
+
+            if key == self.status:
                 thisTagShouldBeSelected = True
+
             slots = {}
-            slots['inputValue'] = status
-            slots['inputCaption'] = status
+            slots['inputValue'] = key
+            slots['inputCaption'] = statuses[key]
             newTag = tag.clone().fillSlots(**slots)
             if thisTagShouldBeSelected:
                 newTag(selected='yes')
