@@ -127,21 +127,27 @@ class Property(Base):
     updateTimestamp = Column(String)
     title = Column(String(collation='NOCASE'))
     description = Column(String)
+    address =  Column(String)
+    mls = Column(String)
+    siteSize = Column(String)
+    totalUnits = Column(String)
+    askingPrice = Column(String)
     imageCount = Column(Integer)
     imageHash = Column(String)
-    downpayment = Column(String)
-    units = Column(Integer)
 
-    def __init__(self, status, createTimestamp, updateTimestamp, title, description, imageHash, imageCount, downpayment, units):
+    def __init__(self, status, createTimestamp, updateTimestamp, title, description, address, mls, siteSize, totalUnits, askingPrice, imageHash, imageCount):
         self.status = status
         self.createTimestamp = createTimestamp
         self.updateTimestamp = updateTimestamp
-        self.title = title
-        self.description = description
-        self.imageHash = imageHash
-        self.imageCount = imageCount
-        self.downpayment = downpayment
-        self.units = units
+        self.title = title 
+        self.description = description 
+        self.address = address 
+        self.mls = mls 
+        self.siteSize = siteSize 
+        self.totalUnits = totalUnits 
+        self.askingPrice = askingPrice 
+        self.imageCount = imageCount 
+        self.imageHash = imageHash 
 
 
 class User(Base):

@@ -9,7 +9,10 @@ from twisted.python import log
 import actions
 import config
 import exchange
+import faq
+import faq
 import home
+import legal
 import login
 import logout
 import assets
@@ -70,6 +73,8 @@ root.putChild('', root)
 def assemble(root):
     root.putChild('login', login.Main())
     root.putChild('loginAction', login.Action(echoFactory))
+    root.putChild('legal', legal.Main())
+    root.putChild('faq', faq.Main())
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
     root.putChild('registerAction', register.Action(echoFactory))
@@ -87,6 +92,7 @@ def assemble(root):
     root.putChild('assets', assets.Main())
 
     root.putChild('resources', File("./resources"))
+    root.putChild('images', File("./images"))
     return root
 
 root = assemble(root)

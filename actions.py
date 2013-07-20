@@ -47,13 +47,15 @@ class AddProperty(Resource):
 
         title = request.args.get('propertyTitle')[0]
         description = request.args.get('propertyDescription')[0]
-        downpayment = request.args.get('propertyDownpayment')[0]
-        units = request.args.get('propertyUnits')[0]
+        address = request.args.get('propertyAddress')[0]
+        totalUnits = request.args.get('propertyTotalUnits')[0]
+        askingPrice = request.args.get('propertyAskingPrice')[0]
 
         sessionProperty['title'] = title
         sessionProperty['description'] = description
-        sessionProperty['downpayment'] = downpayment
-        sessionProperty['units'] = units
+        sessionProperty['address'] = address
+        sessionProperty['totalUnits'] = totalUnits
+        sessionProperty['askingPrice'] = askingPrice
 
         #if error.propertyTitle(request, propertyTitle):
         #    return redirectTo(url, request)
@@ -66,7 +68,8 @@ class AddProperty(Resource):
 
             timestamp = config.createTimestamp()
 
-            propertyObject = Property(status, timestamp, timestamp, title, description, '', '', downpayment, units)
+            #(self, status, createTimestamp, updateTimestamp, title, description, address, mls, siteSize, totalUnits, askingPrice, imageHash, imageCount):
+            propertyObject = Property(status, timestamp, timestamp, title, description, address, '', '',  totalUnits, askingPrice, '', 0)
 
             db.add(propertyObject)
             db.commit()

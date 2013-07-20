@@ -13,12 +13,6 @@
                     <li><a href="../assets">Assets</a></li>
                     <li><a href="../profile">Profile</a></li>
                     <li><a href="../logout">Logout</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Menu <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../orders">Orders</a></li>
-                        </ul>
-                    </li>
                 </ul>
                 <p class="navbar-text pull-right" t:render="first">
                     Logged in as <a href="../settings" class="navbar-link"><t:slot name="htmlUserFirst" /></a>

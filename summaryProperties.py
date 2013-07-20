@@ -109,18 +109,18 @@ class Properties(Element):
 
             price = db.query(Price).filter(Price.currencyId == 'USD').first()
 
-            downpaymentBTC = float(property.downpayment) / float(price.last)
-            pricePerUnitBTC = (float(property.downpayment) / float(price.last)) / float(property.units)
+            askingPriceBTC = float(property.askingPrice) / float(price.last)
+            pricePerUnitBTC = (float(property.askingPrice) / float(price.last)) / float(property.totalUnits)
 
             slots = {}
             slots['htmlPropertyId'] = str(property.id)
             slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
             slots['htmlTitle'] = str(property.title)
             slots['htmlPropertyUrl'] = '../%s' % str(property.id)
-            slots['htmlDownpaymentFiat'] = str(property.downpayment)
-            slots['htmlDownpaymentBTC'] = "%.4f" % downpaymentBTC 
-            slots['htmlUnits'] = str(property.units)
-            slots['htmlPricePerUnitFiat'] = str(float(property.downpayment) / float(property.units))
+            slots['htmlAskingPriceFiat'] = str(property.askingPrice)
+            slots['htmlAskingPriceBTC'] = "%.4f" % askingPriceBTC 
+            slots['htmlTotalUnits'] = str(property.totalUnits)
+            slots['htmlPricePerUnitFiat'] = str(float(property.askingPrice) / float(property.totalUnits))
             slots['htmlPricePerUnitBTC'] =  "%.4f" % pricePerUnitBTC
             self.property = property
             yield tag.clone().fillSlots(**slots)

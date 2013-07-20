@@ -5,8 +5,10 @@ from twisted.python.filepath import FilePath
 
 import assets
 import elements
+import faq
 import forms
 import inbox
+import legal
 import login
 import orders
 import popups
@@ -69,6 +71,12 @@ class BuyProperty(Page):
         return forms.BuyProperty(self.sessionResponse, self.sessionOrder)
 
 
+class FAQ(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+
 class Inbox(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
@@ -84,6 +92,18 @@ class Inbox(Page):
     @renderer
     def sendMessagePopup(self, request, tag):
         return popups.SendMessage(self.sessionUser)
+
+
+class Home(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+
+class Legal(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
 
 
 class Login(Page):
@@ -108,12 +128,6 @@ class Register(Page):
     @renderer
     def registerForm(self, request, tag):
         return register.Form(self.sessionUser, self.sessionResponse)
-
-
-class Home(Page):
-    def __init__(self, pageTitle, template):
-        Page.__init__(self, pageTitle, template)
-        self.pageTitle = pageTitle
 
 
 class Assets(Page):
@@ -196,6 +210,9 @@ class SummaryUsers(Page):
 
 
 templates = {'inbox': 'templates/pages/inbox.xml',
+             'legal': 'templates/pages/legal.xml',
+             'faq': 'templates/pages/faq.xml',
+             'login': 'templates/pages/login.xml',
              'login': 'templates/pages/login.xml',
              'home': 'templates/pages/home.xml',
              'assets': 'templates/pages/assets.xml',

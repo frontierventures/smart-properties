@@ -13,10 +13,10 @@
             </select>
         </span>
     </div>
-    <div>
-        <table style="width: 100%">
-            <thead>
-                <tr>
+    <div class="row">
+        <div class="span4"></div>
+        <div class="span8">
+            <div>
                     <th>Create Date</th>
                     <th>PropertyId</th>
                     <th>Title</th>
@@ -25,10 +25,12 @@
                     <th>Total Units</th>
                     <th>Price Per Unit (USD)</th>
                     <th>Price Per Unit (BTC)</th>
+
+        </div>
+        <table style="width: 100%">
+                <tr>
                     <th>Actions</th>
                 </tr>
-            </thead>
-            <tbody>
                 <tr t:render="row">
                     <td style="text-align:center"><t:slot name="htmlTimestamp" /></td>
                     <td style="text-align:center"><t:slot name="htmlPropertyId" /></td>
@@ -38,8 +40,8 @@
                             <t:slot name="htmlTitle" />
                         </a>
                     </td>
-                    <td style="text-align:center"><t:slot name="htmlAskingPriceFiat" /></td>
                     <td style="text-align:center"><t:slot name="htmlAskingPriceBTC" /></td>
+                    <td style="text-align:center"><t:slot name="htmlAskingPriceFiat" /></td>
                     <td style="text-align:center"><t:slot name="htmlTotalUnits" /></td>
                     <td style="text-align:center"><t:slot name="htmlPricePerUnitFiat" /></td>
                     <td style="text-align:center"><t:slot name="htmlPricePerUnitBTC" /></td>

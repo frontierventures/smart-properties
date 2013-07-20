@@ -39,7 +39,7 @@ class AddProperty(Element):
     @renderer
     def status(self, request, tag):
         sessionProperty = self.sessionProperty
-        statuses = {'pending': 'Pending',
+        statuses = {'pending': 'Up For Vote',
                     'closed': 'Closed'}
 
         propertyStatus = 'pending'
@@ -63,29 +63,42 @@ class AddProperty(Element):
     @renderer
     def inputs(self, request, tag):
         sessionProperty = self.sessionProperty
+        
+        #title = Column(String(collation='NOCASE'))
+        #description = Column(String)
+        #address =  Column(String)
+        #mls = Column(String)
+        #siteSize = Column(String)
+        #totalUnits = Column(String)
+        #askingPrice = Column(String)
 
-        propertyName = ''
-        if sessionProperty.get('name'):
-            propertyName = sessionProperty['name']
+        propertyTitle = ''
+        if sessionProperty.get('title'):
+            propertyTitle = sessionProperty['title']
 
         propertyDescription = ''
         if sessionProperty.get('description'):
             propertyDescription = sessionProperty['description']
 
-        propertyUnits = '' 
-        if sessionProperty.get('units'):
-            propertyUnits = sessionProperty['units']
+        propertyAddress = ''
+        if sessionProperty.get('address'):
+            propertyAddress = sessionProperty['address']
 
-        propertyDownpayment = '' 
-        if sessionProperty.get('propertyDownpayment'):
-            propertyDownpayment = sessionProperty['downpayment']
+        propertyTotalUnits = ''
+        if sessionProperty.get('totalUnits'):
+            propertyTotalUnits = sessionProperty['totalUnits']
+
+        propertyAskingPrice = ''
+        if sessionProperty.get('askingPrice'):
+            propertyAskingPrice = sessionProperty['askingPrice']
 
         slots = {}
         slots['htmlPropertyId'] = str(0)
-        slots['htmlTitle'] = str(propertyName)
+        slots['htmlTitle'] = str(propertyTitle)
         slots['htmlDescription'] = str(propertyDescription)
-        slots['htmlDownpayment'] = str(propertyDownpayment)
-        slots['htmlUnits'] = str(propertyUnits)
+        slots['htmlAddress'] = str(propertyAddress)
+        slots['htmlTotalUnits'] = str(propertyTotalUnits)
+        slots['htmlAskingPrice'] = str(propertyAskingPrice)
         yield tag.fillSlots(**slots)
 
     @renderer
