@@ -9,6 +9,7 @@ from sessions import SessionManager
 from sqlalchemy import func
 
 #import reset
+import locale
 import commonElements
 import config
 import definitions
@@ -98,10 +99,14 @@ class Assets(Element):
 
     @renderer
     def row(self, request, tag):
+        locale.setlocale(locale.LC_ALL, '')
         for asset in self.assets:
             timestamp = float(asset.createTimestamp)
 
             price = db.query(Price).filter(Price.currencyId == 'USD').first()
+
+            askingPriceFiat = float(asset.askingPrice)
+            pricePerUnitFiat = float(asset.askingPrice) / float(asset.totalUnits) 
 
             askingPriceBTC = float(asset.askingPrice) / float(price.last)
             pricePerUnitBTC = (float(asset.askingPrice) / float(price.last)) / float(asset.totalUnits)
@@ -112,11 +117,12 @@ class Assets(Element):
             slots['htmlTitle'] = str(asset.title)
             slots['htmlAssetUrl'] = '../%s' % str(asset.id)
             slots['htmlImageUrl'] = '../images/%s.jpg' % str(asset.id)
-            slots['htmlAskingPriceFiat'] = str(asset.askingPrice)
-            slots['htmlAskingPriceBTC'] = "%.4f" % askingPriceBTC 
             slots['htmlTotalUnits'] = str(asset.totalUnits)
-            slots['htmlPricePerUnitFiat'] = str(float(asset.askingPrice) / float(asset.totalUnits))
-            slots['htmlPricePerUnitBTC'] =  "%.4f" % pricePerUnitBTC
+
+            slots['htmlAskingPriceFiat'] = locale.format("%d", askingPriceFiat, grouping=True) 
+            slots['htmlPricePerUnitFiat'] = locale.format("%d", pricePerUnitFiat, grouping=True)
+            slots['htmlAskingPriceBTC'] = locale.format("%d", askingPriceBTC, grouping=True)
+            slots['htmlPricePerUnitBTC'] = locale.format("%d", pricePerUnitBTC, grouping=True)
             self.asset = asset
             yield tag.clone().fillSlots(**slots)
 

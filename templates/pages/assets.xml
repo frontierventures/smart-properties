@@ -30,7 +30,7 @@
 <body>
     <t:transparent t:render="header" />            
     <t:transparent t:render="assets" />            
-
+    <t:transparent t:render="footer" />            
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -51,3 +51,5 @@
     <script src="../resources/js/assets.js"></script>
 </body>
 </html>
+
+
