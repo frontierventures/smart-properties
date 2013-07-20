@@ -99,7 +99,7 @@ class Assets(Element):
 
     @renderer
     def row(self, request, tag):
-        locale.setlocale(locale.LC_ALL, '')
+        locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8' )
         for asset in self.assets:
             timestamp = float(asset.createTimestamp)
 

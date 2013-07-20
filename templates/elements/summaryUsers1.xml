@@ -1,10 +1,10 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
-    <div style="width: 100%;">
+    <div class="row" style="padding-bottom: 20px">
         <span style="float:left">
             <h1 t:render="count"><t:slot name="htmlUserStatus" /> Users (<t:slot name="htmlUserCount" />)</h1>
         </span>
         <span style="float:right">
-            <select name="userStatus" id="userStatus">
+            <select name="userStatus" id="userStatus" style="margin-top: 15px">
                 <option t:render="userStatus">
                     <t:attr name="value"><t:slot name="inputValue" /></t:attr>
                     <t:slot name="inputCaption" />
@@ -22,7 +22,7 @@
                     <th>Ip</th>
                     <th>Seed</th>
                     <th>Bitcoin Address</th>
-                    <th>Actions</th>
+                    <th>Shares</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,14 +33,7 @@
                     <td style="text-align:center"><t:slot name="htmlUserIp" /></td>
                     <td style="text-align:center"><t:slot name="htmlUserSeed" /></td>
                     <td style="text-align:center"><t:slot name="htmlUserBitcoinAddress" /></td>
-                    <td style="text-align:center">
-                        <a t:render="action">
-                            <t:attr name="id"><t:slot name="htmlId" /></t:attr>
-                            <t:attr name="data-hint"><t:slot name="htmlHint" /></t:attr>
-                            <t:attr name="class"><t:slot name="htmlClass" /></t:attr>
-                            <t:attr name="href"><t:slot name="htmlUrl" /></t:attr>
-                        </a>
-                    </td>
+                    <td style="text-align:center"><t:slot name="htmlUserShares" /></td>
                 </tr>
             </tbody>
         </table>
