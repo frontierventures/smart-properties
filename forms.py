@@ -126,7 +126,7 @@ class BuyProperty(Element):
         slots['htmlPropertyId'] = str(self.propertyObject.id)
         slots['htmlTitle'] = str(self.propertyObject.title)
         slots['htmlDescription'] = str(self.propertyObject.description) 
-        slots['htmlUnits'] = str(self.propertyObject.units) 
+        slots['htmlUnits'] = str(self.propertyObject.totalUnits) 
         return tag.fillSlots(**slots)
 
 

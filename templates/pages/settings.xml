@@ -57,7 +57,7 @@
 </head>
 
 <body>
-
+    <t:transparent t:render="header" />            
     <t:transparent t:render="settingsForm" />            
 
     <!-- Le javascript

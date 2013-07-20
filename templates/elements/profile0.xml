@@ -2,6 +2,6 @@
     <h2 class="form-signin-heading">Profile</h2>
     <div>First: <t:slot name="htmlFirst" /></div>
     <div>Last:<t:slot name="htmlLast" /> </div>
-    <div>Bitcoin Address: <t:slot name="htmlBitcoinAddress" /></div>
+    <div>Bitcoin Address: <t:slot name="htmlBitcoinAddress" /> <a href="../settings">Verify</a></div>
     <div>Shares: <t:slot name="htmlShares" /></div>
 </div>
