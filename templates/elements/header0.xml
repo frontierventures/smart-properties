@@ -13,6 +13,7 @@
                     <li><a href="../register">Register</a></li>
                     <li><a href="../legal">Legal</a></li>
                     <li><a href="../faq">FAQ</a></li>
+                    <li><a href="../exchange">Exchange</a></li>
                 </ul>
                 <form class="navbar-form pull-right" action="../loginAction" method="POST" enctype="application/x-www-form-urlencoded">
                     <input class="span2" type="text" name="userEmail" placeholder="Email" />
