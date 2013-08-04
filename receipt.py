@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 from twisted.web.resource import Resource
 from twisted.web.util import redirectTo
-from twisted.web.server import NOT_DONE_YET
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
 from data import db
-from data import Order
+from data import Order, Transaction
 from sessions import SessionManager
 
 import config
@@ -18,23 +17,23 @@ D = decimal.Decimal
 class Main(Resource):
     def render(self, request):
 
-        sessionOrder = SessionManager(request).getSessionOrder()
-        orderId = sessionOrder['id']
+        sessionTransaction = SessionManager(request).getSessionTransaction()
+        transactionId = sessionTransaction['id']
+        investorId = sessionTransaction['investorId']
 
-        if not orderId:
+        if not transactionId:
             return redirectTo('../', request)
 
-        order = db.query(Order).filter(Order.id == orderId).first()
+        transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
 
         sessionUser = SessionManager(request).getSessionUser()
-        investorId = sessionOrder['investorId']
 
-        Page = pages.Receipt('Receipt', 'receipt')
+        Page = pages.Receipt('Smart Property Group - Receipt', 'receipt')
         Page.sessionUser = sessionUser
-        Page.sessionOrder = sessionOrder
+        Page.sessionTransaction = sessionTransaction
 
         print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
-        print "%ssessionOrder: %s%s" % (config.color.BLUE, sessionOrder, config.color.ENDC)
+        print "%ssessionTransaction: %s%s" % (config.color.BLUE, sessionTransaction, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
 
         request.write('<!DOCTYPE html>\n')

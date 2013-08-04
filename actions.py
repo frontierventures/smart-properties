@@ -6,7 +6,7 @@ from parsley import makeGrammar
 from twisted.web.template import XMLString, Element, renderer, tags
 
 from data import db
-from data import Order, Property, Transaction
+from data import Order, Profile, Property, Transaction
 from sqlalchemy import func
 from sessions import SessionManager
 
@@ -155,6 +155,8 @@ class LendAmount(Resource):
         sessionTransaction['amount'] = amount
         bitcoinAddress = 'XXXXX'
 
+        amount = float(amount)
+
         #if error.propertyTitle(request, propertyTitle):
         #    return redirectTo(url, request)
 
@@ -171,7 +173,13 @@ class LendAmount(Resource):
             #def __init__(self, status, createTimestamp, updateTimestamp, userId, amount):
             transaction = Transaction('pending', timestamp, timestamp, investorId, amount, bitcoinAddress)
             
-            db.add(newTransaction)
+            db.add(transaction)
+
+            debtor = db.query(Profile).filter(Profile.id == 1).first()
+            debtor.balance = float(debtor.balance) - amount
+
+            investor = db.query(Profile).filter(Profile.id == investorId).first()
+            investor.balance = float(investor.balance) + amount
             db.commit()
 
             #url = '../verifyToken?id=%s&token=%s' % (str(newUser.id), token)
