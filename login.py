@@ -111,41 +111,36 @@ class Action(Resource):
         if not user:
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.EMAIL[2]})
             return redirectTo('../login', request)
+        
+        if not encryptor.checkPassword(user.password, userPassword):
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.PASSWORD[2]})
+            return redirectTo('../login', request)
 
         if request.args.get('button')[0] == 'Login':
-            if encryptor.checkPassword(user.password, userPassword):
-                userType = user.type
-                isEmailVerified = user.isEmailVerified
+            userType = user.type
 
-                if isEmailVerified == 0:
-                    isEmailVerified = False
+            url = '../account'
+            if userType == 0:
+                url = '../summaryUsers'
 
-                if isEmailVerified == 1:
-                    isEmailVerified = True
-
-                if userType == 1:
-                    url = '../'
-
-                if not isEmailVerified:
-                    url = '../settings'
-                    url = '../assets'
-
-                if userType == 0:
-                    url = '../summaryUsers'
-
-                functions.makeLogin(request, user.id)
-                SessionManager(request).setSessionResponse({'class': 2, 'form': 0, 'text': definitions.SUCCESS_LOGIN})
-
-                email = str(user.email)
-
-                activity.pushToSocket(self.echoFactory, '%s**** logged in' % email[0])
-                activity.pushToDatabase('%s logged in' % email)
-
-                url = str(url)
-                return redirectTo(url, request)
+            if user.isEmailVerified == 1:
+                isEmailVerified = True
             else:
-                SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.PASSWORD[2]})
-                return redirectTo('../login', request)
+                isEmailVerified = False
+
+            #if not isEmailVerified:
+            #    url = '../settings'
+
+            functions.makeLogin(request, user.id)
+            SessionManager(request).setSessionResponse({'class': 2, 'form': 0, 'text': definitions.SUCCESS_LOGIN})
+
+            email = str(user.email)
+
+            activity.pushToSocket(self.echoFactory, '%s**** logged in' % email[0])
+            activity.pushToDatabase('%s logged in' % email)
+
+            url = str(url)
+            return redirectTo(url, request)
 
 
 class RecoverPassword(Resource):

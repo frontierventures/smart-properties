@@ -1,7 +1,6 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
-    <h2 class="form-signin-heading">Profile</h2>
-    <div>First: <t:slot name="htmlFirst" /></div>
-    <div>Last: <t:slot name="htmlLast" /> </div>
-    <div>Bitcoin Address: <t:slot name="htmlBitcoinAddress" /> <a href="../settings">Verify</a></div>
-    <div>Shares: <t:slot name="htmlShares" /></div>
+    <h2 class="form-signin-heading">Profile Settings</h2>
+    <div><b>First:</b> <t:slot name="htmlFirst" /></div>
+    <div><b>Last:</b> <t:slot name="htmlLast" /> </div>
+    <div><b>Bitcoin Address:</b> <t:slot name="htmlBitcoinAddress" /> <a href="../settings">Verify</a></div>
 </div>

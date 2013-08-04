@@ -1,0 +1,8 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <h2 class="form-signin-heading">Account Summary</h2>
+    <div><b>Invested Balance:</b> <t:slot name="htmlInvestedBalance" /></div>
+    <div><b>Next Payment Date:</b> <t:slot name="htmlNextPaymentDate" /></div>
+    <div><b>Return Rate:</b> <t:slot name="htmlReturnRate" /></div>
+    <div><a href="../lend">Lend</a></div>
+    <div><a href="../">Lending History</a></div>
+</div>

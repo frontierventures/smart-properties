@@ -274,6 +274,26 @@ class FormEditImage(Element):
         return tag.fillSlots(**slots)
 
 
+class LendAmount(Element):
+    def __init__(self, sessionResponse, sessionOrder):
+        self.sessionResponse = sessionResponse
+        self.sessionOrder = sessionOrder
+
+        propertyObject = db.query(Property).filter(Property.id == sessionOrder['propertyId']).first()
+
+        self.loader = XMLString(FilePath('templates/forms/lend.xml').getContent())
+        self.propertyObject = propertyObject
+
+    @renderer
+    def details(self, request, tag):
+        slots = {}
+        slots['htmlPropertyId'] = str(self.propertyObject.id)
+        slots['htmlTitle'] = str(self.propertyObject.title)
+        slots['htmlDescription'] = str(self.propertyObject.description) 
+        slots['htmlUnits'] = str(self.propertyObject.totalUnits) 
+        return tag.fillSlots(**slots)
+
+
 class Notification(Element):
     def __init__(self, sessionResponse):
         self.sessionResponse = sessionResponse

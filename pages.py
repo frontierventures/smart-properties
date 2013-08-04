@@ -2,13 +2,14 @@
 from twisted.web.template import Element, renderer, XMLString
 from twisted.python.filepath import FilePath
 
-
+import account
 import assets
 import elements
 import faq
 import forms
 import inbox
 import legal
+import lend
 import login
 import orders
 import popups
@@ -49,6 +50,16 @@ class Page(Element):
     @renderer
     def helpPopup(self, request, tag):
         return popups.Help()
+
+
+class Account(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+    @renderer
+    def details(self, request, tag):
+        return account.Details(self.sessionUser)
 
 
 class AddProperty(Page):
@@ -98,6 +109,16 @@ class Home(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
         self.pageTitle = pageTitle
+
+
+class Lend(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+    @renderer
+    def lendForm(self, request, tag):
+        return forms.Lend(self.sessionResponse, self.sessionOrder)
 
 
 class Legal(Page):
@@ -212,8 +233,9 @@ class SummaryUsers(Page):
 templates = {'inbox': 'templates/pages/inbox.xml',
              'legal': 'templates/pages/legal.xml',
              'faq': 'templates/pages/faq.xml',
+             'lend': 'templates/pages/lend.xml',
              'login': 'templates/pages/login.xml',
-             'login': 'templates/pages/login.xml',
+             'account': 'templates/pages/account.xml',
              'home': 'templates/pages/home.xml',
              'assets': 'templates/pages/assets.xml',
              'addProperty': 'templates/pages/addProperty.xml',

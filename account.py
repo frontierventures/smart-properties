@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 from twisted.web.resource import Resource
 from twisted.web.util import redirectTo
-from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
+from twisted.web.template import Element, renderer, renderElement, XMLString
+
+from sessions import SessionManager
+
+import config
+import pages
 
 from data import db
 from sqlalchemy.sql import and_
 from data import Profile
 from sessions import SessionManager
-
-import config
-import definitions
-import functions
-import pages
 
 
 class Main(Resource):
@@ -20,20 +20,12 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         sessionUser = SessionManager(request).getSessionUser()
-        if sessionUser['id'] == 0:
-            return redirectTo('../', request)
+        sessionUser['page'] = 'account'
 
-        sessionResponse = SessionManager(request).getSessionResponse()
-
-        sessionUser['page'] = 'profile'
-
-        Page = pages.Profile('Profile', 'profile')
-        Page.sessionResponse = sessionResponse
+        Page = pages.Account('Smart Property Group - Account', 'account')
         Page.sessionUser = sessionUser
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
-        print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
-        SessionManager(request).clearSessionResponse()
+        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
 
@@ -43,15 +35,14 @@ class Details(Element):
         self.sessionUser = sessionUser
 
         self.profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
-        template = 'templates/elements/profile0.xml'
+        template = 'templates/elements/account0.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
 
     @renderer
     def details(self, request, tag):
         slots = {}
-        slots['htmlFirst'] = str(self.profile.first)
-        slots['htmlLast'] = str(self.profile.last) 
-        slots['htmlBitcoinAddress'] = str(self.profile.bitcoinAddress) 
         slots['htmlInvestedBalance'] = str(self.profile.balance) 
+        slots['htmlNextPaymentDate'] = str(config.convertTimestamp(float(config.createTimestamp())))
+        slots['htmlReturnRate'] = str('0.85%') 
         yield tag.clone().fillSlots(**slots)

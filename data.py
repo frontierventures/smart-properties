@@ -101,13 +101,13 @@ class Profile(Base):
     token = Column(String)
     bitcoinAddress = Column(String)
     seed = Column(String)
-    shares = Column(String)
+    balance = Column(String)
     unreadMessages = Column(Integer)
 
     userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", backref=backref("profiles", order_by=id))
 
-    def __init__(self, createTimestamp, updateTimestamp, first, last, token, bitcoinAddress, seed, shares, unreadMessages):
+    def __init__(self, createTimestamp, updateTimestamp, first, last, token, bitcoinAddress, seed, balance, unreadMessages):
         self.createTimestamp = createTimestamp
         self.updateTimestamp = updateTimestamp
         self.first = first
@@ -115,7 +115,7 @@ class Profile(Base):
         self.token = token
         self.bitcoinAddress = bitcoinAddress
         self.seed = seed
-        self.shares = shares
+        self.balance = balance
         self.unreadMessages = unreadMessages
 
 
@@ -148,6 +148,24 @@ class Property(Base):
         self.askingPrice = askingPrice 
         self.imageCount = imageCount 
         self.imageHash = imageHash 
+
+
+class Transaction(Base):
+    __tablename__ = "transactions"
+
+    id = Column(Integer, primary_key=True)
+    status = Column(String)
+    createTimestamp = Column(String)
+    updateTimestamp = Column(String)
+    userId = Column(Integer)
+    amount = Column(String)
+
+    def __init__(self, status, createTimestamp, updateTimestamp, userId, amount):
+        self.status = status
+        self.createTimestamp = createTimestamp
+        self.updateTimestamp = updateTimestamp
+        self.userId = userId
+        self.amount = amount
 
 
 class User(Base):

@@ -6,6 +6,7 @@ from twisted.web.server import Request, Site, Session
 from twisted.web.static import File
 from twisted.python import log
 
+import account
 import actions
 import config
 import exchange
@@ -13,6 +14,7 @@ import faq
 import faq
 import home
 import legal
+import lend
 import login
 import logout
 import assets
@@ -71,10 +73,12 @@ root = home.Main(echoFactory)
 root.putChild('', root)
 
 def assemble(root):
+    root.putChild('account', account.Main())
     root.putChild('login', login.Main())
     root.putChild('loginAction', login.Action(echoFactory))
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())
+    root.putChild('lend', lend.Main())
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
     root.putChild('registerAction', register.Action(echoFactory))
