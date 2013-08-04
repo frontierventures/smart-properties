@@ -6,7 +6,7 @@ from parsley import makeGrammar
 from twisted.web.template import XMLString, Element, renderer, tags
 
 from data import db
-from data import Order, Property 
+from data import Order, Property, Transaction
 from sqlalchemy import func
 from sessions import SessionManager
 
@@ -128,5 +128,79 @@ class BuyProperty(Resource):
             db.commit()
 
             sessionOrder['id'] = order.id
+
+            return redirectTo('../receipt', request)
+
+
+class LendAmount(Resource):
+    def render(self, request):
+        if not request.args:
+            return redirectTo('../', request)
+
+        sessionUser = SessionManager(request).getSessionUser()
+        investorId = sessionUser['id']
+
+        #if sessionUser['type'] != 0:
+        #    return redirectTo('../', request)
+
+        sessionTransaction = SessionManager(request).getSessionTransaction()
+        #propertyId = sessionOrder['propertyId']
+
+        #url = '../summaryProperties?action=add'
+        #url = str(url)
+
+        amount = request.args.get('investmentAmount')[0]
+
+        sessionTransaction['investorId'] = investorId
+        sessionTransaction['amount'] = amount
+        bitcoinAddress = 'XXXXX'
+
+        #if error.propertyTitle(request, propertyTitle):
+        #    return redirectTo(url, request)
+
+        #if error.propertyDescription(request, propertyDescription):
+        #    return redirectTo(url, request)
+
+        #if not request.args.get('isTermsChecked'):
+        #    SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
+        #    return redirectTo('../register', request)
+
+        if request.args.get('button')[0] == 'Get Address':
+            timestamp = config.createTimestamp()
+
+            #def __init__(self, status, createTimestamp, updateTimestamp, userId, amount):
+            transaction = Transaction('pending', timestamp, timestamp, investorId, amount, bitcoinAddress)
+            
+            db.add(newTransaction)
+            db.commit()
+
+            #url = '../verifyToken?id=%s&token=%s' % (str(newUser.id), token)
+
+            #plain = mailer.verificationPlain(url)
+            #html = mailer.verificationHtml(url)
+            #Email(mailer.noreply, email, 'Getting Started', plain, html).send()
+
+            #email = str(email)
+            #activity.pushToSocket(self.echoFactory, '%s**** registered' % email[0])
+            #activity.pushToDatabase('%s registered' % email)
+
+            #functions.makeLogin(request, newUser.id)
+            #return redirectTo('../settings', request)
+            #propertyObject = db.query(Property).filter(Property.id == propertyId).first()
+            #
+            #propertyObject.units -= quantity
+
+            #status = 'open'
+
+            #timestamp = config.createTimestamp()
+            #
+            #total = quantity * float(propertyObject.pricePerUnit)
+            #order = Order(status, timestamp, timestamp, propertyId, propertyObject.title, quantity, propertyObject.pricePerUnit, investorId, total, '')
+            ##def __init__(self, status, createTimestamp, updateTimestamp, propertyId, propertyTitle, units, pricePerUnit, total, paymentAddress):
+
+            #db.add(order)
+            #db.commit()
+
+            sessionTransaction['id'] = transaction.id
 
             return redirectTo('../receipt', request)

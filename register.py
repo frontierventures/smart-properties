@@ -107,9 +107,9 @@ class Action(Resource):
         repeatPassword = request.args.get('userRepeatPassword')[0]
 
         sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['userEmail'] = email
-        sessionUser['userPassword'] = password
-        sessionUser['userRepeatPassword'] = repeatPassword
+        sessionUser['email'] = email
+        sessionUser['password'] = password
+        sessionUser['repeatPassword'] = repeatPassword
 
         if error.email(request, email):
             return redirectTo('../register', request)
@@ -159,4 +159,4 @@ class Action(Resource):
             activity.pushToDatabase('%s registered' % email)
 
             functions.makeLogin(request, newUser.id)
-            return redirectTo('../settings', request)
+            return redirectTo('../account', request)

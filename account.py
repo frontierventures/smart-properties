@@ -22,6 +22,9 @@ class Main(Resource):
         sessionUser = SessionManager(request).getSessionUser()
         sessionUser['page'] = 'account'
 
+        if sessionUser['id'] == 0:
+            return redirectTo('../', request)
+
         Page = pages.Account('Smart Property Group - Account', 'account')
         Page.sessionUser = sessionUser
 

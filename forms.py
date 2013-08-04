@@ -6,7 +6,7 @@ from parsley import makeGrammar
 from twisted.web.template import XMLString, Element, renderer, tags
 
 from data import db
-from data import Property 
+from data import Profile, Property 
 from sqlalchemy import func
 from sessions import SessionManager
 
@@ -275,22 +275,23 @@ class FormEditImage(Element):
 
 
 class LendAmount(Element):
-    def __init__(self, sessionResponse, sessionOrder):
+    def __init__(self, sessionResponse, sessionTransaction):
         self.sessionResponse = sessionResponse
-        self.sessionOrder = sessionOrder
+        self.sessionTransaction = sessionTransaction
 
-        propertyObject = db.query(Property).filter(Property.id == sessionOrder['propertyId']).first()
+        profile = db.query(Profile).filter(Profile.id == 1).first()
 
         self.loader = XMLString(FilePath('templates/forms/lend.xml').getContent())
-        self.propertyObject = propertyObject
+        self.profile = profile
 
     @renderer
     def details(self, request, tag):
         slots = {}
-        slots['htmlPropertyId'] = str(self.propertyObject.id)
-        slots['htmlTitle'] = str(self.propertyObject.title)
-        slots['htmlDescription'] = str(self.propertyObject.description) 
-        slots['htmlUnits'] = str(self.propertyObject.totalUnits) 
+        #slots['htmlPropertyId'] = str(self.propertyObject.id)
+        slots['htmlAvailableBalance'] = str(self.profile.balance) 
+        #slots['htmlTitle'] = str(self.propertyObject.title)
+        #slots['htmlDescription'] = str(self.propertyObject.description) 
+        #slots['htmlUnits'] = str(self.propertyObject.totalUnits) 
         return tag.fillSlots(**slots)
 
 

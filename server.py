@@ -79,6 +79,7 @@ def assemble(root):
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())
     root.putChild('lend', lend.Main())
+    root.putChild('lendAction', actions.LendAmount())
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
     root.putChild('registerAction', register.Action(echoFactory))

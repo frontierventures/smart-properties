@@ -24,6 +24,7 @@ import summaryUsers
 
 class Page(Element):
     sessionOrder = {}
+    sessionTransaction = {}
     sessionProperty = {}
     sessionResponse = {}
     sessionReview = {}
@@ -117,8 +118,8 @@ class Lend(Page):
         self.pageTitle = pageTitle
 
     @renderer
-    def lendForm(self, request, tag):
-        return forms.Lend(self.sessionResponse, self.sessionOrder)
+    def lendAmountForm(self, request, tag):
+        return forms.LendAmount(self.sessionResponse, self.sessionTransaction)
 
 
 class Legal(Page):

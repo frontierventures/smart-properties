@@ -9,7 +9,6 @@
         <!-- CSS -->
         <link href="../resources/css/bootstrap.css" rel="stylesheet" />
         <style type="text/css">
-
             /* Sticky footer styles
             -------------------------------------------------- */
 
@@ -47,8 +46,6 @@
             }
             }
 
-
-
             /* Custom page CSS
             -------------------------------------------------- */
             /* Not required for template or sticky footer method. */
@@ -63,7 +60,6 @@
             code {
             font-size: 80%;
             }
-
         </style>
         <link href="../resources/css/bootstrap-responsive.css" rel="stylesheet" />
 
@@ -89,7 +85,7 @@
 
     <div id="footer">
         <div class="container">
-            <p class="muted credit">Smart Property Investments</p>
+            <p class="muted credit">Smart Property Group</p>
         </div>
     </div>
 

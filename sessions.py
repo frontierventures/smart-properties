@@ -109,6 +109,19 @@ class SessionManager():
         sessionObject.order = {'id': 0}
         print "%ssessionOrder cleared%s" % (config.color.BLUE, config.color.ENDC)
 
+    def getSessionTransaction(self):
+        sessionObject = ISessionObject(self.session)
+        return sessionObject.transaction
+
+    def setSessionTransaction(self, transaction):
+        sessionObject = ISessionObject(self.session)
+        sessionObject.transaction = transaction
+
+    def clearSessionTransaction(self):
+        sessionObject = ISessionObject(self.session)
+        sessionObject.transaction = {'id': 0}
+        print "%ssessionTransaction cleared%s" % (config.color.BLUE, config.color.ENDC)
+
     def getSessionReview(self):
         sessionObject = ISessionObject(self.session)
         return sessionObject.review
@@ -196,6 +209,7 @@ class SessionObject(object):
         self.store = {'id': 0}
         self.review = {'id': 0}
         self.address = {'id': 0}
+        self.transaction = {'id': 0}
         self.link = {'id': 0}
         self.response = {'class': 0, 'form': 0, 'text': ''}
         self.searchResults = []

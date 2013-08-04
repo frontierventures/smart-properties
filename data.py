@@ -159,13 +159,15 @@ class Transaction(Base):
     updateTimestamp = Column(String)
     userId = Column(Integer)
     amount = Column(String)
+    bitcoinAddress = Column(String)
 
-    def __init__(self, status, createTimestamp, updateTimestamp, userId, amount):
+    def __init__(self, status, createTimestamp, updateTimestamp, userId, amount, bitcoinAddress):
         self.status = status
         self.createTimestamp = createTimestamp
         self.updateTimestamp = updateTimestamp
         self.userId = userId
         self.amount = amount
+        self.bitcoinAddress = bitcoinAddress
 
 
 class User(Base):
