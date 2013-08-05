@@ -62,11 +62,8 @@
 
       <hr />
 
-      <footer>
-        <p>&#169; Company 2013</p>
-      </footer>
-
     </div> <!-- /container -->
+    <t:transparent t:render="footer" />            
 
     <!-- Le javascript
     ================================================== -->

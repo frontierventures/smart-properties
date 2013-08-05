@@ -87,7 +87,7 @@ class Users(Element):
             slots['htmlUserIp'] = str(user.ip)
             slots['htmlUserSeed'] = str(profile.seed)
             slots['htmlUserBitcoinAddress'] = str(profile.bitcoinAddress)
-            slots['htmlUserShares'] = str(profile.shares)
+            slots['htmlUserShares'] = str(profile.balance)
             self.user = user
             yield tag.clone().fillSlots(**slots)
 

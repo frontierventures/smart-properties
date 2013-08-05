@@ -4,5 +4,5 @@
     <div><b>Next Payment Date:</b> <t:slot name="htmlNextPaymentDate" /></div>
     <div><b>Return Rate:</b> <t:slot name="htmlReturnRate" /></div>
     <div><a href="../lend">Lend</a></div>
-    <div><a href="../">Lending History</a></div>
+    <div><a href="../history">Transaction History</a></div>
 </div>

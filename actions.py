@@ -171,7 +171,7 @@ class LendAmount(Resource):
             timestamp = config.createTimestamp()
 
             #def __init__(self, status, createTimestamp, updateTimestamp, userId, amount):
-            transaction = Transaction('pending', timestamp, timestamp, investorId, amount, bitcoinAddress)
+            transaction = Transaction('open', timestamp, timestamp, investorId, amount, bitcoinAddress)
             
             db.add(transaction)
 
@@ -210,5 +210,7 @@ class LendAmount(Resource):
             #db.commit()
 
             sessionTransaction['id'] = transaction.id
+            sessionTransaction['amount'] = transaction.amount
+            sessionTransaction['bitcoinAddress'] = transaction.bitcoinAddress
 
             return redirectTo('../receipt', request)

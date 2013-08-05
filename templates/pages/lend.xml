@@ -83,11 +83,7 @@
         <t:transparent t:render="lendAmountForm" />            
     </div>
 
-    <div id="footer">
-        <div class="container">
-            <p class="muted credit">Smart Property Group</p>
-        </div>
-    </div>
+    <t:transparent t:render="footer" />            
 
     <!-- Le javascript
     ================================================== -->

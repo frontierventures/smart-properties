@@ -7,6 +7,7 @@ import assets
 import elements
 import faq
 import forms
+import history
 import inbox
 import legal
 import lend
@@ -106,6 +107,16 @@ class Inbox(Page):
         return popups.SendMessage(self.sessionUser)
 
 
+class History(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def transactions(self, request, tag):
+        return history.Transactions(self.filters, self.sessionUser)
+
+
 class Home(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
@@ -198,7 +209,7 @@ class Receipt(Page):
 
     @renderer
     def receipt(self, request, tag):
-        return receipt.Receipt(self.sessionOrder)
+        return receipt.Receipt(self.sessionTransaction)
 
 
 class SummaryProperties(Page):
@@ -237,6 +248,7 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'lend': 'templates/pages/lend.xml',
              'login': 'templates/pages/login.xml',
              'account': 'templates/pages/account.xml',
+             'history': 'templates/pages/history.xml',
              'home': 'templates/pages/home.xml',
              'assets': 'templates/pages/assets.xml',
              'addProperty': 'templates/pages/addProperty.xml',

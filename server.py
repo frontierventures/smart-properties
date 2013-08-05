@@ -11,7 +11,7 @@ import actions
 import config
 import exchange
 import faq
-import faq
+import history
 import home
 import legal
 import lend
@@ -73,7 +73,9 @@ root = home.Main(echoFactory)
 root.putChild('', root)
 
 def assemble(root):
+    #PAGES
     root.putChild('account', account.Main())
+    root.putChild('history', history.Main())
     root.putChild('login', login.Main())
     root.putChild('loginAction', login.Action(echoFactory))
     root.putChild('legal', legal.Main())

@@ -18,13 +18,14 @@ class Main(Resource):
     def render(self, request):
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
-        transactionId = sessionTransaction['id']
-        investorId = sessionTransaction['investorId']
+        #transactionId = sessionTransaction['id']
 
-        if not transactionId:
+        if sessionTransaction['id'] == 0:
             return redirectTo('../', request)
 
-        transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
+        #investorId = sessionTransaction['investorId']
+
+        #transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
 
         sessionUser = SessionManager(request).getSessionUser()
 
@@ -41,15 +42,13 @@ class Main(Resource):
 
 
 class Receipt(Element):
-    def __init__(self, order):
-        self.order = order
+    def __init__(self, sessionTransaction):
+        self.sessionTransaction = sessionTransaction
         self.loader = XMLString(FilePath('templates/elements/receipt.xml').getContent())
 
     @renderer
     def details(self, request, tag):
         slots = {}
-        #slots['htmlTotal'] = str(D(self.order.subTotal) + D(self.order.shippingCost))
-        #slots['htmlBitcoinAddress'] = str(self.order.paymentAddress)
-        #slots['htmlStorename'] = str(self.store.name)
-        #slots['htmlStoreUrl'] = "../%s" % self.store.name
+        slots['htmlTotal'] = str(self.sessionTransaction['amount'])
+        slots['htmlPaymentAddress'] = str(self.sessionTransaction['bitcoinAddress'])
         yield tag.fillSlots(**slots)
