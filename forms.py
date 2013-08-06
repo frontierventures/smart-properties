@@ -6,7 +6,7 @@ from parsley import makeGrammar
 from twisted.web.template import XMLString, Element, renderer, tags
 
 from data import db
-from data import Profile, Property 
+from data import Profile, Property, Price 
 from sqlalchemy import func
 from sessions import SessionManager
 
@@ -299,20 +299,18 @@ class InvestAmount(Element):
     def __init__(self, sessionResponse, sessionTransaction):
         self.sessionResponse = sessionResponse
         self.sessionTransaction = sessionTransaction
-
-        profile = db.query(Profile).filter(Profile.id == 1).first()
-
         self.loader = XMLString(FilePath('templates/forms/invest.xml').getContent())
-        self.profile = profile
 
     @renderer
     def details(self, request, tag):
+        profile = db.query(Profile).filter(Profile.id == 1).first()
+
+        price = db.query(Price).filter(Price.currencyId == 'USD').first()
+        balanceBTC = float(profile.balance) / float(price.last)
+
         slots = {}
-        #slots['htmlPropertyId'] = str(self.propertyObject.id)
-        slots['htmlAvailableBalance'] = str(self.profile.balance) 
-        #slots['htmlTitle'] = str(self.propertyObject.title)
-        #slots['htmlDescription'] = str(self.propertyObject.description) 
-        #slots['htmlUnits'] = str(self.propertyObject.totalUnits) 
+        slots['htmlMaximumAmountUSD'] = str(profile.balance) 
+        slots['htmlMaximumAmountBTC'] = str(balanceBTC) 
         return tag.fillSlots(**slots)
 
 

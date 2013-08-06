@@ -1,8 +1,9 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
     <form class="form-signin" action="../investAction" method="POST" enctype="application/x-www-form-urlencoded">
         <h2 class="form-signin-heading">Invest Amount</h2>
-        <div><b>Amount Sought:</b> <t:slot name="htmlAvailableBalance" /></div>
-        <div><b>Amount To Invest:</b> <input type="text" name="investmentAmount" placeholder="1"></input></div>
+        <div><b>Maximum Amount (USD):</b> <t:slot name="htmlMaximumAmountUSD" /></div>
+        <div><b>Maximum Amount (BTC):</b> <t:slot name="htmlMaximumAmountBTC" /></div>
+        <div><b>Amount To Invest (USD):</b> <input type="text" name="investmentAmount" placeholder="1"></input></div>
         <button name="button" value="Get Address" class="btn btn-large btn-primary" type="submit">Get Address</button>
     </form>
 </div>

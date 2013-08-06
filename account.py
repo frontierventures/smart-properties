@@ -48,9 +48,7 @@ class Details(Element):
         locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
 
         price = db.query(Price).filter(Price.currencyId == 'USD').first()
-
         balanceBTC = float(self.profile.balance) / float(price.last)
-
 
         slots = {}
         slots['htmlInvestedBalanceFiat'] = str(self.profile.balance) 
