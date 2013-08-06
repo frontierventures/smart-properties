@@ -17,9 +17,16 @@ class Main(Resource):
         sessionUser = SessionManager(request).getSessionUser()
         sessionUser['page'] = 'legal'
 
-        Page = pages.FAQ('FAQ', 'faq')
+        Page = pages.FAQ('Smart Property Group - FAQ', 'faq')
         Page.sessionUser = sessionUser
 
         print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
+
+
+class Details(Element):
+    def __init__(self, sessionUser):
+        self.sessionUser = sessionUser
+        template = 'templates/elements/faq.xml'
+        self.loader = XMLString(FilePath(template).getContent())

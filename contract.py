@@ -17,16 +17,12 @@ class Main(Resource):
         sessionUser = SessionManager(request).getSessionUser()
         sessionUser['page'] = 'legal'
 
-        Page = pages.Legal('Legal', 'legal')
+        if sessionUser['id'] == 0:
+            return redirectTo('../', request)
+
+        Page = pages.Contract('Smart Property Group - Contract', 'contract')
         Page.sessionUser = sessionUser
 
         print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
-
-
-class Details(Element):
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
-        template = 'templates/elements/legal.xml'
-        self.loader = XMLString(FilePath(template).getContent())

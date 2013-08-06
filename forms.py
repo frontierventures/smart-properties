@@ -130,6 +130,27 @@ class BuyProperty(Element):
         return tag.fillSlots(**slots)
 
 
+class Contract(Element):
+    def __init__(self, sessionResponse, sessionTransaction):
+        self.sessionResponse = sessionResponse
+        self.sessionTransaction = sessionTransaction
+
+        profile = db.query(Profile).filter(Profile.id == 1).first()
+
+        self.loader = XMLString(FilePath('templates/forms/contract.xml').getContent())
+        self.profile = profile
+
+    @renderer
+    def details(self, request, tag):
+        slots = {}
+        #slots['htmlPropertyId'] = str(self.propertyObject.id)
+        #slots['htmlAvailableBalance'] = str(self.profile.balance) 
+        #slots['htmlTitle'] = str(self.propertyObject.title)
+        #slots['htmlDescription'] = str(self.propertyObject.description) 
+        #slots['htmlUnits'] = str(self.propertyObject.totalUnits) 
+        return tag.fillSlots(**slots)
+
+
 class FormEdit(Element):
     def __init__(self, sessionUser, sessionProduct, sessionResponse):
         self.sellerId = sessionUser['id']
@@ -274,14 +295,14 @@ class FormEditImage(Element):
         return tag.fillSlots(**slots)
 
 
-class LendAmount(Element):
+class InvestAmount(Element):
     def __init__(self, sessionResponse, sessionTransaction):
         self.sessionResponse = sessionResponse
         self.sessionTransaction = sessionTransaction
 
         profile = db.query(Profile).filter(Profile.id == 1).first()
 
-        self.loader = XMLString(FilePath('templates/forms/lend.xml').getContent())
+        self.loader = XMLString(FilePath('templates/forms/invest.xml').getContent())
         self.profile = profile
 
     @renderer

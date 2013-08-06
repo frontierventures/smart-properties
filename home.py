@@ -49,7 +49,7 @@ class Main(Resource):
             self.serverInfo['visits'] += 1
             sessionUser['seed'] = random.randint(0, sys.maxint)
 
-        Page = pages.Home('Home', 'home')
+        Page = pages.Home('Welcome to Smart Property Group Website!', 'home')
         Page.sessionUser = sessionUser
 
         print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)

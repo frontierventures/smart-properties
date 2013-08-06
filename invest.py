@@ -26,16 +26,16 @@ class Main(Resource):
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
-        sessionUser['page'] = 'lend'
+        sessionUser['page'] = 'invest'
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
 
         if not sessionTransaction.get('amount'):
             sessionTransaction['amount'] = 1
 
-        sessionUser['page'] = 'lend'
+        sessionUser['page'] = 'invest'
 
-        Page = pages.Lend('Smart Property Group - Lend', 'lend')
+        Page = pages.Invest('Smart Property Group - Invest', 'invest')
         Page.sessionUser = sessionUser
         Page.sessionResponse = sessionResponse
         Page.sessionTransaction = sessionTransaction

@@ -19,6 +19,7 @@ import decimal
 import definitions
 #import descriptions
 import error
+import explorer
 import receipt
 import functions
 import hashlib
@@ -132,7 +133,7 @@ class BuyProperty(Resource):
             return redirectTo('../receipt', request)
 
 
-class LendAmount(Resource):
+class InvestAmount(Resource):
     def render(self, request):
         if not request.args:
             return redirectTo('../', request)
@@ -154,29 +155,21 @@ class LendAmount(Resource):
         sessionTransaction['investorId'] = investorId
         sessionTransaction['amount'] = amount
         bitcoinAddress = 'XXXXX'
+        bitcoinAddress = explorer.getNewAddress('')['result']
+
 
         amount = float(amount)
-
-        #if error.propertyTitle(request, propertyTitle):
-        #    return redirectTo(url, request)
-
-        #if error.propertyDescription(request, propertyDescription):
-        #    return redirectTo(url, request)
-
-        #if not request.args.get('isTermsChecked'):
-        #    SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
-        #    return redirectTo('../register', request)
 
         if request.args.get('button')[0] == 'Get Address':
             timestamp = config.createTimestamp()
 
             #def __init__(self, status, createTimestamp, updateTimestamp, userId, amount):
-            transaction = Transaction('open', timestamp, timestamp, investorId, amount, bitcoinAddress)
+            transaction = Transaction('open', timestamp, timestamp, investorId, amount, bitcoinAddress, 0)
             
             db.add(transaction)
 
-            debtor = db.query(Profile).filter(Profile.id == 1).first()
-            debtor.balance = float(debtor.balance) - amount
+            #debtor = db.query(Profile).filter(Profile.id == 1).first()
+            #debtor.balance = float(debtor.balance) - amount
 
             investor = db.query(Profile).filter(Profile.id == investorId).first()
             investor.balance = float(investor.balance) + amount
@@ -212,5 +205,33 @@ class LendAmount(Resource):
             sessionTransaction['id'] = transaction.id
             sessionTransaction['amount'] = transaction.amount
             sessionTransaction['bitcoinAddress'] = transaction.bitcoinAddress
+            sessionTransaction['isSigned'] = 0 
+
+            return redirectTo('../contract', request)
+
+
+class SignContract(Resource):
+    def render(self, request):
+        if not request.args:
+            return redirectTo('../', request)
+
+        sessionUser = SessionManager(request).getSessionUser()
+        investorId = sessionUser['id']
+
+        sessionTransaction = SessionManager(request).getSessionTransaction()
+        transactionId = sessionTransaction['id']
+
+        signature = request.args.get('contractSignature')[0]
+
+        if request.args.get('button')[0] == 'Sign Contract':
+            timestamp = config.createTimestamp()
+            
+            transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
+
+            transaction.updateTimestamp = timestamp
+            transaction.isSigned = 1
+            db.commit()
+
+            sessionTransaction['isSigned'] = transaction.isSigned
 
             return redirectTo('../receipt', request)

@@ -1,0 +1,8 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <form class="form-signin" action="../contractAction" method="POST" enctype="application/x-www-form-urlencoded">
+        <h2 class="form-signin-heading">Terms of Agreement</h2>
+        <div>I agree to comply with all that's stated.</div>
+        <div><b>Signature:</b> <input type="text" name="contractSignature" placeholder="Sign Here"></input></div>
+        <button name="button" value="Sign Contract" class="btn btn-large btn-primary" type="submit">Sign Contract</button>
+    </form>
+</div>

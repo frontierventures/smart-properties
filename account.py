@@ -7,11 +7,12 @@ from twisted.web.template import Element, renderer, renderElement, XMLString
 from sessions import SessionManager
 
 import config
+import locale
 import pages
 
 from data import db
 from sqlalchemy.sql import and_
-from data import Profile
+from data import Profile, Price
 from sessions import SessionManager
 
 
@@ -44,8 +45,16 @@ class Details(Element):
 
     @renderer
     def details(self, request, tag):
+        locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
+
+        price = db.query(Price).filter(Price.currencyId == 'USD').first()
+
+        balanceBTC = float(self.profile.balance) / float(price.last)
+
+
         slots = {}
-        slots['htmlInvestedBalance'] = str(self.profile.balance) 
+        slots['htmlInvestedBalanceFiat'] = str(self.profile.balance) 
+        slots['htmlInvestedBalanceBtc'] = str(balanceBTC) 
         slots['htmlNextPaymentDate'] = str(config.convertTimestamp(float(config.createTimestamp())))
         slots['htmlReturnRate'] = str('0.85%') 
         yield tag.clone().fillSlots(**slots)

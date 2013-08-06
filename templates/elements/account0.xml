@@ -1,8 +1,9 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
     <h2 class="form-signin-heading">Account Summary</h2>
-    <div><b>Invested Balance:</b> <t:slot name="htmlInvestedBalance" /></div>
+    <div><a href="../history">Transaction History</a></div>
+    <div><b>Invested Balance (USD):</b> <t:slot name="htmlInvestedBalanceFiat" /></div>
+    <div><b>Invested Balance (BTC):</b> <t:slot name="htmlInvestedBalanceBtc" /></div>
     <div><b>Next Payment Date:</b> <t:slot name="htmlNextPaymentDate" /></div>
     <div><b>Return Rate:</b> <t:slot name="htmlReturnRate" /></div>
-    <div><a href="../lend">Lend</a></div>
-    <div><a href="../history">Transaction History</a></div>
+    <a class="btn btn-large btn-primary" href="../invest">Invest</a>
 </div>

@@ -8,13 +8,14 @@ from twisted.python import log
 
 import account
 import actions
+import contract
 import config
 import exchange
 import faq
 import history
 import home
 import legal
-import lend
+import invest
 import login
 import logout
 import assets
@@ -75,13 +76,17 @@ root.putChild('', root)
 def assemble(root):
     #PAGES
     root.putChild('account', account.Main())
+    root.putChild('contract', contract.Main())
     root.putChild('history', history.Main())
     root.putChild('login', login.Main())
+    #ACTIONS
+    root.putChild('contractAction', actions.SignContract())
     root.putChild('loginAction', login.Action(echoFactory))
+
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())
-    root.putChild('lend', lend.Main())
-    root.putChild('lendAction', actions.LendAmount())
+    root.putChild('invest', invest.Main())
+    root.putChild('investAction', actions.InvestAmount())
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
     root.putChild('registerAction', register.Action(echoFactory))

@@ -2,4 +2,5 @@
     <h2 class="form-signin-heading">Receipt</h2>
     <div><b>Total:</b> <t:slot name="htmlTotal" /></div>
     <div><b>Payment Address:</b> <t:slot name="htmlPaymentAddress" /></div>
+    <div><b>Contract Signature:</b> <t:slot name="htmlIsSigned" /></div>
 </div>

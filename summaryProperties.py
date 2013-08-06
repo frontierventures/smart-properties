@@ -108,7 +108,6 @@ class Properties(Element):
             timestamp = float(property.createTimestamp)
 
             price = db.query(Price).filter(Price.currencyId == 'USD').first()
-
             askingPriceBTC = float(property.askingPrice) / float(price.last)
             pricePerUnitBTC = (float(property.askingPrice) / float(price.last)) / float(property.totalUnits)
 

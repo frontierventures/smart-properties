@@ -4,13 +4,14 @@ from twisted.python.filepath import FilePath
 
 import account
 import assets
+import contract
 import elements
 import faq
 import forms
 import history
 import inbox
 import legal
-import lend
+import invest
 import login
 import orders
 import popups
@@ -84,10 +85,24 @@ class BuyProperty(Page):
         return forms.BuyProperty(self.sessionResponse, self.sessionOrder)
 
 
+class Contract(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+    @renderer
+    def contractForm(self, request, tag):
+        return forms.Contract(self.sessionResponse, self.sessionTransaction)
+
+
 class FAQ(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
         self.pageTitle = pageTitle
+
+    @renderer
+    def details(self, request, tag):
+        return faq.Details(self.sessionUser)
 
 
 class Inbox(Page):
@@ -123,20 +138,24 @@ class Home(Page):
         self.pageTitle = pageTitle
 
 
-class Lend(Page):
+class Invest(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
         self.pageTitle = pageTitle
 
     @renderer
-    def lendAmountForm(self, request, tag):
-        return forms.LendAmount(self.sessionResponse, self.sessionTransaction)
+    def investAmountForm(self, request, tag):
+        return forms.InvestAmount(self.sessionResponse, self.sessionTransaction)
 
 
 class Legal(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
         self.pageTitle = pageTitle
+
+    @renderer
+    def details(self, request, tag):
+        return legal.Details(self.sessionUser)
 
 
 class Login(Page):
@@ -243,9 +262,10 @@ class SummaryUsers(Page):
 
 
 templates = {'inbox': 'templates/pages/inbox.xml',
+             'contract': 'templates/pages/contract.xml',
              'legal': 'templates/pages/legal.xml',
              'faq': 'templates/pages/faq.xml',
-             'lend': 'templates/pages/lend.xml',
+             'invest': 'templates/pages/invest.xml',
              'login': 'templates/pages/login.xml',
              'account': 'templates/pages/account.xml',
              'history': 'templates/pages/history.xml',
