@@ -27,6 +27,7 @@ import settings
 import summaryOrders
 import summaryProperties
 import summaryUsers
+import summaryTransactions
 
 
 class EchoProtocol(protocol.Protocol):
@@ -97,6 +98,7 @@ def assemble(root):
     root.putChild('summaryProperties', summaryProperties.Main())
     root.putChild('summaryOrders', summaryOrders.Main())
     root.putChild('summaryUsers', summaryUsers.Main())
+    root.putChild('summaryTransactions', summaryTransactions.Main())
     root.putChild('verifyMessage', settings.Action(echoFactory))
     root.putChild('addProperty', actions.AddProperty())
     root.putChild('buyProperty', actions.BuyProperty())

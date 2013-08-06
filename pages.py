@@ -22,6 +22,7 @@ import settings
 import summaryOrders
 import summaryProperties
 import summaryUsers
+import summaryTransactions
 
 
 class Page(Element):
@@ -261,6 +262,16 @@ class SummaryUsers(Page):
         return summaryUsers.Users(self.status)
 
 
+class SummaryTransactions(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def transactions(self, request, tag):
+        return summaryTransactions.Transactions(self.filters, self.sessionUser)
+
+
 templates = {'inbox': 'templates/pages/inbox.xml',
              'contract': 'templates/pages/contract.xml',
              'legal': 'templates/pages/legal.xml',
@@ -280,4 +291,5 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'settings': 'templates/pages/settings.xml',
              'summaryProperties': 'templates/pages/summaryProperties.xml',
              'summaryOrders': 'templates/pages/summaryOrders.xml',
+             'summaryTransactions': 'templates/pages/summaryTransactions.xml',
              'summaryUsers': 'templates/pages/summaryUsers.xml'}
