@@ -6,7 +6,7 @@ server {
     client_max_body_size 5M;
     #client_header_timeout 5s;
     listen 80;
-    #server_name domain.com www.domain.com;
+    server_name sptrust.co www.sptrust.co;
     location / {
         #deny 137.186.216.56;
         #limit_conn   one  1;

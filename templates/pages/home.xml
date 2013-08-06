@@ -1,23 +1,259 @@
 <html lang="en" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
-  <head>
-      <meta charset="utf-8" />
-        <title t:render="title"><t:slot name="htmlPageTitle" /></title>
+    <head>
+        <meta charset="utf-8" />
+        <title>Carousel Template Bootstrap</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="" />
         <meta name="author" content="" />
 
-    <!-- Le styles -->
-    <link href="../resources/css/bootstrap.css" rel="stylesheet" />
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-    <link href="../resources/css/bootstrap-responsive.css" rel="stylesheet" />
+        <!-- Le styles -->
+        <link href="../resources/css/footer.css" rel="stylesheet" />
+        <link href="../resources/css/bootstrap.css" rel="stylesheet" />
+        <link href="../resources/css/bootstrap-responsive.css" rel="stylesheet" />
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
+        <style>
+
+            /* GLOBAL STYLES
+            -------------------------------------------------- */
+            /* Padding below the footer and lighter body text */
+
+            body {
+            padding-bottom: 40px;
+            color: #5a5a5a;
+            }
+
+            /* CUSTOMIZE THE NAVBAR
+            -------------------------------------------------- */
+
+            /* Special class on .container surrounding .navbar, used for positioning it into place. */
+            .navbar-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            margin-top: 20px;
+            margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
+            }
+            .navbar-wrapper .navbar {
+
+            }
+
+            /* Remove border and change up box shadow for more contrast */
+            .navbar .navbar-inner {
+            border: 0;
+            -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+            -moz-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+            box-shadow: 0 2px 10px rgba(0,0,0,.25);
+            }
+
+            /* Downsize the brand/project name a bit */
+            .navbar .brand {
+            padding: 14px 20px 16px; /* Increase vertical padding to match navbar links */
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+            }
+
+            /* Navbar links: increase padding for taller navbar */
+            .navbar .nav > li > a {
+            padding: 15px 20px;
+            }
+
+            /* Offset the responsive button for proper vertical alignment */
+            .navbar .btn-navbar {
+            margin-top: 10px;
+            }
+
+
+
+            /* CUSTOMIZE THE CAROUSEL
+            -------------------------------------------------- */
+
+            /* Carousel base class */
+            .carousel {
+            margin-bottom: 60px;
+            }
+
+            .carousel .container {
+            position: relative;
+            z-index: 9;
+            }
+
+            .carousel-control {
+            height: 80px;
+            margin-top: 0;
+            font-size: 120px;
+            text-shadow: 0 1px 1px rgba(0,0,0,.4);
+            background-color: transparent;
+            border: 0;
+            z-index: 10;
+            }
+
+            .carousel .item {
+            height: 500px;
+            }
+            .carousel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            height: 500px;
+            }
+
+            .carousel-caption {
+            background-color: transparent;
+            position: static;
+            max-width: 550px;
+            padding: 0 20px;
+            margin-top: 200px;
+            }
+            .carousel-caption h1,
+            .carousel-caption .lead {
+            margin: 0;
+            line-height: 1.25;
+            color: #fff;
+            text-shadow: 0 1px 1px rgba(0,0,0,.4);
+            }
+            .carousel-caption .btn {
+            margin-top: 10px;
+            }
+
+
+
+            /* MARKETING CONTENT
+            -------------------------------------------------- */
+
+            /* Center align the text within the three columns below the carousel */
+            .marketing .span4 {
+            text-align: center;
+            }
+            .marketing h2 {
+            font-weight: normal;
+            }
+            .marketing .span4 p {
+            margin-left: 10px;
+            margin-right: 10px;
+            }
+
+
+            /* Featurettes
+            ------------------------- */
+
+            .featurette-divider {
+            margin: 80px 0; /* Space out the Bootstrap <hr /> more */
+            }
+            .featurette {
+            padding-top: 120px; /* Vertically center images part 1: add padding above and below text. */
+            overflow: hidden; /* Vertically center images part 2: clear their floats. */
+            }
+            .featurette-image {
+            margin-top: -120px; /* Vertically center images part 3: negative margin up the image the same amount of the padding to center it. */
+            }
+
+            /* Give some space on the sides of the floated elements so text doesn't run right into it. */
+            .featurette-image.pull-left {
+            margin-right: 40px;
+            }
+            .featurette-image.pull-right {
+            margin-left: 40px;
+            }
+
+            /* Thin out the marketing headings */
+            .featurette-heading {
+            font-size: 50px;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -1px;
+            }
+
+
+
+            /* RESPONSIVE CSS
+            -------------------------------------------------- */
+
+            @media (max-width: 979px) {
+
+            .container.navbar-wrapper {
+            margin-bottom: 0;
+            width: auto;
+            }
+            .navbar-inner {
+            border-radius: 0;
+            margin: -20px 0;
+            }
+
+            .carousel .item {
+            height: 500px;
+            }
+            .carousel img {
+            width: auto;
+            height: 500px;
+            }
+
+            .featurette {
+            height: auto;
+            padding: 0;
+            }
+            .featurette-image.pull-left,
+            .featurette-image.pull-right {
+            display: block;
+            float: none;
+            max-width: 40%;
+            margin: 0 auto 20px;
+            }
+            }
+
+
+            @media (max-width: 767px) {
+
+            .navbar-inner {
+            margin: -20px;
+            }
+
+            .carousel {
+            margin-left: -20px;
+            margin-right: -20px;
+            }
+            .carousel .container {
+
+            }
+            .carousel .item {
+            height: 300px;
+            }
+            .carousel img {
+            height: 300px;
+            }
+            .carousel-caption {
+            width: 65%;
+            padding: 0 70px;
+            margin-top: 100px;
+            }
+            .carousel-caption h1 {
+            font-size: 30px;
+            }
+            .carousel-caption .lead,
+            .carousel-caption .btn {
+            font-size: 18px;
+            }
+
+            .marketing .span4 + .span4 {
+            margin-top: 40px;
+            }
+
+            .featurette-heading {
+            font-size: 30px;
+            }
+            .featurette .lead {
+            font-size: 18px;
+            line-height: 1.5;
+            }
+
+            }
+        </style>
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
       <script src="../resources/js/html5shiv.js"></script>
     <![endif]-->
 
@@ -27,42 +263,75 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../resources/ico/apple-touch-icon-72-precomposed.png" />
     <link rel="apple-touch-icon-precomposed" href="../resources/ico/apple-touch-icon-57-precomposed.png" />
     <link rel="shortcut icon" href="../resources/ico/favicon.png" />
-  </head>
-
-  <body>
-
+</head>
+<body>
     <t:transparent t:render="header" />            
-    <div class="container">
-
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Our Business Model</h1>
-        <p>Smart Property Investments Inc. provides property management and real estate holding services as well as facilitates the exchange of “shares” in our smart property selection. We provide a place where people can come together and invest in a selection of income properties together, receive the profits together, and make the decisions concerning the property together.</p>
-        <p><a href="#" class="btn btn-primary btn-large">Learn more </a></p>
-      </div>
-
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="span4">
-          <h2>Invest</h2>
-          <p>We do this by treating discrete units of equity, called “shares” here-on-in, as Smart Properties. Simply put, a buyer purchases a share from the seller using the Smart Property transaction system as proposed by Nick Szabo and detailed on https://en.bitcoin.it/wiki/Smart_Property.</p>
-          <p><a class="btn" href="#">View details </a></p>
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="../resources/img/slides/1.jpg" alt="" />
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>Invest</h1>
+                        <p class="lead"></p>
+                        <a class="btn btn-large btn-primary" href="#">Sign up today</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../resources/img/slides/2.jpg" alt="" />
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>Profit</h1>
+                        <p class="lead"></p>
+                        <a class="btn btn-large btn-primary" href="#">Learn more</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../resources/img/slides/3.jpg" alt="" />
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>Manage</h1>
+                        <p class="lead"></p>
+                        <a class="btn btn-large btn-primary" href="#">Browse gallery</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="span4">
-          <h2>Manage</h2>
-          <p>We get paid to manage the properties and facilitate the process for property selection to the eventual sale of the asset in our Smart Property selection.</p>
-          <p><a class="btn" href="#">View details </a></p>
-       </div>
-        <div class="span4">
-          <h2>Profit</h2>
-          <p>With this risk comes reward, the ability to vote on all property decisions such as rent increases, home improvement, sales and any potential problem that could arise that may affect the property.</p>
-          <p><a class="btn" href="#">View details </a></p>
-        </div>
-      </div>
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">&#8249;</a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">&#8250;</a>
+    </div><!-- /.carousel -->
 
-      <hr />
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
 
-    </div> <!-- /container -->
+    <div class="container marketing">
+
+        <!-- Three columns of text below the carousel -->
+        <div class="row">
+            <div class="span4">
+                <h2>What We Need</h2>
+                <p>We’re requesting personal loans from interested lenders. These personal loans will be guaranteed by us, of which our personal financial information will be available here. We’re seeking $135,000 USD denominated in bitcoins at the current exchange rate to purchase a mortgage on a Multi-Unit Residential Property.</p>
+                <p><a class="btn" href="#">View details </a></p>
+            </div><!-- /.span4 -->
+            <div class="span4">
+                <h2>How You Profit</h2>
+                <p>In exchange for this loan, you will receive a monthly coupon of 0.85% of your investment in perpetuity. The principal will be returned at a date to be determined by us. What this means for you is you will get a return of 10.2% APR anonymously in a safe, controlled manner.</p>
+                <p><a class="btn" href="#">View details </a></p>
+            </div><!-- /.span4 -->
+            <div class="span4">
+                <h2>How We Secure</h2>
+                <p>Investment security is our top priority, we follow all required regulations for personal loans and property management to make sure that anything that could happen to your investment will be taken care of. In the event of corporate insolvency, we are personally liable to repay the principal + 3% APR, and we’ll personally make sure that you can sue us if need be.</p>
+                <p><a class="btn" href="#">View details </a></p>
+            </div><!-- /.span4 -->
+        </div><!-- /.row -->
+
+    </div><!-- /.container -->
+    <br />
     <t:transparent t:render="footer" />            
 
     <!-- Le javascript
@@ -81,6 +350,14 @@
     <script src="../resources/js/bootstrap-collapse.js"></script>
     <script src="../resources/js/bootstrap-carousel.js"></script>
     <script src="../resources/js/bootstrap-typeahead.js"></script>
-
-  </body>
+    <script>
+        !function ($) {
+        $(function(){
+        // carousel demo
+        $('#myCarousel').carousel()
+        })
+        }(window.jQuery)
+    </script>
+    <script src="../resources/js/holder/holder.js"></script>
+</body>
 </html>

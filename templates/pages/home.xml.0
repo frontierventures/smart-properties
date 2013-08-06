@@ -1,0 +1,86 @@
+<html lang="en" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+  <head>
+      <meta charset="utf-8" />
+        <title t:render="title"><t:slot name="htmlPageTitle" /></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+    <!-- Le styles -->
+    <link href="../resources/css/bootstrap.css" rel="stylesheet" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="../resources/css/bootstrap-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../resources/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../resources/ico/apple-touch-icon-144-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../resources/ico/apple-touch-icon-114-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../resources/ico/apple-touch-icon-72-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" href="../resources/ico/apple-touch-icon-57-precomposed.png" />
+    <link rel="shortcut icon" href="../resources/ico/favicon.png" />
+  </head>
+
+  <body>
+
+    <t:transparent t:render="header" />            
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>Our Business Model</h1>
+        <p>Smart Property Investments Inc. provides property management and real estate holding services as well as facilitates the exchange of “shares” in our smart property selection. We provide a place where people can come together and invest in a selection of income properties together, receive the profits together, and make the decisions concerning the property together.</p>
+        <p><a href="#" class="btn btn-primary btn-large">Learn more </a></p>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span4">
+          <h2>Invest</h2>
+          <p>We do this by treating discrete units of equity, called “shares” here-on-in, as Smart Properties. Simply put, a buyer purchases a share from the seller using the Smart Property transaction system as proposed by Nick Szabo and detailed on https://en.bitcoin.it/wiki/Smart_Property.</p>
+          <p><a class="btn" href="#">View details </a></p>
+        </div>
+        <div class="span4">
+          <h2>Manage</h2>
+          <p>We get paid to manage the properties and facilitate the process for property selection to the eventual sale of the asset in our Smart Property selection.</p>
+          <p><a class="btn" href="#">View details </a></p>
+       </div>
+        <div class="span4">
+          <h2>Profit</h2>
+          <p>With this risk comes reward, the ability to vote on all property decisions such as rent increases, home improvement, sales and any potential problem that could arise that may affect the property.</p>
+          <p><a class="btn" href="#">View details </a></p>
+        </div>
+      </div>
+
+      <hr />
+
+    </div> <!-- /container -->
+    <t:transparent t:render="footer" />            
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../resources/js/jquery.js"></script>
+    <script src="../resources/js/bootstrap-transition.js"></script>
+    <script src="../resources/js/bootstrap-alert.js"></script>
+    <script src="../resources/js/bootstrap-modal.js"></script>
+    <script src="../resources/js/bootstrap-dropdown.js"></script>
+    <script src="../resources/js/bootstrap-scrollspy.js"></script>
+    <script src="../resources/js/bootstrap-tab.js"></script>
+    <script src="../resources/js/bootstrap-tooltip.js"></script>
+    <script src="../resources/js/bootstrap-popover.js"></script>
+    <script src="../resources/js/bootstrap-button.js"></script>
+    <script src="../resources/js/bootstrap-collapse.js"></script>
+    <script src="../resources/js/bootstrap-carousel.js"></script>
+    <script src="../resources/js/bootstrap-typeahead.js"></script>
+
+  </body>
+</html>
