@@ -23,6 +23,7 @@ import functions
 import hashlib
 import inspect
 import itertools
+import locale
 import os
 
 D = decimal.Decimal
@@ -303,14 +304,19 @@ class InvestAmount(Element):
 
     @renderer
     def details(self, request, tag):
+        locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
         profile = db.query(Profile).filter(Profile.id == 1).first()
 
         price = db.query(Price).filter(Price.currencyId == 'USD').first()
         balanceBTC = float(profile.balance) / float(price.last)
 
+        maximumAmountFiat = float(profile.balance)
+        maximumAmountBtc = float(balanceBTC)
+
         slots = {}
-        slots['htmlMaximumAmountUSD'] = str(profile.balance) 
-        slots['htmlMaximumAmountBTC'] = str(balanceBTC) 
+        slots['htmlLast'] = str(price.last) 
+        slots['htmlMaximumAmountFiat'] = locale.format("%d", maximumAmountFiat, grouping=True) 
+        slots['htmlMaximumAmountBtc'] = locale.format("%d", maximumAmountBtc, grouping=True)
         return tag.fillSlots(**slots)
 
 

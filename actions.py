@@ -150,7 +150,7 @@ class InvestAmount(Resource):
         #url = '../summaryProperties?action=add'
         #url = str(url)
 
-        amount = request.args.get('investmentAmount')[0]
+        amount = request.args.get('investmentAmountFiat')[0]
 
         sessionTransaction['investorId'] = investorId
         sessionTransaction['amount'] = amount
