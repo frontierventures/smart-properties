@@ -6,18 +6,17 @@ from parsley import makeGrammar
 from twisted.web.template import XMLString, Element, renderer, tags
 
 from data import db
-from data import Order, Profile, Property, Transaction
+from data import Order, Profile, Property, Transaction, User
 from sqlalchemy import func
 from sessions import SessionManager
 
-#import Image
+import activity
 import cgi
-#import cloud
-import commonElements
+import elements
+import encryptor
 import config
 import decimal
 import definitions
-#import descriptions
 import error
 import explorer
 import receipt
@@ -25,9 +24,13 @@ import functions
 import hashlib
 import inspect
 import itertools
+import mailer
 import os
+import random
+import sys
 
 D = decimal.Decimal
+Email = mailer.Email
 
 
 class AddProperty(Resource):
@@ -208,6 +211,78 @@ class InvestAmount(Resource):
             sessionTransaction['isSigned'] = 0 
 
             return redirectTo('../contract', request)
+
+
+class Register(Resource):
+    def __init__(self, echoFactory):
+        self.echoFactory = echoFactory
+
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        if not request.args:
+            return redirectTo('../register', request)
+
+        sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['action'] = 'register'
+
+        email = request.args.get('userEmail')[0]
+        password = request.args.get('userPassword')[0]
+        repeatPassword = request.args.get('userRepeatPassword')[0]
+
+        sessionUser['email'] = email
+        sessionUser['password'] = password
+        sessionUser['repeatPassword'] = repeatPassword
+
+        if error.email(request, email):
+            return redirectTo('../register', request)
+
+        users = db.query(User).filter(User.status == 'active')
+        user = users.filter(User.email == email).first()
+
+        if user:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.EMAIL[3]})
+            return redirectTo('../register', request)
+
+        if error.password(request, password):
+            return redirectTo('../register', request)
+
+        if error.repeatPassword(request, repeatPassword):
+            return redirectTo('../register', request)
+
+        if error.mismatchPassword(request, password, repeatPassword):
+            return redirectTo('../register', request)
+
+        if not request.args.get('isTermsChecked'):
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
+            return redirectTo('../register', request)
+
+        if request.args.get('button')[0] == 'Register':
+            timestamp = config.createTimestamp()
+            token = hashlib.sha224(str(email)).hexdigest()
+
+            password = encryptor.hashPassword(password)
+            newUser = User('unverified', 2, timestamp, email, password, 0, '')
+            
+            seed = random.randint(0, sys.maxint)
+            newProfile = Profile(timestamp, timestamp, '', '', token, '', seed, 0, 0)
+            newUser.profiles = [newProfile]
+
+            db.add(newUser)
+            db.commit()
+
+            url = '../verifyToken?id=%s&token=%s' % (str(newUser.id), token)
+
+            plain = mailer.verificationPlain(url)
+            html = mailer.verificationHtml(url)
+            Email(mailer.noreply, email, 'Getting Started', plain, html).send()
+
+            email = str(email)
+            activity.pushToSocket(self.echoFactory, '%s**** registered' % email[0])
+            activity.pushToDatabase('%s registered' % email)
+
+            functions.makeLogin(request, newUser.id)
+            return redirectTo('../account', request)
 
 
 class SignContract(Resource):

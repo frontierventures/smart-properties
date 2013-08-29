@@ -13,7 +13,7 @@ from sessions import SessionManager
 #import Image
 import cgi
 #import cloud
-import commonElements
+import elements
 import config
 import decimal
 import definitions

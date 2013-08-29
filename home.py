@@ -7,7 +7,7 @@ from sessions import SessionManager
 from sqlalchemy import func
 
 #import reset
-import commonElements
+import elements
 import config
 import definitions
 import functions

@@ -80,9 +80,11 @@ def assemble(root):
     root.putChild('contract', contract.Main())
     root.putChild('history', history.Main())
     root.putChild('login', login.Main())
+
     #ACTIONS
     root.putChild('contractAction', actions.SignContract())
     root.putChild('loginAction', login.Action(echoFactory))
+    root.putChild('registerAction', actions.Register(echoFactory))
 
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())
@@ -90,7 +92,6 @@ def assemble(root):
     root.putChild('investAction', actions.InvestAmount())
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
-    root.putChild('registerAction', register.Action(echoFactory))
     root.putChild('settings', settings.Main())
     root.putChild('orders', orders.Main())
     root.putChild('profile', profile.Main())

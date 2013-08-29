@@ -80,7 +80,7 @@ class Form(Element):
         if not sessionResponse['text']:
             return []
         else:
-            return commonElements.Notification(sessionResponse)
+            return elements.Notification(sessionResponse)
 
 
 class Action(Resource):

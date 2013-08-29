@@ -41,5 +41,29 @@ def getNewAddress(account):
     except Exception as e:
         print e
         output = ''
+
     print output
     return output
+
+
+def verifyMessage(bitcoinAddress, signature, message):
+    data = '{"jsonrpc": "1.0", "id":"curltest", "method": "verifymessage", "params": ["%s", "%s", "%s"] }' % (bitcoinAddress, signature, message)
+    
+    b = StringIO.StringIO()
+    c.setopt(c.WRITEFUNCTION, b.write)
+    c.setopt(c.POSTFIELDS, data)
+
+    try:
+        c.perform()
+        output = b.getvalue()
+        output = json.loads(output)
+    except Exception as e:
+        print e
+        output = ''
+
+    print output
+    return output
+
+verifyMessage('blah', 'blah', 'blah')
+#{u'id': u'curltest', u'result': None, u'error': {u'message': u'Invalid address', u'code': -3}}
+#verifymessage <bitcoinaddress> <signature> <message>

@@ -9,7 +9,7 @@ from data import db
 from sqlalchemy.sql import and_
 from sessions import SessionManager
 
-import commonElements
+import elements
 import config
 import definitions
 import json
@@ -72,7 +72,7 @@ class Form(Element):
 
     @renderer
     def menu(self, request, tag):
-        return commonElements.TabCell(self.sessionUser, 3)
+        return elements.TabCell(self.sessionUser, 3)
 
     @renderer
     def row(self, request, tag):

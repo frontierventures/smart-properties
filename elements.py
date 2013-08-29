@@ -62,13 +62,10 @@ class Invite(Element):
                                 ''')
 
 
-class Notification(Element):
-    html = [''] * 2
-    html[0] = XMLString(FilePath('templates/notification0.xml').getContent())
-
+class Alert(Element):
     def __init__(self, sessionResponse):
         self.sessionResponse = sessionResponse
-        self.loader = self.html[0]
+        self.loader = XMLString(FilePath('templates/elements/notification0.xml').getContent())
 
     @renderer
     def message(self, request, tag):
@@ -78,7 +75,6 @@ class Notification(Element):
                         'alert alert-error',
                         'alert alert-success',
                         'alert alert-info']
-        print "INDEX: %s" % index
         slots = {}
         slots['htmlMessageClass'] = messageClass[index]
         slots['htmlMessageText'] = sessionResponse['text']
