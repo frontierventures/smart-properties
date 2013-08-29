@@ -77,6 +77,17 @@ class AddProperty(Page):
         return forms.AddProperty(self.sessionUser, self.sessionProperty, self.sessionResponse)
 
 
+class Assets(Page):
+    def __init__(self, pageTitle, template, status):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+        self.status = status
+
+    @renderer
+    def assets(self, request, tag):
+        return assets.Assets(self.status)
+
+
 class BuyProperty(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
@@ -174,27 +185,6 @@ class Login(Page):
         return popups.RecoverPassword()
 
 
-class Register(Page):
-    def __init__(self, pageTitle, template):
-        Page.__init__(self, pageTitle, template)
-        self.pageTitle = pageTitle
-
-    @renderer
-    def registerForm(self, request, tag):
-        return register.Form(self.sessionUser, self.sessionResponse)
-
-
-class Assets(Page):
-    def __init__(self, pageTitle, template, status):
-        Page.__init__(self, pageTitle, template)
-        self.pageTitle = pageTitle
-        self.status = status
-
-    @renderer
-    def assets(self, request, tag):
-        return assets.Assets(self.status)
-
-
 class Orders(Page):
     def __init__(self, pageTitle, template, status):
         Page.__init__(self, pageTitle, template)
@@ -212,6 +202,16 @@ class Profile(Page):
     @renderer
     def details(self, request, tag):
         return profile.Details(self.sessionUser)
+
+
+class Register(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+    @renderer
+    def registerForm(self, request, tag):
+        return forms.Register(self.sessionUser, self.sessionResponse)
 
 
 class Settings(Page):
@@ -264,13 +264,13 @@ class SummaryOrders(Page):
 
 
 class SummaryUsers(Page):
-    def __init__(self, pageTitle, template, status):
+    def __init__(self, pageTitle, template, filters):
         Page.__init__(self, pageTitle, template)
-        self.status = status
+        self.filters = filters
 
     @renderer
     def users(self, request, tag):
-        return summaryUsers.Users(self.status)
+        return summaryUsers.Users(self.filters)
 
 
 class SummaryTransactions(Page):

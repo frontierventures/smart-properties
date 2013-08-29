@@ -34,6 +34,7 @@ D = decimal.Decimal
 Email = mailer.Email
 
 
+#FORM ACTIONS
 class AddProperty(Resource):
     def render(self, request):
         if not request.args:
@@ -344,7 +345,7 @@ class Register(Resource):
             activity.pushToSocket(self.echoFactory, '%s**** registered' % email[0])
             activity.pushToDatabase('%s registered' % email)
 
-            functions.makeLogin(request, newUser.id)
+            login.makeSession(request, newUser.id)
             return redirectTo('../account', request)
 
 
@@ -375,7 +376,7 @@ class SignContract(Resource):
             return redirectTo('../receipt', request)
 
 
-class Sign(Resource):
+class ValidateBitcoinAddress(Resource):
     def __init__(self, echoFactory):
         self.echoFactory = echoFactory
 
@@ -385,23 +386,70 @@ class Sign(Resource):
         if not request.args:
             return redirectTo('../settings', request)
 
+        sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['action'] = 'validateOwnership'
+
+        nonce = request.args.get('userNonce')[0]
         bitcoinAddress = request.args.get('userBitcoinAddress')[0]
         signature = request.args.get('userSignature')[0]
 
-        sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['userNonce'] = nonce
         sessionUser['userBitcoinAddress'] = bitcoinAddress
         sessionUser['userSignature'] = signature
 
         if error.bitcoinAddress(request, bitcoinAddress):
-            return redirectTo('../settings', request)
+            return redirectTo('../signature', request)
 
-        if error.signature(request, signature):
-            return redirectTo('../settings', request)
+        #if error.signature(request, signature):
+        #    return redirectTo('../signature', request)
 
-        if request.args.get('button')[0] == 'Verify':
-            timestamp = config.createTimestamp()
+        print explorer.summary()
+        
+        output = explorer.verifyMessage(bitcoinAddress, signature, nonce)
+        print output
+        print output['error']
 
-            profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
-            print explorer.summary()
-            print explorer.verifyMessage(bitcoinAddress, signature, profile.seed)
+        if output['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': output['error']['message']})
+        else:
+            if output['result']:
+                timestamp = config.createTimestamp()
+
+                user = db.query(User).filter(User.id == sessionUser['id']).first()
+                user.status = 'verified'
+
+                profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+                profile.updateTimestamp = timestamp
+                profile.bitcoinAddress = bitcoinAddress
+                
+                db.commit()
+                sessionUser['status'] = 'verified'
+            else:
+                SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.SIGNATURE[2]})
+
+        return redirectTo('../account', request)
+
+
+#POST ACTIONS
+class UpdateTransaction(Resource):
+    def render(self, request):
+        sessionUser = SessionManager(request).getSessionUser()
+
+        userType = sessionUser['type']
+        if userType != 0:
             return redirectTo('../', request)
+
+        if not request.args:
+            return redirectTo('../', request)
+
+        try:
+            transactionId = request.args.get('id')[0]
+            transactionStatus = request.args.get('status')[0]
+        except:
+            return redirectTo('../summaryTransactions', request)
+        
+        transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
+        transaction.status = transactionStatus 
+
+        db.commit()
+        return redirectTo('../summaryTransactions', request)

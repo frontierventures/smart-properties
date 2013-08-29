@@ -83,10 +83,14 @@ def assemble(root):
     root.putChild('login', login.Main())
     root.putChild('signature', signature.Main())
 
-    #ACTIONS
+    #POST ACTIONS
     root.putChild('contractAction', actions.SignContract())
     root.putChild('loginAction', actions.Login(echoFactory))
     root.putChild('registerAction', actions.Register(echoFactory))
+    root.putChild('validateBitcoinAddress', actions.ValidateBitcoinAddress(echoFactory))
+
+    #GET ACTIONS
+    root.putChild('updateTransaction', actions.UpdateTransaction())
 
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())

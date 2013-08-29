@@ -29,6 +29,10 @@ STORE_NAME = ['Store name not entered',
 BITCOIN_ADDRESS = ['Bitcoin address not entered',
                    'Invalid bitcoin address format']
 
+SIGNATURE = ['Signature not entered',
+             'Invalid signature format',
+             'Message was not verified']
+
 FIRST = ['First name not entered',
          'Non-alphanumeric first name entered']
 

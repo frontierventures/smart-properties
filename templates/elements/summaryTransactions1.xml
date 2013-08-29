@@ -22,6 +22,7 @@
                     <th>InvestorId</th>
                     <th>Balance</th>
                     <th>Bitcoin Address</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,12 @@
                     <td style="text-align:center"><t:slot name="htmlTransactionUserId" /></td>
                     <td style="text-align:center"><t:slot name="htmlTransactionAmount" /></td>
                     <td style="text-align:center"><t:slot name="htmlTransactionBitcoinAddress" /></td>
+                    <td style="text-align:center">
+                        <a t:render="action">
+                            <t:attr name="href"><t:slot name="htmlUrl" /></t:attr>
+                            <t:slot name="htmlCaption" />
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>

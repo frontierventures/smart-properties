@@ -19,6 +19,7 @@ import functions
 import hashlib
 import inspect
 import json
+import login
 import mailer
 import os
 import pages
@@ -41,7 +42,7 @@ class Main(Resource):
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
-        Page = pages.Register('Register', 'register')
+        Page = pages.Register('Smart Property Group - Register', 'register')
         Page.sessionUser = sessionUser
         Page.sessionResponse = sessionResponse
 
@@ -52,43 +53,3 @@ class Main(Resource):
 
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
-
-
-class Form(Element):
-    loader = XMLString(FilePath('templates/forms/register.xml').getContent())
-
-    def __init__(self, sessionUser, sessionResponse):
-        self.sessionUser = sessionUser
-        self.sessionResponse = sessionResponse
-        print 
-        print sessionUser
-
-    @renderer
-    def form(self, request, tag):
-        sessionUser = self.sessionUser
-
-        userEmail = ''
-        if sessionUser.get('email'):
-            userEmail = sessionUser['email']
-
-        userPassword = ''
-        if sessionUser.get('password'):
-            userPassword = sessionUser['password']
-
-        userRepeatPassword = ''
-        if sessionUser.get('repeatPassword'):
-            userRepeatPassword = sessionUser['repeatPassword']
-
-        slots = {}
-        slots['htmlEmail'] = userEmail
-        slots['htmlPassword'] = userPassword
-        slots['htmlRepeatPassword'] = userRepeatPassword
-        yield tag.fillSlots(**slots)
-
-    @renderer
-    def alert(self, request, tag):
-        sessionResponse = self.sessionResponse
-        if sessionResponse['text']:
-            return elements.Alert(sessionResponse)
-        else:
-            return []

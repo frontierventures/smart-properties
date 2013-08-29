@@ -502,6 +502,46 @@ class ProductImage():
                 print "%s%s created%s" % (config.color.BLUE, i, config.color.ENDC)
 
 
+class Register(Element):
+    loader = XMLString(FilePath('templates/forms/register.xml').getContent())
+
+    def __init__(self, sessionUser, sessionResponse):
+        self.sessionUser = sessionUser
+        self.sessionResponse = sessionResponse
+        print 
+        print sessionUser
+
+    @renderer
+    def form(self, request, tag):
+        sessionUser = self.sessionUser
+
+        userEmail = ''
+        if sessionUser.get('email'):
+            userEmail = sessionUser['email']
+
+        userPassword = ''
+        if sessionUser.get('password'):
+            userPassword = sessionUser['password']
+
+        userRepeatPassword = ''
+        if sessionUser.get('repeatPassword'):
+            userRepeatPassword = sessionUser['repeatPassword']
+
+        slots = {}
+        slots['htmlEmail'] = userEmail
+        slots['htmlPassword'] = userPassword
+        slots['htmlRepeatPassword'] = userRepeatPassword
+        yield tag.fillSlots(**slots)
+
+    @renderer
+    def alert(self, request, tag):
+        sessionResponse = self.sessionResponse
+        if sessionResponse['text']:
+            return elements.Alert(sessionResponse)
+        else:
+            return []
+
+
 class Signature(Element):
     loader = XMLString(FilePath('templates/forms/signature.xml').getContent())
 

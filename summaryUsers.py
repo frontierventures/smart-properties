@@ -7,6 +7,7 @@ from twisted.python.filepath import FilePath
 from data import Profile, User
 from data import db
 from sessions import SessionManager
+from sqlalchemy import not_
 
 import config
 import json
@@ -25,21 +26,31 @@ class Main(Resource):
         try:
             status = request.args.get('status')[0]
         except:
-            status = 'active'
+            status = 'verified'
 
-        Page = pages.SummaryUsers('User Summary', 'summaryUsers', status)
+        filters = {'status': status}
+
+        Page = pages.SummaryUsers('User Summary', 'summaryUsers', filters)
         Page.sessionUser = sessionUser
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
 
 
 class Users(Element):
-    def __init__(self, status):
-        self.status = status
-        users = db.query(User).order_by(User.loginTimestamp.desc())
-        users = users.filter(User.status == status)
+    def __init__(self, filters):
+        self.status = filters['status']
+
+        users = db.query(User)
+        if self.status == 'verified':
+            users = users.filter(User.status == 'verified').order_by(User.loginTimestamp.desc())
+        elif self.status == 'deleted':
+            users = users.filter(User.status == 'deleted').order_by(User.loginTimestamp.desc())
+        else: 
+            users = users.filter(not_(User.status.in_(['verified', 'deleted']))).order_by(User.loginTimestamp.desc())
+
+
         if users.count() == 0:
             template = 'templates/elements/summaryUsers0.xml'
         else:
@@ -50,7 +61,8 @@ class Users(Element):
 
     @renderer
     def count(self, request, tag):
-        statuses = {'active': 'Active',
+        statuses = {'verified': 'Verified',
+                    'unverified': 'Unverified',
                     'deleted': 'Deleted'}
         slots = {}
         slots['htmlUserStatus'] = statuses[self.status]
@@ -59,7 +71,7 @@ class Users(Element):
 
     @renderer
     def userStatus(self, request, tag):
-        statuses = ['active', 'deleted']
+        statuses = ['verified', 'unverified', 'deleted']
 
         for status in statuses:
             thisTagShouldBeSelected = False
@@ -108,7 +120,7 @@ class Users(Element):
 
 
 class Delete(Resource):
-    def __init__(self, topProductCounter):
+    def __initdads__(self, topProductCounter):
         self.topProductCounter = topProductCounter
 
     def render(self, request):

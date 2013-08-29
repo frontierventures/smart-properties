@@ -66,40 +66,10 @@ def bitcoinAddress(request, value):
 
 def signature(request, value):
     if not value:
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.BITCOIN_ADDRESS[0]})
+        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.SIGNATURE[0]})
         return True
     elif not re.match(definitions.REGEX_BITCOIN_ADDRESS, value):
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.BITCOIN_ADDRESS[1]})
-        return True
-
-
-def storeName(request, value):
-    if not value:
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 2, 'text': definitions.STORE_NAME[0]})
-        return True
-    elif not re.match(definitions.REGEX_STORENAME, value):
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 2, 'text': definitions.STORE_NAME[1]})
-        return True
-
-    if len(value) > 18 or len(value) < 5:
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 2, 'text': definitions.STORE_NAME[4]})
-        return True
-
-    if value in definitions.restrictedStoreNames:
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.STORE_NAME[2]})
-        return True
-
-
-def storeDescription(request, value):
-    if not value:
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 2, 'text': definitions.DESCRIPTION[0]})
-        return True
-    elif not re.match(definitions.REGEX_DESCRIPTION, value):
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 2, 'text': definitions.DESCRIPTION[1]})
-        return True
-
-    if len(value) > 200 or len(value) < 5:
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 2, 'text': definitions.STORE_DESCRIPTION[0]})
+        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.SIGNATURE[1]})
         return True
 
 

@@ -136,6 +136,7 @@ def makeSession(request, userId):
 
     sessionUser = SessionManager(request).getSessionUser()
     sessionUser['id'] = user.id
+    sessionUser['type'] = user.type
     sessionUser['ip'] = user.ip
     sessionUser['status'] = user.status 
     sessionUser['isEmailVerified'] = isEmailVerified

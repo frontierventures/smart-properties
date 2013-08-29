@@ -50,13 +50,14 @@ class Transactions(Element):
         self.sessionUser = sessionUser
 
         transactions = db.query(Transaction)
-        print "hjdhsjfshdjfjsdjfsdjfjsdjfhsjdhfj"
         if self.status == 'pending':
-            transactions = transactions.filter(Transaction.status.in_(['open', 'paid'])).order_by(Transaction.updateTimestamp.desc())
+            transactions = transactions.filter(Transaction.status.in_(['open'])).order_by(Transaction.updateTimestamp.desc())
+
         if self.status == 'canceled':
             transactions = transactions.filter(Transaction.status == 'canceled').order_by(Transaction.updateTimestamp.desc())
+
         if self.status == 'complete':
-            transactions = transactions.filter(Transaction.status == 'received').order_by(Transaction.updateTimestamp.desc())
+            transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.updateTimestamp.desc())
 
         if transactions.count() == 0:
             template = 'templates/elements/summaryTransactions0.xml'
@@ -116,14 +117,11 @@ class Transactions(Element):
     @renderer
     def action(self, request, tag):
         actions = {}
-        actions[config.createTimestamp()] = ['View', 'ticon view hint hint--top hint--rounded', '../describeProperty']
-        actions[config.createTimestamp()] = ['Delete', 'ticon delete hint hint--top hint--rounded', '../deleteProperty?id=%s' % self.transaction.id]
+        actions[config.createTimestamp()] = ['Mark Complete', '../updateTransaction?id=%s&status=complete' % self.transaction.id]
+        #actions[config.createTimestamp()] = ['Delete', 'ticon delete hint hint--top hint--rounded', '../deleteProperty?id=%s' % self.transaction.id]
 
         for key in sorted(actions.keys()):
-            slots = {}
-            slots['htmlId'] = str(self.transaction.id)
-            slots['htmlHint'] = actions[key][0]
-            slots['htmlClass'] = actions[key][1]
-            slots['htmlUrl'] = actions[key][2]
-            newTag = tag.clone().fillSlots(**slots)
-            yield newTag
+            slots = {} 
+            slots['htmlCaption'] = actions[key][0]
+            slots['htmlUrl'] = actions[key][1]
+            yield tag.clone().fillSlots(**slots)
