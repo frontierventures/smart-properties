@@ -14,34 +14,6 @@ from decimal import ROUND_UP
 D = decimal.Decimal
 
 
-def makeLogin(request, userId):
-    print "%s%s %s%s" % (config.color.RED, __name__, inspect.stack()[0][3], config.color.ENDC)
-    SessionManager(request).add()
-
-    user = db.query(User).filter(User.id == userId).first()
-    user.loginTimestamp = config.createTimestamp()
-    user.ip = request.getClientIP()
-    db.commit()
-
-    profile = db.query(Profile).filter(Profile.userId == userId).first()
-    isEmailVerified = user.isEmailVerified
-
-    if isEmailVerified == 0:
-        isEmailVerified = False
-
-    if isEmailVerified == 1:
-        isEmailVerified = True
-
-    sessionUser = SessionManager(request).getSessionUser()
-    sessionUser['id'] = user.id
-    sessionUser['ip'] = user.ip
-    sessionUser['type'] = user.type
-    sessionUser['isEmailVerified'] = isEmailVerified
-    sessionUser['first'] = profile.first
-    sessionUser['last'] = profile.last
-    sessionUser['loginTimestamp'] = config.createTimestamp()
-
-
 class SessionUser(Resource):
     def render(self, request):
         print "%s%s %s%s" % (config.color.RED, __name__, inspect.stack()[0][3], config.color.ENDC)

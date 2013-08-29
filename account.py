@@ -26,6 +26,9 @@ class Main(Resource):
         if sessionUser['id'] == 0:
             return redirectTo('../', request)
 
+        if sessionUser['status'] != 'verified':
+            return redirectTo('../signature', request)
+
         Page = pages.Account('Smart Property Group - Account', 'account')
         Page.sessionUser = sessionUser
 

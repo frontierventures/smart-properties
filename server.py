@@ -24,6 +24,7 @@ import profile
 import receipt
 import register
 import settings
+import signature
 import summaryOrders
 import summaryProperties
 import summaryUsers
@@ -80,10 +81,11 @@ def assemble(root):
     root.putChild('contract', contract.Main())
     root.putChild('history', history.Main())
     root.putChild('login', login.Main())
+    root.putChild('signature', signature.Main())
 
     #ACTIONS
     root.putChild('contractAction', actions.SignContract())
-    root.putChild('loginAction', login.Action(echoFactory))
+    root.putChild('loginAction', actions.Login(echoFactory))
     root.putChild('registerAction', actions.Register(echoFactory))
 
     root.putChild('legal', legal.Main())

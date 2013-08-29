@@ -1,16 +1,16 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="form">
-    <form class="form-signin" action="../registerAction" method="POST" enctype="application/x-www-form-urlencoded">
-        <h2 class="form-signin-heading">Account Details</h2>
+    <form class="form-register" action="../registerAction" method="POST" enctype="application/x-www-form-urlencoded">
+        <h2 class="form-register-heading">Account Details</h2>
         <div>
             <t:transparent t:render="alert" />
         </div>
-        <input type="text" placeholder="Email address" name="userEmail">
+        <input type="text" class="input-block-level" placeholder="Email address" name="userEmail">
             <t:attr name="value"><t:slot name="htmlEmail" /></t:attr>
         </input>
-        <input type="password" placeholder="Password" name="userPassword">
+        <input type="password" class="input-block-level" placeholder="Password" name="userPassword">
             <t:attr name="value"><t:slot name="htmlPassword" /></t:attr>
         </input>
-        <input type="password" placeholder="Repeat Password" name="userRepeatPassword">
+        <input type="password" class="input-block-level" placeholder="Repeat Password" name="userRepeatPassword">
             <t:attr name="value"><t:slot name="htmlRepeatPassword" /></t:attr>
         </input>
         <label class="checkbox">

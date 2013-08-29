@@ -19,6 +19,7 @@ import profile
 import receipt
 import register
 import settings
+import signature
 import summaryOrders
 import summaryProperties
 import summaryUsers
@@ -223,6 +224,16 @@ class Settings(Page):
         return settings.Form(self.sessionUser, self.sessionResponse)
 
 
+class Signature(Page):
+    def __init__(self, pageTitle, template):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+
+    @renderer
+    def signatureForm(self, request, tag):
+        return forms.Signature(self.sessionUser, self.sessionResponse)
+
+
 class Receipt(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
@@ -289,6 +300,7 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'register': 'templates/pages/register.xml',
              'receipt': 'templates/pages/receipt.xml',
              'settings': 'templates/pages/settings.xml',
+             'signature': 'templates/pages/signature.xml',
              'summaryProperties': 'templates/pages/summaryProperties.xml',
              'summaryOrders': 'templates/pages/summaryOrders.xml',
              'summaryTransactions': 'templates/pages/summaryTransactions.xml',

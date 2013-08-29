@@ -24,6 +24,7 @@ import functions
 import hashlib
 import inspect
 import itertools
+import login
 import mailer
 import os
 import random
@@ -213,6 +214,68 @@ class InvestAmount(Resource):
             return redirectTo('../contract', request)
 
 
+class Login(Resource):
+    def __init__(self, echoFactory):
+        self.echoFactory = echoFactory
+
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        if not request.args:
+            return redirectTo('../', request)
+
+        sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['action'] = 'login'
+
+        userEmail = request.args.get('userEmail')[0]
+        userPassword = request.args.get('userPassword')[0]
+
+        sessionUser['email'] = userEmail
+        sessionUser['password'] = userPassword
+
+        if error.email(request, userEmail):
+            return redirectTo('../login', request)
+
+        if error.password(request, userPassword):
+            return redirectTo('../login', request)
+
+        users = db.query(User).filter(User.email == userEmail)
+        user = users.filter(User.status == 'active').first()
+        if not user:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.EMAIL[2]})
+            return redirectTo('../login', request)
+        
+        if not encryptor.checkPassword(user.password, userPassword):
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.PASSWORD[2]})
+            return redirectTo('../login', request)
+
+        if request.args.get('button')[0] == 'Login':
+            userType = user.type
+
+            url = '../account'
+            if userType == 0:
+                url = '../summaryUsers'
+
+            if user.isEmailVerified == 1:
+                isEmailVerified = True
+            else:
+                isEmailVerified = False
+
+            #if not isEmailVerified:
+            #    url = '../settings'
+
+            login.makeSession(request, user.id)
+            SessionManager(request).setSessionResponse({'class': 2, 'form': 0, 'text': definitions.SUCCESS_LOGIN})
+
+            email = str(user.email)
+
+            activity.pushToSocket(self.echoFactory, '%s**** logged in' % email[0])
+            activity.pushToDatabase('%s logged in' % email)
+
+            url = str(url)
+            return redirectTo(url, request)
+
+
 class Register(Resource):
     def __init__(self, echoFactory):
         self.echoFactory = echoFactory
@@ -310,3 +373,35 @@ class SignContract(Resource):
             sessionTransaction['isSigned'] = transaction.isSigned
 
             return redirectTo('../receipt', request)
+
+
+class Sign(Resource):
+    def __init__(self, echoFactory):
+        self.echoFactory = echoFactory
+
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        if not request.args:
+            return redirectTo('../settings', request)
+
+        bitcoinAddress = request.args.get('userBitcoinAddress')[0]
+        signature = request.args.get('userSignature')[0]
+
+        sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['userBitcoinAddress'] = bitcoinAddress
+        sessionUser['userSignature'] = signature
+
+        if error.bitcoinAddress(request, bitcoinAddress):
+            return redirectTo('../settings', request)
+
+        if error.signature(request, signature):
+            return redirectTo('../settings', request)
+
+        if request.args.get('button')[0] == 'Verify':
+            timestamp = config.createTimestamp()
+
+            profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+            print explorer.summary()
+            print explorer.verifyMessage(bitcoinAddress, signature, profile.seed)
+            return redirectTo('../', request)

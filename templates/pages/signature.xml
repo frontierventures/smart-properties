@@ -6,8 +6,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
 
-        <!-- CSS -->
-        <link href="../resources/css/register.css" rel="stylesheet" />
+        <!-- Le styles -->
+        <link href="../resources/css/signature.css" rel="stylesheet" />
         <link href="../resources/css/footer.css" rel="stylesheet" />
 
         <link href="../resources/css/bootstrap.css" rel="stylesheet" />
@@ -20,17 +20,16 @@
 
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../resources/ico/apple-touch-icon-144-precomposed.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../resources/ico/apple-touch-icon-114-precomposed.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../resources/ico/apple-touch-icon-114-precomposed.png" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../resources/ico/apple-touch-icon-72-precomposed.png" />
     <link rel="apple-touch-icon-precomposed" href="../resources/ico/apple-touch-icon-57-precomposed.png" />
     <link rel="shortcut icon" href="../resources/ico/favicon.png" />
 </head>
 <body>
-    <!-- Part 1: Wrap all page content here -->
     <div id="wrap">
         <t:transparent t:render="header" />            
         <div id="push"></div>
-        <t:transparent t:render="registerForm" />            
+        <t:transparent t:render="signatureForm" />            
     </div>
     <t:transparent t:render="footer" />            
 

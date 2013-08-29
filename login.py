@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.python.filepath import FilePath
 from twisted.web.template import Element, renderer, renderElement, XMLString
 
-from data import User
+from data import Profile, User
 from data import db
 from sessions import SessionManager
 
@@ -41,7 +41,7 @@ class Main(Resource):
             if verify == 'ok':
                 sessionResponse = {'class': 2, 'form': 0, 'text': definitions.VERIFY_SUCCESS}
 
-        Page = pages.Login('Login', 'login')
+        Page = pages.Login('Smart Property Group - Login', 'login')
         Page.sessionUser = sessionUser
         Page.sessionResponse = sessionResponse
 
@@ -83,66 +83,6 @@ class Form(Element):
             return elements.Notification(sessionResponse)
 
 
-class Action(Resource):
-    def __init__(self, echoFactory):
-        self.echoFactory = echoFactory
-
-    def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-
-        if not request.args:
-            return redirectTo('../', request)
-
-        userEmail = request.args.get('userEmail')[0]
-        userPassword = request.args.get('userPassword')[0]
-
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['email'] = userEmail
-        sessionUser['password'] = userPassword
-
-        if error.email(request, userEmail):
-            return redirectTo('../login', request)
-
-        if error.password(request, userPassword):
-            return redirectTo('../login', request)
-
-        users = db.query(User).filter(User.email == userEmail)
-        user = users.filter(User.status == 'active').first()
-        if not user:
-            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.EMAIL[2]})
-            return redirectTo('../login', request)
-        
-        if not encryptor.checkPassword(user.password, userPassword):
-            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.PASSWORD[2]})
-            return redirectTo('../login', request)
-
-        if request.args.get('button')[0] == 'Login':
-            userType = user.type
-
-            url = '../account'
-            if userType == 0:
-                url = '../summaryUsers'
-
-            if user.isEmailVerified == 1:
-                isEmailVerified = True
-            else:
-                isEmailVerified = False
-
-            #if not isEmailVerified:
-            #    url = '../settings'
-
-            functions.makeLogin(request, user.id)
-            SessionManager(request).setSessionResponse({'class': 2, 'form': 0, 'text': definitions.SUCCESS_LOGIN})
-
-            email = str(user.email)
-
-            activity.pushToSocket(self.echoFactory, '%s**** logged in' % email[0])
-            activity.pushToDatabase('%s logged in' % email)
-
-            url = str(url)
-            return redirectTo(url, request)
-
-
 class RecoverPassword(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
@@ -175,3 +115,30 @@ class RecoverPassword(Resource):
         Email(mailer.noreply, userEmail, 'Your  password was reset!', plain, html).send()
 
         return json.dumps(dict(response=1, text=definitions.PASSWORD[3]))
+
+
+def makeSession(request, userId):
+    SessionManager(request).add()
+
+    user = db.query(User).filter(User.id == userId).first()
+    user.loginTimestamp = config.createTimestamp()
+    user.ip = request.getClientIP()
+    db.commit()
+
+    profile = db.query(Profile).filter(Profile.userId == userId).first()
+    isEmailVerified = user.isEmailVerified
+
+    if isEmailVerified == 0:
+        isEmailVerified = False
+
+    if isEmailVerified == 1:
+        isEmailVerified = True
+
+    sessionUser = SessionManager(request).getSessionUser()
+    sessionUser['id'] = user.id
+    sessionUser['ip'] = user.ip
+    sessionUser['status'] = user.status 
+    sessionUser['isEmailVerified'] = isEmailVerified
+    sessionUser['first'] = profile.first
+    sessionUser['last'] = profile.last
+    sessionUser['loginTimestamp'] = config.createTimestamp()

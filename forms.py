@@ -502,86 +502,120 @@ class ProductImage():
                 print "%s%s created%s" % (config.color.BLUE, i, config.color.ENDC)
 
 
-class DeleteOne(Resource):
-    def __init__(self, productViews):
-        self.productViews = productViews
+class Signature(Element):
+    loader = XMLString(FilePath('templates/forms/signature.xml').getContent())
 
-    def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+    def __init__(self, sessionUser, sessionResponse):
+        self.sessionUser = sessionUser
+        self.sessionResponse = sessionResponse
+        self.profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userId = sessionUser['id']
-        if userId == 0:
-            return redirectTo('../', request)
+    @renderer
+    def form(self, request, tag):
+        sessionUser = self.sessionUser
 
-        productId = 0
-        try:
-            productId = int(request.args.get('id')[0])
-        except:
-            return redirectTo('../', request)
+        userBitcoinAddress = ''
+        if sessionUser.get('userBitcoinAddress'):
+            userBitcoinAddress = sessionUser['userBitcoinAddress']
 
-        product = db.query(PhysicalProduct).filter(PhysicalProduct.id == productId).first()
-        if product.sellerId != userId:
-            return redirectTo('../', request)
+        userSignature = ''
+        if sessionUser.get('userSignature'):
+            userSignature = sessionUser['userSignature']
 
-        catalogItem = db.query(CatalogItem).filter(CatalogItem.productId == productId).first()
+        slots = {}
+        slots['htmlNonce'] = self.profile.seed
+        slots['htmlBitcoinAddress'] = userBitcoinAddress
+        slots['htmlSignature'] = userSignature
+        yield tag.fillSlots(**slots)
 
-        product.status = 'deleted'
-        catalogItem.status = 'deleted'
-
-        if product.id in self.productViews.keys():
-            del self.productViews[product.id]
-
-        store = db.query(Store).filter(Store.ownerId == userId).first()
-        store.productCount -= 1
-        store.updateTimestamp = config.createTimestamp()
-
-        if store.productCount <= 0:
-            store.status = 'closed'
-
-        url = '../%s' % str(store.name)
-
-        db.commit()
-        return redirectTo(url, request)
-
-
-class DeleteMany(Resource):
-    def __init__(self, productViews):
-        self.productViews = productViews
-
-    def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-        if not request.args:
-            return redirectTo('../inbox', request)
-
-        sessionUser = SessionManager(request).getSessionUser()
-        userId = sessionUser['id']
-        if userId == 0:
-            return redirectTo('../', request)
-
-        productIds = request.args.get('productIds')
-
-        store = db.query(Store).filter(Store.ownerId == userId).first()
-        for productId in productIds:
-            product = db.query(PhysicalProduct).filter(PhysicalProduct.id == productId).first()
-            if product.sellerId != userId:
-                return redirectTo('../', request)
-
-            catalogItem = db.query(CatalogItem).filter(CatalogItem.productId == productId).first()
-
-            product.status = 'deleted'
-            catalogItem.status = 'deleted'
-
-            if product.id in self.productViews.keys():
-                del self.productViews[product.id]
-
-            store.productCount -= 1
-            store.updateTimestamp = config.createTimestamp()
-
-            if store.productCount <= 0:
-                store.status = 'closed'
-            db.commit()
-
-        url = '../%s' % str(store.name)
-
-        return redirectTo(url, request)
+    @renderer
+    def alert(self, request, tag):
+        if self.sessionResponse['text']:
+            return elements.Alert(self.sessionResponse)
+        else:
+            return []
+#
+#
+#class DeleteOne(Resource):
+#    def __init__(self, productViews):
+#        self.productViews = productViews
+#
+#    def render(self, request):
+#        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+#
+#        sessionUser = SessionManager(request).getSessionUser()
+#        userId = sessionUser['id']
+#        if userId == 0:
+#            return redirectTo('../', request)
+#
+#        productId = 0
+#        try:
+#            productId = int(request.args.get('id')[0])
+#        except:
+#            return redirectTo('../', request)
+#
+#        product = db.query(PhysicalProduct).filter(PhysicalProduct.id == productId).first()
+#        if product.sellerId != userId:
+#            return redirectTo('../', request)
+#
+#        catalogItem = db.query(CatalogItem).filter(CatalogItem.productId == productId).first()
+#
+#        product.status = 'deleted'
+#        catalogItem.status = 'deleted'
+#
+#        if product.id in self.productViews.keys():
+#            del self.productViews[product.id]
+#
+#        store = db.query(Store).filter(Store.ownerId == userId).first()
+#        store.productCount -= 1
+#        store.updateTimestamp = config.createTimestamp()
+#
+#        if store.productCount <= 0:
+#            store.status = 'closed'
+#
+#        url = '../%s' % str(store.name)
+#
+#        db.commit()
+#        return redirectTo(url, request)
+#
+#
+#class DeleteMany(Resource):
+#    def __init__(self, productViews):
+#        self.productViews = productViews
+#
+#    def render(self, request):
+#        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+#        if not request.args:
+#            return redirectTo('../inbox', request)
+#
+#        sessionUser = SessionManager(request).getSessionUser()
+#        userId = sessionUser['id']
+#        if userId == 0:
+#            return redirectTo('../', request)
+#
+#        productIds = request.args.get('productIds')
+#
+#        store = db.query(Store).filter(Store.ownerId == userId).first()
+#        for productId in productIds:
+#            product = db.query(PhysicalProduct).filter(PhysicalProduct.id == productId).first()
+#            if product.sellerId != userId:
+#                return redirectTo('../', request)
+#
+#            catalogItem = db.query(CatalogItem).filter(CatalogItem.productId == productId).first()
+#
+#            product.status = 'deleted'
+#            catalogItem.status = 'deleted'
+#
+#            if product.id in self.productViews.keys():
+#                del self.productViews[product.id]
+#
+#            store.productCount -= 1
+#            store.updateTimestamp = config.createTimestamp()
+#
+#            if store.productCount <= 0:
+#                store.status = 'closed'
+#            db.commit()
+#
+#        url = '../%s' % str(store.name)
+#
+#        return redirectTo(url, request)
