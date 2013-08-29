@@ -64,6 +64,14 @@ def verifyMessage(bitcoinAddress, signature, message):
     print output
     return output
 
-verifyMessage('blah', 'blah', 'blah')
+
+address = '17EoJsYcb5nPMLkjv92W85n2nr2pBzUrjE'
+message = '''This is a message'''
+message = ''
+signature = 'IGgHKI8dvS5T1ubYWW/zLRq0Pa63y1/7xy9rMn6z8q8+cRuri5nsidw6YEEXgdDwDlWD0fY49pw0/6+WWj1lyNM='
+
+signature = 'IiGgHKI8dvS5T1ubYWW/zLRq0Pa63y1/7xy9rMn6z8q8+cRuri5nsidw6YEEXgdDwDlWD0fY49pw0/6+WWj1lyNM='
+
+verifyMessage(address, signature, message)
 #{u'id': u'curltest', u'result': None, u'error': {u'message': u'Invalid address', u'code': -3}}
 #verifymessage <bitcoinaddress> <signature> <message>
