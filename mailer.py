@@ -27,7 +27,7 @@ class Email():
 
     def send(self):
         msg = MIMEMultipart('alternative')
-        msg['From'] = 'Coingig Team <noreply@coingig.com>'
+        msg['From'] = 'Smart Property Group <noreply@sptrust.co>'
         msg['To'] = self.receiver
         msg['Date'] = formatdate(localtime=True)
         msg['Subject'] = self.subject
@@ -43,7 +43,7 @@ class Email():
             smtp.ehlo()
             smtp.starttls()
             #need pass
-            smtp.login('', '')
+            smtp.login('noreply@sptrust.co', 'noreply123noreply')
             smtp.sendmail(self.sender, self.receiver, msg.as_string())
             smtp.quit()
 
@@ -81,10 +81,10 @@ def messageMemoHtml(profile):
 def verificationPlain(url):
     plain = """
     Thank you for registering!\n
-    You can now take the steps to become a Coingig user!\n
+    You can now take the steps to become a Smart Property Group investor!\n
     Please visit the link below to verify your email address.\n
     %s/n
-    Coingig Team
+    Smart Property Group 
     """ % url
     return plain
 
@@ -93,10 +93,10 @@ def verificationHtml(url):
     html = """
     <html>
     <p><b>Thank you for registering!</b></p>
-    <p>You can now take the steps to become a Coingig user!</p>
+    <p>You can now take the steps to become a Smart Property Group investor!</p>
     <p>Please visit the link below to verify your email address.</p>
     <p><a href="%s">Verify Email</a></p>
-    <p><b>Coingig Team</b></p>
+    <p><b>Smart Property Group</b></p>
     </html>
     """ % url
     return html

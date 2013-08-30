@@ -54,6 +54,7 @@ class Details(Element):
         balanceBTC = float(self.profile.balance) / float(price.last)
 
         slots = {}
+        slots['htmlPaymentAddress'] = str(self.profile.bitcoinAddress) 
         slots['htmlInvestedBalanceFiat'] = str(self.profile.balance) 
         slots['htmlInvestedBalanceBtc'] = str(balanceBTC) 
         slots['htmlNextPaymentDate'] = str(config.convertTimestamp(float(config.createTimestamp())))
