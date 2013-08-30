@@ -4,6 +4,15 @@ import re
 from sessions import SessionManager
 
 
+def amount(request, value):
+    if not value:
+        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.AMOUNT[0]})
+        return True
+    #elif not re.match(definitions.REGEX_FIRST, value):
+    #    SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.FIRST[1]})
+    #    return True
+
+
 def first(request, value):
     if not value:
         SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.FIRST[0]})
@@ -47,6 +56,12 @@ def repeatPassword(request, value):
 #    elif not re.match(definitions.REGEX_PASSWORD, value):
 #        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.PASSWORD_REPEAT[1]})
 #        return True
+
+
+def signature(request, value):
+    if not value:
+        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.SIGNATURE[0]})
+        return True
 
 
 def mismatchPassword(request, value1, value2):

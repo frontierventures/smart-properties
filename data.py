@@ -1,3 +1,4 @@
+#! /usr/bin/python
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import create_engine, ForeignKey
@@ -208,11 +209,11 @@ def reset():
     user = db.query(User).filter(User.email == '0@0.0').first()
     if not user:
         password = encryptor.hashPassword("0")
-        admin = User("active", 0, timestamp, "0@0.0", password, 1, '')
-        newProfile = Profile(timestamp, timestamp, 'admin', 'admin', '', '', '', 1000, 0)
+        admin = User('verified', 0, timestamp, '0@0.0', password, 1, '')
+        newProfile = Profile(timestamp, timestamp, 'admin', 'admin', '', '', '', 135000, 0)
         admin.profiles = [newProfile]
         db.add(admin)
 
     db.commit()
 
-reset()
+#reset()

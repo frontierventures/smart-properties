@@ -30,9 +30,9 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         sessionUser = SessionManager(request).getSessionUser()
-        userId = sessionUser['id']
+        sessionUser['page'] = 'login'
 
-        if userId >= 1:
+        if sessionUser['id'] >= 1:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
@@ -45,8 +45,8 @@ class Main(Resource):
         Page.sessionUser = sessionUser
         Page.sessionResponse = sessionResponse
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
-        print "sessionResponse: %s" % sessionResponse
+        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
+        print "%ssessionResponse: %s%s" % (config.color.YELLOW, sessionResponse, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)

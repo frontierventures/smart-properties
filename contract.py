@@ -15,7 +15,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'legal'
+        sessionUser['page'] = 'contract'
 
         if sessionUser['id'] == 0:
             return redirectTo('../', request)

@@ -106,7 +106,7 @@ class Transactions(Element):
             slots = {}
             #slots['htmlStatus'] = str(transaction.status)
             slots['htmlTransactionCreateTimestamp'] = config.convertTimestamp(timestamp)
-            slots['htmlTransactionUpdateTimestamp'] = config.convertTimestamp(timestamp)
+            slots['htmlTransactionUpdateTimestamp'] = config.convertTimestamp(float(transaction.createTimestamp))
             slots['htmlTransactionId'] = str(transaction.id)
             slots['htmlTransactionUserId'] = str(transaction.userId)
             slots['htmlTransactionAmount'] = str(transaction.amount) 
@@ -118,7 +118,7 @@ class Transactions(Element):
     def action(self, request, tag):
         actions = {}
         actions[config.createTimestamp()] = ['Mark Complete', '../updateTransaction?id=%s&status=complete' % self.transaction.id]
-        #actions[config.createTimestamp()] = ['Delete', 'ticon delete hint hint--top hint--rounded', '../deleteProperty?id=%s' % self.transaction.id]
+        actions[config.createTimestamp()] = ['Cancel', '../updateTransaction?id=%s&status=canceled' % self.transaction.id]
 
         for key in sorted(actions.keys()):
             slots = {} 

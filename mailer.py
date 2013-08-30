@@ -53,91 +53,99 @@ class Email():
             print e
 
 
-def messageMemoPlain(profile):
-    plain = """
-    You have %s message(s).\n
-    Please visit the link below to check your inbox.\n
-    http://www.coingig.com/login\n
-    Coingig Team
-    """ % profile.unreadCount
-    return plain
-
-
-def messageMemoHtml(profile):
-    html = """
-    <html>
-    <head></head>
-    <body>
-    <p><b>You have %s message(s).</b></p>
-    <p>Please visit the link below to check your inbox.</p>
-    <p><a href="http://www.coingig.com/login">Login Here</a></p>
-    <p><b>Coingig Team</b></p>
-    </body>
-    </html>
-    """ % profile.unreadCount
-    return html
-
-
-def verificationPlain(url):
+def verificationPlain(seed):
     plain = """
     Thank you for registering!\n
     You can now take the steps to become a Smart Property Group investor!\n
-    Please visit the link below to verify your email address.\n
-    %s/n
+    Please use your bitcoin wallet to sign the seed provided below.\n
+    %s\n
+    We will use the signature to verify your identity and the bitcoin address for payments.\n
     Smart Property Group 
-    """ % url
+    """ % seed
     return plain
 
 
-def verificationHtml(url):
+def verificationHtml(seed):
     html = """
     <html>
     <p><b>Thank you for registering!</b></p>
     <p>You can now take the steps to become a Smart Property Group investor!</p>
-    <p>Please visit the link below to verify your email address.</p>
-    <p><a href="%s">Verify Email</a></p>
+    <p>Please use your bitcoin wallet to sign the seed provided below.</p>
+    <p>%s</p>
+    <p>We will use the signature to verify your identity and the bitcoin address for payments.</p>
     <p><b>Smart Property Group</b></p>
     </html>
-    """ % url
+    """ % seed
     return html
 
 
-def passwordRecoveryPlain(email, password):
-    plain = """Account Details\nEmail:  %s\nTemporary Password: %s\nCoingig Team""" % (email, password)
-    return plain
-
-
-def passwordRecoveryHtml(email, password):
-    html = """\
-    <html>
-    <p><h2>Account Details</h2></p>
-    <p><b>Email:</b> %s</p>
-    <p><b>Temporary Password:</b> %s</p>
-    <p><b>Coingig Team</b></p>
-    </html>
-    """ % (email, password)
-    return html
-
-
-def invitationPlain(email, password):
+def transactionPendingMemoPlain(transaction):
     plain = """
-    Account Details\n
-    Email: %s\n
-    Temporary Password: %s\n
-    Coingig Team
-    """ % (email, password)
+    Congratulatuons! Your Smart Property Group transcation was successul!\n
+    Transaction Id: %s\n
+    Transaction Amount: %s\n
+    Transaction Bitcoin Address: %s\n
+    Smart Property Group 
+    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
     return plain
 
 
-def invitationHtml(email, password):
+def transactionPendingMemoHtml(transaction):
     html = """
     <html>
-    <p>
-    <h2>Account Details</h2>
-    </p>
-    <p><b>Email:</b> %s</p>
-    <p><b>Temporary Password:</b> %s</p>
-    <p><b>Coingig Team</b></p>
+    <p><b>Congratulations! Your Smart Property Group transaction was successful!</b></p>
+    <p><b>Transaction Id:</b> %s</p>
+    <p><b>Transaction Amount:</b> %s</p>
+    <p><b>Transaction Bitcoin Address:</b> %s</p>
+    <p><b>Smart Property Group</b></p>
     </html>
-    """ % (email, password)
+    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+    return html
+
+
+def transactionApprovalMemoPlain(transaction):
+    plain = """
+    Congratulatuons! Your Smart Property Group transaction was successul!\n
+    Transaction Id: %s\n
+    Transaction Amount: %s\n
+    Transaction Bitcoin Address: %s\n
+    Smart Property Group 
+    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+    return plain
+
+
+def transactionApprovalMemoHtml(transaction):
+    html = """
+    <html>
+    <p><b>Congratulations! Your Smart Property Group transaction was successful!</b></p>
+    <p><b>Transaction Id:</b> %s</p>
+    <p><b>Transaction Amount:</b> %s</p>
+    <p><b>Transaction Bitcoin Address:</b> %s</p>
+    <p><b>Smart Property Group</b></p>
+    </html>
+    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+    return html
+
+
+def transactionCancelationMemoPlain(transaction):
+    plain = """
+    Your Smart Property Group transaction was canceled!\n
+    Transaction Id: %s\n
+    Transaction Amount: %s\n
+    Transaction Bitcoin Address: %s (invalid)\n
+    Smart Property Group 
+    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+    return plain
+
+
+def transactionCancelationMemoHtml(transaction):
+    html = """
+    <html>
+    <p><b>Your Smart Property Group transaction was canceled!</b></p>
+    <p><b>Transaction Id:</b> %s</p>
+    <p><b>Transaction Amount:</b> %s</p>
+    <p><b>Transaction Bitcoin Address:</b> %s (invalid)</p>
+    <p><b>Smart Property Group</b></p>
+    </html>
+    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
     return html

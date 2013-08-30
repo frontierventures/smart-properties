@@ -52,11 +52,11 @@ class Transactions(Element):
         transactions = db.query(Transaction)
         transactions = transactions.filter(Transaction.userId == sessionUser['id'])
         if self.status == 'pending':
-            transactions = transactions.filter(Transaction.status.in_(['open', 'paid'])).order_by(Transaction.updateTimestamp.desc())
+            transactions = transactions.filter(Transaction.status.in_(['open'])).order_by(Transaction.updateTimestamp.desc())
         if self.status == 'canceled':
             transactions = transactions.filter(Transaction.status == 'canceled').order_by(Transaction.updateTimestamp.desc())
         if self.status == 'complete':
-            transactions = transactions.filter(Transaction.status == 'received').order_by(Transaction.updateTimestamp.desc())
+            transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.updateTimestamp.desc())
 
         if transactions.count() == 0:
             template = 'templates/elements/history0.xml'

@@ -88,6 +88,7 @@ def assemble(root):
     root.putChild('loginAction', actions.Login(echoFactory))
     root.putChild('registerAction', actions.Register(echoFactory))
     root.putChild('validateBitcoinAddress', actions.ValidateBitcoinAddress(echoFactory))
+    root.putChild('investAction', actions.Invest())
 
     #GET ACTIONS
     root.putChild('updateTransaction', actions.UpdateTransaction())
@@ -95,7 +96,6 @@ def assemble(root):
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())
     root.putChild('invest', invest.Main())
-    root.putChild('investAction', actions.InvestAmount())
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
     root.putChild('settings', settings.Main())

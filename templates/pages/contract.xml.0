@@ -7,9 +7,7 @@
         <meta name="author" content="" />
 
         <!-- CSS -->
-        <link href="../resources/css/receipt.css" rel="stylesheet" />
         <link href="../resources/css/footer.css" rel="stylesheet" />
-
         <link href="../resources/css/bootstrap.css" rel="stylesheet" />
         <link href="../resources/css/bootstrap-responsive.css" rel="stylesheet" />
 
@@ -30,8 +28,9 @@
     <div id="wrap">
         <t:transparent t:render="header" />            
         <div id="push"></div>
-        <t:transparent t:render="receipt" />            
+        <t:transparent t:render="contractForm" />            
     </div>
+
     <t:transparent t:render="footer" />            
 
     <!-- Le javascript

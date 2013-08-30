@@ -41,7 +41,8 @@ class Details(Element):
     def __init__(self, sessionUser):
         self.sessionUser = sessionUser
 
-        self.profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+        self.investor = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+        self.solicitor = db.query(Profile).filter(Profile.id == 1).first()
         template = 'templates/elements/account0.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
@@ -51,12 +52,18 @@ class Details(Element):
         locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
 
         price = db.query(Price).filter(Price.currencyId == 'USD').first()
-        balanceBTC = float(self.profile.balance) / float(price.last)
+
+        investorBalanceBTC = float(self.investor.balance) / float(price.last)
+        solicitorBalanceBTC = float(self.solicitor.balance) / float(price.last)
 
         slots = {}
-        slots['htmlPaymentAddress'] = str(self.profile.bitcoinAddress) 
-        slots['htmlInvestedBalanceFiat'] = str(self.profile.balance) 
-        slots['htmlInvestedBalanceBtc'] = str(balanceBTC) 
+        slots['htmlPaymentAddress'] = str(self.investor.bitcoinAddress) 
+        slots['htmlAvailableBalanceFiat'] = str(self.solicitor.balance) 
+        slots['htmlInvestedBalanceFiat'] = str(self.investor.balance) 
+
+        slots['htmlAvailableBalanceBtc'] = str(solicitorBalanceBTC) 
+        slots['htmlInvestedBalanceBtc'] = str(investorBalanceBTC) 
+
         slots['htmlNextPaymentDate'] = str(config.convertTimestamp(float(config.createTimestamp())))
         slots['htmlReturnRate'] = str('0.85%') 
         yield tag.clone().fillSlots(**slots)

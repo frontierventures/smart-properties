@@ -22,7 +22,7 @@
                     <th>Ip</th>
                     <th>Seed</th>
                     <th>Bitcoin Address</th>
-                    <th>Shares</th>
+                    <th>Balance</th>
                 </tr>
             </thead>
             <tbody>

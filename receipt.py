@@ -28,13 +28,14 @@ class Main(Resource):
         #transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
 
         sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['page'] = 'receipt'
 
         Page = pages.Receipt('Smart Property Group - Receipt', 'receipt')
         Page.sessionUser = sessionUser
         Page.sessionTransaction = sessionTransaction
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
-        print "%ssessionTransaction: %s%s" % (config.color.BLUE, sessionTransaction, config.color.ENDC)
+        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
+        print "%ssessionTransaction: %s%s" % (config.color.YELLOW, sessionTransaction, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
 
         request.write('<!DOCTYPE html>\n')

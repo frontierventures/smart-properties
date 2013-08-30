@@ -138,74 +138,37 @@ class BuyProperty(Resource):
             return redirectTo('../receipt', request)
 
 
-class InvestAmount(Resource):
+class Invest(Resource):
     def render(self, request):
         if not request.args:
             return redirectTo('../', request)
 
         sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['action'] = 'invest'
+
         investorId = sessionUser['id']
 
-        #if sessionUser['type'] != 0:
-        #    return redirectTo('../', request)
-
         sessionTransaction = SessionManager(request).getSessionTransaction()
-        #propertyId = sessionOrder['propertyId']
-
-        #url = '../summaryProperties?action=add'
-        #url = str(url)
 
         amount = request.args.get('investmentAmountFiat')[0]
 
         sessionTransaction['investorId'] = investorId
         sessionTransaction['amount'] = amount
-        bitcoinAddress = 'XXXXX'
         bitcoinAddress = explorer.getNewAddress('')['result']
 
+        if error.amount(request, amount):
+            return redirectTo('../invest', request)
 
         amount = float(amount)
 
         if request.args.get('button')[0] == 'Get Address':
             timestamp = config.createTimestamp()
 
-            #def __init__(self, status, createTimestamp, updateTimestamp, userId, amount):
             transaction = Transaction('open', timestamp, timestamp, investorId, amount, bitcoinAddress, 0)
             
             db.add(transaction)
 
-            #debtor = db.query(Profile).filter(Profile.id == 1).first()
-            #debtor.balance = float(debtor.balance) - amount
-
-            investor = db.query(Profile).filter(Profile.id == investorId).first()
-            investor.balance = float(investor.balance) + amount
             db.commit()
-
-            #url = '../verifyToken?id=%s&token=%s' % (str(newUser.id), token)
-
-            #plain = mailer.verificationPlain(url)
-            #html = mailer.verificationHtml(url)
-            #Email(mailer.noreply, email, 'Getting Started', plain, html).send()
-
-            #email = str(email)
-            #activity.pushToSocket(self.echoFactory, '%s**** registered' % email[0])
-            #activity.pushToDatabase('%s registered' % email)
-
-            #functions.makeLogin(request, newUser.id)
-            #return redirectTo('../settings', request)
-            #propertyObject = db.query(Property).filter(Property.id == propertyId).first()
-            #
-            #propertyObject.units -= quantity
-
-            #status = 'open'
-
-            #timestamp = config.createTimestamp()
-            #
-            #total = quantity * float(propertyObject.pricePerUnit)
-            #order = Order(status, timestamp, timestamp, propertyId, propertyObject.title, quantity, propertyObject.pricePerUnit, investorId, total, '')
-            ##def __init__(self, status, createTimestamp, updateTimestamp, propertyId, propertyTitle, units, pricePerUnit, total, paymentAddress):
-
-            #db.add(order)
-            #db.commit()
 
             sessionTransaction['id'] = transaction.id
             sessionTransaction['amount'] = transaction.amount
@@ -241,7 +204,7 @@ class Login(Resource):
             return redirectTo('../login', request)
 
         users = db.query(User).filter(User.email == userEmail)
-        user = users.filter(User.status == 'active').first()
+        user = users.filter(User.status != 'deleted').first()
         if not user:
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.EMAIL[2]})
             return redirectTo('../login', request)
@@ -251,11 +214,9 @@ class Login(Resource):
             return redirectTo('../login', request)
 
         if request.args.get('button')[0] == 'Login':
-            userType = user.type
-
             url = '../account'
-            if userType == 0:
-                url = '../summaryUsers'
+            if user.type == 0:
+                url = '../summaryTransactions'
 
             if user.isEmailVerified == 1:
                 isEmailVerified = True
@@ -266,7 +227,6 @@ class Login(Resource):
             #    url = '../settings'
 
             login.makeSession(request, user.id)
-            SessionManager(request).setSessionResponse({'class': 2, 'form': 0, 'text': definitions.SUCCESS_LOGIN})
 
             email = str(user.email)
 
@@ -335,10 +295,8 @@ class Register(Resource):
             db.add(newUser)
             db.commit()
 
-            url = '../verifyToken?id=%s&token=%s' % (str(newUser.id), token)
-
-            plain = mailer.verificationPlain(url)
-            html = mailer.verificationHtml(url)
+            plain = mailer.verificationPlain(seed)
+            html = mailer.verificationHtml(seed)
             Email(mailer.noreply, email, 'Getting Started', plain, html).send()
 
             email = str(email)
@@ -355,12 +313,16 @@ class SignContract(Resource):
             return redirectTo('../', request)
 
         sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['action'] = 'signContract'
         investorId = sessionUser['id']
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
         transactionId = sessionTransaction['id']
 
         signature = request.args.get('contractSignature')[0]
+
+        if error.signature(request, signature):
+            return redirectTo('../contract', request)
 
         if request.args.get('button')[0] == 'Sign Contract':
             timestamp = config.createTimestamp()
@@ -370,6 +332,12 @@ class SignContract(Resource):
             transaction.updateTimestamp = timestamp
             transaction.isSigned = 1
             db.commit()
+        
+            user = db.query(User).filter(User.id == transaction.userId).first()
+            plain = mailer.transactionPendingMemoPlain(transaction)
+            html = mailer.transactionPendingMemoHtml(transaction)
+            Email(mailer.noreply, user.email, 'Your have a pending Smart Property Group transaction!', plain, html).send()
+            Email(mailer.noreply, 'transactions@sptrust.co', 'Your have a pending Smart Property Group transaction!', plain, html).send()
 
             sessionTransaction['isSigned'] = transaction.isSigned
 
@@ -435,8 +403,7 @@ class UpdateTransaction(Resource):
     def render(self, request):
         sessionUser = SessionManager(request).getSessionUser()
 
-        userType = sessionUser['type']
-        if userType != 0:
+        if sessionUser['type'] != 0:
             return redirectTo('../', request)
 
         if not request.args:
@@ -448,8 +415,29 @@ class UpdateTransaction(Resource):
         except:
             return redirectTo('../summaryTransactions', request)
         
+
         transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
         transaction.status = transactionStatus 
+        transaction.updateTimestamp = config.createTimestamp()
+        
+        investor = db.query(Profile).filter(Profile.id == transaction.userId).first()
+        investor.balance = float(investor.balance) + float(transaction.amount)
+
+        solicitor = db.query(Profile).filter(Profile.id == 1).first()
+        solicitor.balance = float(solicitor.balance) - float(transaction.amount)
 
         db.commit()
+
+        user = db.query(User).filter(User.id == transaction.userId).first()
+        
+        if transactionStatus == 'complete':
+            plain = mailer.transactionApprovalMemoPlain(transaction)
+            html = mailer.transactionApprovalMemoHtml(transaction)
+            Email(mailer.noreply, user.email, 'Your Smart Property Group transaction was marked complete!', plain, html).send()
+
+        if transactionStatus == 'canceled':
+            plain = mailer.transactionCancelationMemoPlain(transaction)
+            html = mailer.transactionCancelationMemoHtml(transaction)
+            Email(mailer.noreply, user.email, 'Your Smart Property Group transaction was canceled!', plain, html).send()
+
         return redirectTo('../summaryTransactions', request)
