@@ -1,7 +1,7 @@
 <div class="form-account" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
     <h1 class="form-account-heading">Account Summary</h1>
     <div><a href="../history">Transaction History</a></div>
-    <div><b>Payment Address: </b><t:slot name="htmlPaymentAddress" /></div>
+    <div><b>Payment Address: </b><t:slot name="htmlPaymentAddress" /> <a href="../">Change</a></div>
     <div><b>Invested Balance (USD):</b> <t:slot name="htmlInvestedBalanceFiat" /></div>
     <div><b>Next Payment Date:</b> <t:slot name="htmlNextPaymentDate" /></div>
     <div><b>Return Rate:</b> <t:slot name="htmlReturnRate" /></div>

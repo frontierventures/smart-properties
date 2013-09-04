@@ -1,0 +1,9 @@
+Parsley==1.1
+SQLAlchemy==0.8.2
+Twisted==13.1.0
+Twisted-Core==12.2.0
+pyPdf==1.13
+pycurl==7.19.0
+txWS==0.7.1
+zope.interface==3.6.1
+reportlab==2.7

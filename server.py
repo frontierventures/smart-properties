@@ -114,6 +114,7 @@ def assemble(root):
 
     root.putChild('resources', File("./resources"))
     root.putChild('images', File("./images"))
+    root.putChild('files', File("./files"))
     return root
 
 root = assemble(root)
