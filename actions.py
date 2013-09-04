@@ -164,7 +164,7 @@ class Invest(Resource):
         if request.args.get('button')[0] == 'Get Address':
             timestamp = config.createTimestamp()
 
-            transaction = Transaction('open', timestamp, timestamp, investorId, amount, bitcoinAddress, 0)
+            transaction = Transaction('open', timestamp, timestamp, investorId, amount, bitcoinAddress, '', '')
             
             db.add(transaction)
 
@@ -253,10 +253,12 @@ class Register(Resource):
         email = request.args.get('userEmail')[0]
         password = request.args.get('userPassword')[0]
         repeatPassword = request.args.get('userRepeatPassword')[0]
+        bitcoinAddress = request.args.get('userBitcoinAddress')[0]
 
         sessionUser['email'] = email
         sessionUser['password'] = password
         sessionUser['repeatPassword'] = repeatPassword
+        sessionUser['bitcoinAddress'] = repeatPassword
 
         if error.email(request, email):
             return redirectTo('../register', request)
@@ -277,6 +279,9 @@ class Register(Resource):
         if error.mismatchPassword(request, password, repeatPassword):
             return redirectTo('../register', request)
 
+        if error.bitcoinAddress(request, bitcoinAddress):
+            return redirectTo('../register', request)
+
         if not request.args.get('isTermsChecked'):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
             return redirectTo('../register', request)
@@ -289,7 +294,7 @@ class Register(Resource):
             newUser = User('unverified', 2, timestamp, email, password, 0, '')
             
             seed = random.randint(0, sys.maxint)
-            newProfile = Profile(timestamp, timestamp, '', '', token, '', seed, 0, 0)
+            newProfile = Profile(timestamp, timestamp, '', '', token, bitcoinAddress, seed, 0, 0)
             newUser.profiles = [newProfile]
 
             db.add(newUser)
@@ -314,23 +319,66 @@ class SignContract(Resource):
 
         sessionUser = SessionManager(request).getSessionUser()
         sessionUser['action'] = 'signContract'
+
         investorId = sessionUser['id']
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
         transactionId = sessionTransaction['id']
 
         signature = request.args.get('contractSignature')[0]
+        statement = request.args.get('contractStatement')[0]
+        #<div><b>Bitcoin Address:</b> <t:slot name="htmlBitcoinAddress" /> </div>
+        #<div><b>Statement:</b> <input type="text" name="contractStatement"><t:attr name="value"><t:slot name="htmlContractStatement" /></t:attr></input></div>
+        #<div><b>Signature:</b> <input type="text" name="contractSignature"></input></div>
+        #<button name="button" value="Sign Contract" class="btn btn-large btn-primary" type="submit">Sign Contract</button>
 
-        if error.signature(request, signature):
-            return redirectTo('../contract', request)
+        #if error.signature(request, signature):
+        #    return redirectTo('../contract', request)
 
         if request.args.get('button')[0] == 'Sign Contract':
+            profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+
+            print explorer.summary()
+
+            signature = str(signature)
+            statement = str(statement)
+            bitcoinAddress = str(profile.bitcoinAddress)
+            
+            output = explorer.verifyMessage(bitcoinAddress, signature, statement)
+
+            print output
+            print output['error']
+
+            if output['error']:
+                SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': output['error']['message']})
+                return redirectTo('../contract', request)
+            else:
+                if not output['result']:
+                    SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.SIGNATURE[2]})
+                    return redirectTo('../contract', request)
+
+            #    if output['result']:
+            #        timestamp = config.createTimestamp()
+
+            #        user = db.query(User).filter(User.id == sessionUser['id']).first()
+            #        user.status = 'verified'
+
+            #        profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+            #        profile.updateTimestamp = timestamp
+            #        profile.bitcoinAddress = bitcoinAddress
+            #        
+            #        db.commit()
+            #        sessionUser['status'] = 'verified'
+
+
             timestamp = config.createTimestamp()
             
             transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
 
             transaction.updateTimestamp = timestamp
-            transaction.isSigned = 1
+            transaction.signature = signature
+            transaction.statement = statement
+
             db.commit()
         
             user = db.query(User).filter(User.id == transaction.userId).first()
@@ -339,7 +387,7 @@ class SignContract(Resource):
             Email(mailer.noreply, user.email, 'Your have a pending Smart Property Group transaction!', plain, html).send()
             Email(mailer.noreply, 'transactions@sptrust.co', 'Your have a pending Smart Property Group transaction!', plain, html).send()
 
-            sessionTransaction['isSigned'] = transaction.isSigned
+            sessionTransaction['signature'] = transaction.signature
 
             return redirectTo('../receipt', request)
 

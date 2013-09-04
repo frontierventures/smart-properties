@@ -48,6 +48,8 @@ def getNewAddress(account):
 
 def verifyMessage(bitcoinAddress, signature, message):
     data = '{"jsonrpc": "1.0", "id":"curltest", "method": "verifymessage", "params": ["%s", "%s", "%s"] }' % (bitcoinAddress, signature, message)
+
+    print data
     
     b = StringIO.StringIO()
     c.setopt(c.WRITEFUNCTION, b.write)
@@ -65,9 +67,9 @@ def verifyMessage(bitcoinAddress, signature, message):
     return output
 
 
-address = '17EoJsYcb5nPMLkjv92W85n2nr2pBzUrjE'
+address = '16zimZSKaSCxGgvzXWbrLBMsLEf5s189Qs'
 message = '''This is a message'''
-message = ''
+message = '3611344634638997077'
 signature = 'IGgHKI8dvS5T1ubYWW/zLRq0Pa63y1/7xy9rMn6z8q8+cRuri5nsidw6YEEXgdDwDlWD0fY49pw0/6+WWj1lyNM='
 
 signature = 'IiGgHKI8dvS5T1ubYWW/zLRq0Pa63y1/7xy9rMn6z8q8+cRuri5nsidw6YEEXgdDwDlWD0fY49pw0/6+WWj1lyNM='

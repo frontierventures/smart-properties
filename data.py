@@ -161,16 +161,18 @@ class Transaction(Base):
     userId = Column(Integer)
     amount = Column(String)
     bitcoinAddress = Column(String)
-    isSigned = Column(String)
+    statement = Column(String)
+    signature = Column(String)
 
-    def __init__(self, status, createTimestamp, updateTimestamp, userId, amount, bitcoinAddress, isSigned):
+    def __init__(self, status, createTimestamp, updateTimestamp, userId, amount, bitcoinAddress, statement, signature):
         self.status = status
         self.createTimestamp = createTimestamp
         self.updateTimestamp = updateTimestamp
         self.userId = userId
         self.amount = amount
         self.bitcoinAddress = bitcoinAddress
-        self.isSigned = isSigned
+        self.statement = statement
+        self.signature = signature
 
 
 class User(Base):
@@ -216,4 +218,4 @@ def reset():
 
     db.commit()
 
-#reset()
+reset()

@@ -132,11 +132,12 @@ class BuyProperty(Element):
 
 
 class Contract(Element):
-    def __init__(self, sessionResponse, sessionTransaction):
+    def __init__(self, sessionUser, sessionResponse, sessionTransaction):
+        self.sessionUser = sessionUser
         self.sessionResponse = sessionResponse
         self.sessionTransaction = sessionTransaction
 
-        profile = db.query(Profile).filter(Profile.id == 1).first()
+        profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
 
         self.loader = XMLString(FilePath('templates/forms/contract.xml').getContent())
         self.profile = profile
@@ -144,11 +145,8 @@ class Contract(Element):
     @renderer
     def details(self, request, tag):
         slots = {}
-        #slots['htmlPropertyId'] = str(self.propertyObject.id)
-        #slots['htmlAvailableBalance'] = str(self.profile.balance) 
-        #slots['htmlTitle'] = str(self.propertyObject.title)
-        #slots['htmlDescription'] = str(self.propertyObject.description) 
-        #slots['htmlUnits'] = str(self.propertyObject.totalUnits) 
+        slots['htmlBitcoinAddress'] = str(self.profile.bitcoinAddress)
+        slots['htmlContractStatement'] = str(self.profile.seed) 
         return tag.fillSlots(**slots)
 
     @renderer
@@ -524,8 +522,6 @@ class Register(Element):
     def __init__(self, sessionUser, sessionResponse):
         self.sessionUser = sessionUser
         self.sessionResponse = sessionResponse
-        print 
-        print sessionUser
 
     @renderer
     def form(self, request, tag):
@@ -543,10 +539,15 @@ class Register(Element):
         if sessionUser.get('repeatPassword'):
             userRepeatPassword = sessionUser['repeatPassword']
 
+        userBitcoinAddress = ''
+        if sessionUser.get('bitcoinAddress'):
+            userBitcoinAddress = sessionUser['bitcoinAddress']
+
         slots = {}
         slots['htmlEmail'] = userEmail
         slots['htmlPassword'] = userPassword
         slots['htmlRepeatPassword'] = userRepeatPassword
+        slots['htmlBitcoinAddress'] = userBitcoinAddress
         yield tag.fillSlots(**slots)
 
     @renderer

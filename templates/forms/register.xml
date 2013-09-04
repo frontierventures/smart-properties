@@ -13,6 +13,9 @@
         <input type="password" class="input-block-level" placeholder="Repeat Password" name="userRepeatPassword">
             <t:attr name="value"><t:slot name="htmlRepeatPassword" /></t:attr>
         </input>
+        <input type="text" class="input-block-level" placeholder="Bitcoin Address" name="userBitcoinAddress">
+            <t:attr name="value"><t:slot name="htmlBitcoinAddress" /></t:attr>
+        </input>
         <label class="checkbox">
             <input type="checkbox" value="remember-me" name="isTermsChecked"/> I agree to the <a href="../terms">Terms of Use</a> 
         </label>

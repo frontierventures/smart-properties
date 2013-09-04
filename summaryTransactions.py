@@ -111,6 +111,12 @@ class Transactions(Element):
             slots['htmlTransactionUserId'] = str(transaction.userId)
             slots['htmlTransactionAmount'] = str(transaction.amount) 
             slots['htmlTransactionBitcoinAddress'] = str(transaction.bitcoinAddress) 
+            
+            isSigned = 'No'
+            if transaction.signature:
+                isSigned = 'Yes'
+
+            slots['htmlTransactionSignature'] = str(isSigned) 
             self.transaction = transaction
             yield tag.clone().fillSlots(**slots)
 

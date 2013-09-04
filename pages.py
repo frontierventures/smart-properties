@@ -105,7 +105,7 @@ class Contract(Page):
 
     @renderer
     def contractForm(self, request, tag):
-        return forms.Contract(self.sessionResponse, self.sessionTransaction)
+        return forms.Contract(self.sessionUser, self.sessionResponse, self.sessionTransaction)
 
 
 class FAQ(Page):

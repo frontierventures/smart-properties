@@ -58,12 +58,6 @@ def repeatPassword(request, value):
 #        return True
 
 
-def signature(request, value):
-    if not value:
-        SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.SIGNATURE[0]})
-        return True
-
-
 def mismatchPassword(request, value1, value2):
     if value1 != value2:
         SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.PASSWORD_REPEAT[2]})
