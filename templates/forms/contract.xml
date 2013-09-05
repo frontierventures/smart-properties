@@ -22,6 +22,6 @@
         <div><b>Bitcoin Address:</b> <t:slot name="htmlBitcoinAddress" /> </div>
         <div><b>Statement:</b> <input type="text" name="contractStatement"><t:attr name="value"><t:slot name="htmlContractStatement" /></t:attr></input></div>
         <div><b>Signature:</b> <input type="text" name="contractSignature"></input></div>
-        <button name="button" value="Sign Contract" class="btn btn-large btn-primary" type="submit">Sign Contract</button>
+        <button name="button" value="Finalize" class="btn btn-large btn-primary" type="submit">Finalize</button>
     </form>
 </div>

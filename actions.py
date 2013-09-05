@@ -20,6 +20,7 @@ import definitions
 import error
 import explorer
 import receipt
+import report
 import functions
 import hashlib
 import inspect
@@ -95,7 +96,7 @@ class BuyProperty(Resource):
             return redirectTo('../', request)
 
         sessionUser = SessionManager(request).getSessionUser()
-        investorId = sessionUser['id']
+        lenderId = sessionUser['id']
 
         #if sessionUser['type'] != 0:
         #    return redirectTo('../', request)
@@ -109,7 +110,7 @@ class BuyProperty(Resource):
         quantity = int(request.args.get('propertyQuantity')[0])
 
         sessionOrder['quantity'] = quantity
-        sessionOrder['investorId'] = investorId
+        sessionOrder['lenderId'] = lenderId
 
         #if error.propertyTitle(request, propertyTitle):
         #    return redirectTo(url, request)
@@ -127,7 +128,7 @@ class BuyProperty(Resource):
             timestamp = config.createTimestamp()
             
             total = quantity * float(propertyObject.pricePerUnit)
-            order = Order(status, timestamp, timestamp, propertyId, propertyObject.title, quantity, propertyObject.pricePerUnit, investorId, total, '')
+            order = Order(status, timestamp, timestamp, propertyId, propertyObject.title, quantity, propertyObject.pricePerUnit, lenderId, total, '')
             #def __init__(self, status, createTimestamp, updateTimestamp, propertyId, propertyTitle, units, pricePerUnit, total, paymentAddress):
 
             db.add(order)
@@ -138,37 +139,39 @@ class BuyProperty(Resource):
             return redirectTo('../receipt', request)
 
 
-class Invest(Resource):
+class Lend(Resource):
     def render(self, request):
         if not request.args:
             return redirectTo('../', request)
 
         sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['action'] = 'invest'
+        sessionUser['action'] = 'lend'
 
-        investorId = sessionUser['id']
+        lenderId = sessionUser['id']
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
 
-        amount = request.args.get('investmentAmountFiat')[0]
+        amount = request.args.get('loanAmountFiat')[0]
 
-        sessionTransaction['investorId'] = investorId
+        sessionTransaction['lenderId'] = lenderId
         sessionTransaction['amount'] = amount
         bitcoinAddress = explorer.getNewAddress('')['result']
 
         if error.amount(request, amount):
-            return redirectTo('../invest', request)
+            return redirectTo('../lend', request)
 
         amount = float(amount)
 
         if request.args.get('button')[0] == 'Get Address':
             timestamp = config.createTimestamp()
 
-            transaction = Transaction('open', timestamp, timestamp, investorId, amount, bitcoinAddress, '', '')
+            transaction = Transaction('open', timestamp, timestamp, lenderId, amount, bitcoinAddress, '', '')
             
             db.add(transaction)
 
             db.commit()
+
+            report.createPdf(transaction)
 
             sessionTransaction['id'] = transaction.id
             sessionTransaction['amount'] = transaction.amount
@@ -312,15 +315,15 @@ class Register(Resource):
             return redirectTo('../account', request)
 
 
-class SignContract(Resource):
+class Finalize(Resource):
     def render(self, request):
         if not request.args:
             return redirectTo('../', request)
 
         sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['action'] = 'signContract'
+        sessionUser['action'] = 'finalizeContract'
 
-        investorId = sessionUser['id']
+        lenderId = sessionUser['id']
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
         transactionId = sessionTransaction['id']
@@ -335,7 +338,7 @@ class SignContract(Resource):
         #if error.signature(request, signature):
         #    return redirectTo('../contract', request)
 
-        if request.args.get('button')[0] == 'Sign Contract':
+        if request.args.get('button')[0] == 'Finalize':
             profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
 
             print explorer.summary()
@@ -468,8 +471,8 @@ class UpdateTransaction(Resource):
         transaction.status = transactionStatus 
         transaction.updateTimestamp = config.createTimestamp()
         
-        investor = db.query(Profile).filter(Profile.id == transaction.userId).first()
-        investor.balance = float(investor.balance) + float(transaction.amount)
+        lender = db.query(Profile).filter(Profile.id == transaction.userId).first()
+        lender.balance = float(lender.balance) + float(transaction.amount)
 
         solicitor = db.query(Profile).filter(Profile.id == 1).first()
         solicitor.balance = float(solicitor.balance) - float(transaction.amount)

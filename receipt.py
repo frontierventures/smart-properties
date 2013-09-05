@@ -23,7 +23,7 @@ class Main(Resource):
         if sessionTransaction['id'] == 0:
             return redirectTo('../', request)
 
-        #investorId = sessionTransaction['investorId']
+        #lenderId = sessionTransaction['lenderId']
 
         #transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
 

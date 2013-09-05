@@ -48,7 +48,7 @@ class Orders(Element):
         self.sessionUser = sessionUser
         self.status = status
 
-        orders = db.query(Order).filter(Order.investorId == sessionUser['id'])
+        orders = db.query(Order).filter(Order.lenderId == sessionUser['id'])
         if status == 'pending':
             orders = orders.filter(Order.status.in_(['open', 'paid'])).order_by(Order.updateTimestamp.desc())
         if status == 'canceled':

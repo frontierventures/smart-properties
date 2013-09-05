@@ -9,7 +9,6 @@
         <!-- CSS -->
         <link href="../resources/css/receipt.css" rel="stylesheet" />
         <link href="../resources/css/footer.css" rel="stylesheet" />
-
         <link href="../resources/css/bootstrap.css" rel="stylesheet" />
         <link href="../resources/css/bootstrap-responsive.css" rel="stylesheet" />
 
@@ -32,6 +31,7 @@
         <div id="push"></div>
         <t:transparent t:render="receipt" />            
     </div>
+
     <t:transparent t:render="footer" />            
 
     <!-- Le javascript

@@ -15,6 +15,9 @@
 .form-receipt .checkbox {
     margin-bottom: 10px;
 }
+.form-receipt-heading {
+    text-align: center;
+}
 .form-receipt input[type="text"],
 .form-receipt input[type="password"] {
     font-size: 16px;

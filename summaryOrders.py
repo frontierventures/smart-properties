@@ -102,7 +102,7 @@ class Orders(Element):
             slots['htmlStatus'] = str(order.status)
             slots['htmlOrderId'] = str(order.id)
             slots['htmlTimestamp'] = config.convertTimestamp(timestamp)
-            slots['htmlInvestorId'] = str(order.investorId) 
+            slots['htmlLenderId'] = str(order.lenderId) 
             slots['htmlUnits'] = str(order.units) 
             self.order = order
             yield tag.clone().fillSlots(**slots)

@@ -53,5 +53,5 @@ class Details(Element):
         slots['htmlFirst'] = str(self.profile.first)
         slots['htmlLast'] = str(self.profile.last) 
         slots['htmlBitcoinAddress'] = str(self.profile.bitcoinAddress) 
-        slots['htmlInvestedBalance'] = str(self.profile.balance) 
+        slots['htmlLendBalance'] = str(self.profile.balance) 
         yield tag.clone().fillSlots(**slots)

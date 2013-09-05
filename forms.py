@@ -277,7 +277,6 @@ class FormEdit(Element):
 
     @renderer
     def notification(self, request, tag):
-        print "%s%s %s%s" % (config.color.RED, __name__, inspect.stack()[0][3], config.color.ENDC)
         sessionResponse = self.sessionResponse
         if not sessionResponse['text']:
             return []
@@ -302,11 +301,11 @@ class FormEditImage(Element):
         return tag.fillSlots(**slots)
 
 
-class InvestAmount(Element):
+class LendAmount(Element):
     def __init__(self, sessionResponse, sessionTransaction):
         self.sessionResponse = sessionResponse
         self.sessionTransaction = sessionTransaction
-        self.loader = XMLString(FilePath('templates/forms/invest.xml').getContent())
+        self.loader = XMLString(FilePath('templates/forms/lend.xml').getContent())
 
     @renderer
     def details(self, request, tag):

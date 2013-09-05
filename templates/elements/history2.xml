@@ -19,7 +19,7 @@
                     <th>Create Date</th>
                     <th>Status</th>
                     <th>OrderId</th>
-                    <th>InvestorId</th>
+                    <th>LenderId</th>
                     <th>Units</th>
                     <th>Actions</th>
                 </tr>
@@ -29,7 +29,7 @@
                     <td style="text-align:center"><t:slot name="htmlTimestamp" /></td>
                     <td style="text-align:center"><t:slot name="htmlStatus" /></td>
                     <td style="text-align:center"><t:slot name="htmlOrderId" /></td>
-                    <td style="text-align:center"><t:slot name="htmlInvestorId" /></td>
+                    <td style="text-align:center"><t:slot name="htmlLenderId" /></td>
                     <td style="text-align:center"><t:slot name="htmlUnits" /></td>
                     <td style="text-align:center">
                         <a t:render="action">

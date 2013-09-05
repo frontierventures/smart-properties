@@ -12,7 +12,7 @@ import pages
 
 from data import db
 from sqlalchemy.sql import and_
-from data import Profile, Price
+from data import Profile, Price, Transaction
 from sessions import SessionManager
 
 
@@ -38,7 +38,7 @@ class Details(Element):
     def __init__(self, sessionUser):
         self.sessionUser = sessionUser
 
-        self.investor = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+        self.lender = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
         self.solicitor = db.query(Profile).filter(Profile.id == 1).first()
         template = 'templates/elements/account0.xml'
 
@@ -50,17 +50,30 @@ class Details(Element):
 
         price = db.query(Price).filter(Price.currencyId == 'USD').first()
 
-        investorBalanceBTC = float(self.investor.balance) / float(price.last)
+        lenderBalanceBTC = float(self.lender.balance) / float(price.last)
         solicitorBalanceBTC = float(self.solicitor.balance) / float(price.last)
 
         slots = {}
-        slots['htmlPaymentAddress'] = str(self.investor.bitcoinAddress) 
+        slots['htmlPaymentAddress'] = str(self.lender.bitcoinAddress) 
         slots['htmlAvailableBalanceFiat'] = str(self.solicitor.balance) 
-        slots['htmlInvestedBalanceFiat'] = str(self.investor.balance) 
+        slots['htmlLoanBalanceFiat'] = str(self.lender.balance) 
 
         slots['htmlAvailableBalanceBtc'] = str(solicitorBalanceBTC) 
-        slots['htmlInvestedBalanceBtc'] = str(investorBalanceBTC) 
+        slots['htmlLoanBalanceBtc'] = str(lenderBalanceBTC) 
 
         slots['htmlNextPaymentDate'] = str(config.convertTimestamp(float(config.createTimestamp())))
         slots['htmlReturnRate'] = str('0.85%') 
         yield tag.clone().fillSlots(**slots)
+
+    @renderer
+    def transaction(self, request, tag):
+        transactions = db.query(Transaction).filter(Transaction.userId == self.sessionUser['id'])
+        transactions = transactions.filter(Transaction.status == 'complete')
+        transactions = transactions.order_by(Transaction.createTimestamp.desc())
+
+        for transaction in transactions: 
+            slots = {}
+            slots['htmlContractName'] = 'Contract #%s' % str(transaction.id)
+            slots['htmlContractUrl'] = '../files/contract-%s.pdf' % str(transaction.id)
+            yield tag.clone().fillSlots(**slots)
+

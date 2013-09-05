@@ -11,7 +11,7 @@ import forms
 import history
 import inbox
 import legal
-import invest
+import lend
 import login
 import orders
 import popups
@@ -151,14 +151,14 @@ class Home(Page):
         self.pageTitle = pageTitle
 
 
-class Invest(Page):
+class Lend(Page):
     def __init__(self, pageTitle, template):
         Page.__init__(self, pageTitle, template)
         self.pageTitle = pageTitle
 
     @renderer
-    def investAmountForm(self, request, tag):
-        return forms.InvestAmount(self.sessionResponse, self.sessionTransaction)
+    def loanAmountForm(self, request, tag):
+        return forms.LendAmount(self.sessionResponse, self.sessionTransaction)
 
 
 class Legal(Page):
@@ -287,7 +287,7 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'contract': 'templates/pages/contract.xml',
              'legal': 'templates/pages/legal.xml',
              'faq': 'templates/pages/faq.xml',
-             'invest': 'templates/pages/invest.xml',
+             'lend': 'templates/pages/lend.xml',
              'login': 'templates/pages/login.xml',
              'account': 'templates/pages/account.xml',
              'history': 'templates/pages/history.xml',

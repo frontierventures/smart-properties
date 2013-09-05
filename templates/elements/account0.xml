@@ -2,8 +2,8 @@
     <h1 class="form-account-heading">Account Summary</h1>
     <div><a href="../history">Transaction History</a></div>
     <div><b>Payment Address: </b><t:slot name="htmlPaymentAddress" /> <a href="../">Change</a></div>
-    <div><b>Invested Balance (USD):</b> <t:slot name="htmlInvestedBalanceFiat" /></div>
+    <div><b>Loan Balance (USD):</b> <t:slot name="htmlLoanBalanceFiat" /></div>
     <div><b>Next Payment Date:</b> <t:slot name="htmlNextPaymentDate" /></div>
-    <div><b>Return Rate:</b> <t:slot name="htmlReturnRate" /></div>
-    <a class="btn btn-large btn-primary" href="../invest">Invest</a>
+    <div t:render="transaction"><a><t:attr name="href"><t:slot name="htmlContractUrl" /></t:attr><t:slot name="htmlContractName" /></a></div>
+    <a class="btn btn-large btn-primary" href="../lend">Lend</a>
 </div>

@@ -19,7 +19,7 @@
                     <th>Create Timestamp</th>
                     <th>Update Timestamp</th>
                     <th>TransactionId</th>
-                    <th>InvestorId</th>
+                    <th>LenderId</th>
                     <th>Balance</th>
                     <th>Bitcoin Address</th>
                     <th>Is Signed?</th>

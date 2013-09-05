@@ -62,11 +62,11 @@ class Order(Base):
     propertyTitle = Column(String)
     units = Column(Integer)
     pricePerUnit = Column(String)
-    investorId = Column(Integer)
+    lenderId = Column(Integer)
     total = Column(String)
     paymentAddress = Column(String)
 
-    def __init__(self, status, createTimestamp, updateTimestamp, propertyId, propertyTitle, units, pricePerUnit, investorId, total, paymentAddress):
+    def __init__(self, status, createTimestamp, updateTimestamp, propertyId, propertyTitle, units, pricePerUnit, lenderId, total, paymentAddress):
         self.status = status
         self.createTimestamp = createTimestamp
         self.updateTimestamp = updateTimestamp
@@ -74,7 +74,7 @@ class Order(Base):
         self.propertyTitle = propertyTitle
         self.units = units
         self.pricePerUnit = pricePerUnit
-        self.investorId = investorId
+        self.lenderId = lenderId
         self.total = total
         self.paymentAddress = paymentAddress
 

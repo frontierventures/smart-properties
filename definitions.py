@@ -29,7 +29,7 @@ STORE_NAME = ['Store name not entered',
 BITCOIN_ADDRESS = ['Bitcoin address not entered',
                    'Invalid bitcoin address format']
 
-AMOUNT = ['Investment amount not entered']
+AMOUNT = ['Lend amount not entered']
 
 SIGNATURE = ['Signature not entered',
              'Invalid signature format',

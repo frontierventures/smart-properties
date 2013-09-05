@@ -15,7 +15,7 @@ import faq
 import history
 import home
 import legal
-import invest
+import lend
 import login
 import logout
 import assets
@@ -84,18 +84,18 @@ def assemble(root):
     root.putChild('signature', signature.Main())
 
     #POST ACTIONS
-    root.putChild('contractAction', actions.SignContract())
+    root.putChild('contractAction', actions.Finalize())
     root.putChild('loginAction', actions.Login(echoFactory))
     root.putChild('registerAction', actions.Register(echoFactory))
     root.putChild('validateBitcoinAddress', actions.ValidateBitcoinAddress(echoFactory))
-    root.putChild('investAction', actions.Invest())
+    root.putChild('lendAction', actions.Lend())
 
     #GET ACTIONS
     root.putChild('updateTransaction', actions.UpdateTransaction())
 
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())
-    root.putChild('invest', invest.Main())
+    root.putChild('lend', lend.Main())
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
     root.putChild('settings', settings.Main())
