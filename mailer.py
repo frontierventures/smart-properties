@@ -53,29 +53,27 @@ class Email():
             print e
 
 
-def verificationPlain(seed):
+def verificationPlain(url):
     plain = """
     Thank you for registering!\n
     You can now take the steps to become a Smart Property Group lender!\n
-    Please use your bitcoin wallet to sign the seed provided below.\n
+    Please visit the link below to confirm you are the owner of this email address.\n
     %s\n
-    We will use the signature to verify your identity and the bitcoin address for payments.\n
     Smart Property Group 
-    """ % seed
+    """ % url
     return plain
 
 
-def verificationHtml(seed):
+def verificationHtml(url):
     html = """
     <html>
     <p><b>Thank you for registering!</b></p>
     <p>You can now take the steps to become a Smart Property Group lender!</p>
-    <p>Please use your bitcoin wallet to sign the seed provided below.</p>
+    <p>Please visit the link below to confirm you are the owner of this email address.</p>
     <p>%s</p>
-    <p>We will use the signature to verify your identity and the bitcoin address for payments.</p>
     <p><b>Smart Property Group</b></p>
     </html>
-    """ % seed
+    """ % url
     return html
 
 

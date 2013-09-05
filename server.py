@@ -29,6 +29,7 @@ import summaryOrders
 import summaryProperties
 import summaryUsers
 import summaryTransactions
+import userToken
 
 
 class EchoProtocol(protocol.Protocol):
@@ -91,7 +92,9 @@ def assemble(root):
     root.putChild('lendAction', actions.Lend())
 
     #GET ACTIONS
+    root.putChild('sendToken', userToken.Send())
     root.putChild('updateTransaction', actions.UpdateTransaction())
+    root.putChild('verifyEmail', userToken.Verify())
 
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())

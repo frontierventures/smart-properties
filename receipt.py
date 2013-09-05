@@ -53,4 +53,5 @@ class Receipt(Element):
         slots['htmlTotal'] = str(self.sessionTransaction['amount'])
         slots['htmlPaymentAddress'] = str(self.sessionTransaction['bitcoinAddress'])
         slots['htmlSignature'] = str(self.sessionTransaction['signature'])
+        slots['htmlContractUrl'] = '../files/contract-%s.pdf' % str(self.sessionTransaction['id'])
         yield tag.fillSlots(**slots)

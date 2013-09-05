@@ -52,37 +52,6 @@ class Main(Resource):
         return renderElement(request, Page)
 
 
-class Form(Element):
-    def __init__(self, sessionUser, sessionResponse):
-        self.sessionUser = sessionUser
-        self.sessionResponse = sessionResponse
-        self.loader = XMLString(FilePath('templates/forms/login.xml').getContent())
-
-    @renderer
-    def form(self, request, tag):
-        sessionUser = self.sessionUser
-        userEmail = ''
-        if sessionUser.get('email'):
-            userEmail = sessionUser['email']
-
-        userPassword = ''
-        if sessionUser.get('password'):
-            userPassword = sessionUser['password']
-
-        slots = {}
-        slots['htmlEmail'] = userEmail
-        slots['htmlPassword'] = userPassword
-        yield tag.fillSlots(**slots)
-
-    @renderer
-    def notification(self, request, tag):
-        sessionResponse = self.sessionResponse
-        if not sessionResponse['text']:
-            return []
-        else:
-            return elements.Notification(sessionResponse)
-
-
 class RecoverPassword(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)

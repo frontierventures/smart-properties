@@ -40,7 +40,11 @@ class Details(Element):
 
         self.lender = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
         self.solicitor = db.query(Profile).filter(Profile.id == 1).first()
-        template = 'templates/elements/account0.xml'
+
+        if sessionUser['status'] == 'verified':
+            template = 'templates/elements/account0.xml'
+        else:
+            template = 'templates/elements/account1.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
 

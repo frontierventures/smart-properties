@@ -333,6 +333,37 @@ class LendAmount(Element):
             return []
 
 
+class Login(Element):
+    def __init__(self, sessionUser, sessionResponse):
+        self.sessionUser = sessionUser
+        self.sessionResponse = sessionResponse
+        self.loader = XMLString(FilePath('templates/forms/login.xml').getContent())
+
+    @renderer
+    def form(self, request, tag):
+        sessionUser = self.sessionUser
+        userEmail = ''
+        if sessionUser.get('email'):
+            userEmail = sessionUser['email']
+
+        userPassword = ''
+        if sessionUser.get('password'):
+            userPassword = sessionUser['password']
+
+        slots = {}
+        slots['htmlEmail'] = userEmail
+        slots['htmlPassword'] = userPassword
+        yield tag.fillSlots(**slots)
+
+    @renderer
+    def alert(self, request, tag):
+        sessionResponse = self.sessionResponse
+        if sessionResponse['text']:
+            return elements.Alert(sessionResponse)
+        else:
+            return []
+
+
 class Notification(Element):
     def __init__(self, sessionResponse):
         self.sessionResponse = sessionResponse

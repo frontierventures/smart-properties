@@ -178,7 +178,7 @@ class Login(Page):
 
     @renderer
     def loginForm(self, request, tag):
-        return login.Form(self.sessionUser, self.sessionResponse)
+        return forms.Login(self.sessionUser, self.sessionResponse)
 
     @renderer
     def recoverPasswordPopup(self, request, tag):

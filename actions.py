@@ -303,8 +303,10 @@ class Register(Resource):
             db.add(newUser)
             db.commit()
 
-            plain = mailer.verificationPlain(seed)
-            html = mailer.verificationHtml(seed)
+            url = 'http://www.sptrust.co/verifyEmail?id=%s&token=%s' % (str(newUser.id), token)
+
+            plain = mailer.verificationPlain(url)
+            html = mailer.verificationHtml(url)
             Email(mailer.noreply, email, 'Getting Started', plain, html).send()
 
             email = str(email)
@@ -330,14 +332,6 @@ class Finalize(Resource):
 
         signature = request.args.get('contractSignature')[0]
         statement = request.args.get('contractStatement')[0]
-        #<div><b>Bitcoin Address:</b> <t:slot name="htmlBitcoinAddress" /> </div>
-        #<div><b>Statement:</b> <input type="text" name="contractStatement"><t:attr name="value"><t:slot name="htmlContractStatement" /></t:attr></input></div>
-        #<div><b>Signature:</b> <input type="text" name="contractSignature"></input></div>
-        #<button name="button" value="Sign Contract" class="btn btn-large btn-primary" type="submit">Sign Contract</button>
-
-        #if error.signature(request, signature):
-        #    return redirectTo('../contract', request)
-
         if request.args.get('button')[0] == 'Finalize':
             profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
 
