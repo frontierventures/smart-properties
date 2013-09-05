@@ -1,10 +1,24 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
     <form class="form-contract" action="../contractAction" method="POST" enctype="application/x-www-form-urlencoded">
         <h2 class="form-contract-heading">Loan Agreement</h2>
-        <div>[CONTRACT TEXT HERE]</div>
+        <div>[CONTRACT FRAME HERE]</div>
+        <div><b>IN WITNESS WHEREOF</b> the parties have executed this Agreement as of the day and year first above written.</div>
+        <div>[Note: Date is automatically inserted into loan agreement]</div>
         <div>
             <t:transparent t:render="alert" />
         </div>
+
+        <table>
+            <tr>
+                <td><b>SIGNED, SEALED AND DELIVERED</b> in presence of [ACCOUNT NAME SERVER]</td>
+                <td><b>BITCOIN REALTY MANAGEMENT LIMIT</b> Per: {} Name: {} Title: {}</td>
+            </tr>
+            <tr>
+                <td>By Clicking Below I confirm that I have electronically signed this Loan Agreement, which has the same effect as signing a paper version of this aggreement. [Click here] I understand the consequences of clicking here as my electronic signature. [Click here]</td>
+                <td>Devin Podgorki, James Sutton</td>
+            </tr>
+        </table>
+
         <div><b>Bitcoin Address:</b> <t:slot name="htmlBitcoinAddress" /> </div>
         <div><b>Statement:</b> <input type="text" name="contractStatement"><t:attr name="value"><t:slot name="htmlContractStatement" /></t:attr></input></div>
         <div><b>Signature:</b> <input type="text" name="contractSignature"></input></div>
