@@ -175,6 +175,7 @@ class Lend(Resource):
 
             sessionTransaction['id'] = transaction.id
             sessionTransaction['amount'] = transaction.amount
+            sessionTransaction['createTimestamp'] = timestamp
             sessionTransaction['bitcoinAddress'] = transaction.bitcoinAddress
             sessionTransaction['isSigned'] = 0 
 

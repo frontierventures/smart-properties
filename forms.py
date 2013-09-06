@@ -142,9 +142,16 @@ class Contract(Element):
         self.loader = XMLString(FilePath('templates/forms/contract.xml').getContent())
         self.profile = profile
 
+        print self.sessionTransaction
+
     @renderer
     def details(self, request, tag):
+        timestamp = self.sessionTransaction['createTimestamp']
         slots = {}
+        slots['htmlTransactionTimestamp'] = config.convertTimestamp(timestamp)
+        slots['htmlTransactionAmount'] = str(self.sessionTransaction['amount'])
+        slots['htmlLenderBitcoinAddress'] = str(self.sessionUser['bitcoinAddress'])
+        slots['htmlLenderEmail'] = str(self.sessionUser['email'])
         slots['htmlBitcoinAddress'] = str(self.profile.bitcoinAddress)
         slots['htmlContractStatement'] = str(self.profile.seed) 
         return tag.fillSlots(**slots)

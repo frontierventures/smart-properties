@@ -111,4 +111,5 @@ def makeSession(request, userId):
     sessionUser['isEmailVerified'] = isEmailVerified
     sessionUser['first'] = profile.first
     sessionUser['last'] = profile.last
+    sessionUser['bitcoinAddress'] = profile.bitcoinAddress
     sessionUser['loginTimestamp'] = config.createTimestamp()
