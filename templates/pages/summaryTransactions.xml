@@ -29,7 +29,7 @@
         <div id="push"></div>
         <t:transparent t:render="transactions" />
     </div>
-
+    <div id="push"></div>
     <t:transparent t:render="footer" />            
 
     <!-- Le javascript

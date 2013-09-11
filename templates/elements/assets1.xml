@@ -26,8 +26,8 @@
             <div><b>AssetId:</b> <t:slot name="htmlAssetId" /></div>
             <div><b>Title:</b> <a><t:attr name="href"><t:slot name="htmlAssetUrl" /></t:attr><t:slot name="htmlTitle" /></a></div>
             <div><b>Total Units:</b> <t:slot name="htmlTotalUnits" /></div>
-            <div><b>Asking Price (USD):</b> <t:slot name="htmlAskingPriceFiat" /></div>
-            <div><b>Price Per Unit (USD):</b> <t:slot name="htmlPricePerUnitFiat" /></div>
+            <div><b>Asking Price (CAD):</b> <t:slot name="htmlAskingPriceFiat" /></div>
+            <div><b>Price Per Unit (CAD):</b> <t:slot name="htmlPricePerUnitFiat" /></div>
             <div><b>Asking Price (BTC):</b> <span style="color: green; font-weight: bold;"><t:slot name="htmlAskingPriceBTC" /></span></div>
                 <div><b>Price Per Unit (BTC):</b> <span style="color: green; font-weight: bold;"><t:slot name="htmlPricePerUnitBTC" /></span></div>
         </div>

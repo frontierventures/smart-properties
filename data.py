@@ -24,9 +24,9 @@ class Log(Base):
     timestamp = Column(String)
     entry = Column(String)
 
-    def __init__(self, timestamp, entry):
-        self.timestamp = timestamp
-        self.entry = entry
+    def __init__(self, data):
+        self.timestamp = data['timestamp']
+        self.entry = data['entry']
 
 
 class Message(Base):
@@ -41,15 +41,32 @@ class Message(Base):
     subject = Column(String)
     body = Column(String)
 
-    def __init__(self, parentId, status, timestamp, receiverId, senderId, name, subject, body):
-        self.parentId = parentId
-        self.status = status
-        self.timestamp = timestamp
-        self.receiverId = receiverId
-        self.senderId = senderId
-        self.name = name
-        self.subject = subject
-        self.body = body
+    def __init__(self, data):
+        self.parentId = data['parentId']
+        self.status = data['status']
+        self.timestamp = data['timestamp']
+        self.receiverId = data['receiverId']
+        self.senderId = data['senderId']
+        self.name = data['name']
+        self.subject = data['subject']
+        self.body = data['body']
+
+
+class Newsletter(Base):
+    __tablename__ = "newsletters"
+    id = Column(Integer, primary_key=True)
+    status = Column(String)
+    timestamp = Column(String)
+    authorId = Column(Integer)
+    title = Column(String)
+    body = Column(String)
+
+    def __init__(self, data):
+        self.status = data['status']
+        self.timestamp = data['timestamp']
+        self.authorId = data['authorId']
+        self.title = data['title']
+        self.body = data['body']
 
 
 class Order(Base):
@@ -66,17 +83,17 @@ class Order(Base):
     total = Column(String)
     paymentAddress = Column(String)
 
-    def __init__(self, status, createTimestamp, updateTimestamp, propertyId, propertyTitle, units, pricePerUnit, lenderId, total, paymentAddress):
-        self.status = status
-        self.createTimestamp = createTimestamp
-        self.updateTimestamp = updateTimestamp
-        self.propertyId = propertyId
-        self.propertyTitle = propertyTitle
-        self.units = units
-        self.pricePerUnit = pricePerUnit
-        self.lenderId = lenderId
-        self.total = total
-        self.paymentAddress = paymentAddress
+    def __init__(self, data):
+        self.status = data['status']
+        self.createTimestamp = data['createTimestamp']
+        self.updateTimestamp = data['updateTimestamp']
+        self.propertyId = data['propertyId']
+        self.propertyTitle = data['propertyTitle']
+        self.units = data['units']
+        self.pricePerUnit = data['pricePerUnit']
+        self.lenderId = data['lenderId']
+        self.total = data['total']
+        self.paymentAddress = data['paymentAddress']
 
 
 class Price(Base):
@@ -86,10 +103,10 @@ class Price(Base):
     currencyId = Column(Integer)
     last = Column(String)
 
-    def __init__(self, timestamp, currencyId, last):
-        self.timestamp = timestamp
-        self.currencyId = currencyId
-        self.last = last
+    def __init__(self, data):
+        self.timestamp = data['timestamp']
+        self.currencyId = data['currencyId']
+        self.last = data['last']
 
 
 class Profile(Base):
@@ -108,16 +125,16 @@ class Profile(Base):
     userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", backref=backref("profiles", order_by=id))
 
-    def __init__(self, createTimestamp, updateTimestamp, first, last, token, bitcoinAddress, seed, balance, unreadMessages):
-        self.createTimestamp = createTimestamp
-        self.updateTimestamp = updateTimestamp
-        self.first = first
-        self.last = last
-        self.token = token
-        self.bitcoinAddress = bitcoinAddress
-        self.seed = seed
-        self.balance = balance
-        self.unreadMessages = unreadMessages
+    def __init__(self, data):
+        self.createTimestamp = data['createTimestamp']
+        self.updateTimestamp = data['updateTimestamp']
+        self.first = data['first']
+        self.last = data['last']
+        self.token = data['token']
+        self.bitcoinAddress = data['bitcoinAddress']
+        self.seed = data['seed']
+        self.balance = data['balance']
+        self.unreadMessages = data['unreadMessages']
 
 
 class Property(Base):
@@ -136,19 +153,19 @@ class Property(Base):
     imageCount = Column(Integer)
     imageHash = Column(String)
 
-    def __init__(self, status, createTimestamp, updateTimestamp, title, description, address, mls, siteSize, totalUnits, askingPrice, imageHash, imageCount):
-        self.status = status
-        self.createTimestamp = createTimestamp
-        self.updateTimestamp = updateTimestamp
-        self.title = title 
-        self.description = description 
-        self.address = address 
-        self.mls = mls 
-        self.siteSize = siteSize 
-        self.totalUnits = totalUnits 
-        self.askingPrice = askingPrice 
-        self.imageCount = imageCount 
-        self.imageHash = imageHash 
+    def __init__(self, data):
+        self.status = data['status']
+        self.createTimestamp = data['createTimestamp']
+        self.updateTimestamp = data['updateTimestamp']
+        self.title = data['title']
+        self.description = data['description']
+        self.address = data['address']
+        self.mls = data['mls']
+        self.siteSize = data['siteSize']
+        self.totalUnits = data['totalUnits']
+        self.askingPrice = data['askingPrice']
+        self.imageCount = data['imageCount']
+        self.imageHash = data['imageHash']
 
 
 class Transaction(Base):
@@ -164,15 +181,15 @@ class Transaction(Base):
     statement = Column(String)
     signature = Column(String)
 
-    def __init__(self, status, createTimestamp, updateTimestamp, userId, amount, bitcoinAddress, statement, signature):
-        self.status = status
-        self.createTimestamp = createTimestamp
-        self.updateTimestamp = updateTimestamp
-        self.userId = userId
-        self.amount = amount
-        self.bitcoinAddress = bitcoinAddress
-        self.statement = statement
-        self.signature = signature
+    def __init__(self, data):
+        self.status = data['status']
+        self.createTimestamp = data['createTimestamp']
+        self.updateTimestamp = data['updateTimestamp']
+        self.userId = data['userId']
+        self.amount = data['amount']
+        self.bitcoinAddress = data['bitcoinAddress']
+        self.statement = data['statement']
+        self.signature = data['signature']
 
 
 class User(Base):
@@ -187,14 +204,14 @@ class User(Base):
     isEmailVerified = Column(Integer)
     ip = Column(String)
 
-    def __init__(self, status, type, loginTimestamp, email, password, isEmailVerified, ip):
-        self.status = status
-        self.type = type
-        self.loginTimestamp = loginTimestamp
-        self.email = email
-        self.password = password
-        self.isEmailVerified = isEmailVerified
-        self.ip = ip
+    def __init__(self, data):
+        self.status = data['status']
+        self.type = data['type']
+        self.loginTimestamp = data['loginTimestamp']
+        self.email = data['email']
+        self.password = data['password']
+        self.isEmailVerified = data['isEmailVerified']
+        self.ip = data['ip']
 
 
 def reset():

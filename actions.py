@@ -165,18 +165,29 @@ class Lend(Resource):
         if request.args.get('button')[0] == 'Get Address':
             timestamp = config.createTimestamp()
 
-            transaction = Transaction('open', timestamp, timestamp, lenderId, amount, bitcoinAddress, '', '')
+            data = {
+                'status': 'open',
+                'createTimestamp': timestamp,
+                'updateTimestamp': timestamp,
+                'userId': lenderId,
+                'amount': amount,
+                'bitcoinAddress': bitcoinAddress,
+                'statement': '',
+                'signature': ''    
+                }
+
+            newTransaction = Transaction(data)
             
-            db.add(transaction)
+            db.add(newTransaction)
 
             db.commit()
 
-            report.createPdf(transaction)
+            report.createPdf(newTransaction)
 
-            sessionTransaction['id'] = transaction.id
-            sessionTransaction['amount'] = transaction.amount
+            sessionTransaction['id'] = newTransaction.id
+            sessionTransaction['amount'] = newTransaction.amount
             sessionTransaction['createTimestamp'] = timestamp
-            sessionTransaction['bitcoinAddress'] = transaction.bitcoinAddress
+            sessionTransaction['bitcoinAddress'] = newTransaction.bitcoinAddress
             sessionTransaction['isSigned'] = 0 
 
             return redirectTo('../contract', request)
@@ -293,12 +304,33 @@ class Register(Resource):
         if request.args.get('button')[0] == 'Register':
             timestamp = config.createTimestamp()
             token = hashlib.sha224(str(email)).hexdigest()
-
             password = encryptor.hashPassword(password)
-            newUser = User('unverified', 2, timestamp, email, password, 0, '')
-            
             seed = random.randint(0, sys.maxint)
-            newProfile = Profile(timestamp, timestamp, '', '', token, bitcoinAddress, seed, 0, 0)
+
+            data = {
+                'status': 'unverified',
+                'type': 2,
+                'loginTimestamp': timestamp,
+                'email': email,
+                'password': password,
+                'isEmailVerified': 0,
+                'ip': ''
+                }
+
+            newUser = User(data)
+            data = {            
+                'createTimestamp': timestamp,
+                'updateTimestamp': timestamp,
+                'first': '',
+                'last': '',
+                'token': token,
+                'bitcoinAddress': bitcoinAddress,
+                'seed': seed,
+                'balance': 0, 
+                'unreadMessages': 0
+                }
+            newProfile = Profile(data)
+
             newUser.profiles = [newProfile]
 
             db.add(newUser)

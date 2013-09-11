@@ -59,6 +59,12 @@ def pushToSocket(echoFactory, text):
 
 def pushToDatabase(text):
     timestamp = config.createTimestamp()
-    newEntry = Log(timestamp, text)
+
+    data = {
+        'timestamp': timestamp,
+        'entry': text
+        }
+
+    newEntry = Log(data)
     db.add(newEntry)
     db.commit()

@@ -20,10 +20,10 @@
                     <th>Create Date</th>
                     <th>PropertyId</th>
                     <th>Title</th>
-                    <th>Asking Price (USD)</th>
+                    <th>Asking Price (CAD)</th>
                     <th>Asking Price (BTC)</th>
                     <th>Total Units</th>
-                    <th>Price Per Unit (USD)</th>
+                    <th>Price Per Unit (CAD)</th>
                     <th>Price Per Unit (BTC)</th>
 
         </div>

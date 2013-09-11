@@ -1,3 +1,31 @@
 <div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
-    <h2 class="form-signin-heading">Frequentyly Asked Questions</h2>
+    <h2 class="form-signin-heading">Frequenty Asked Questions</h2>
+    <p><b>Q: Who are you?</b></p>
+    <p>A: We are Bitcoin Realty Management Ltd. (BRM), a Nova Scotia Canada-based real estate investment corporation.</p>
+    <p>Our executive management team consists of three people:</p> 
+    <p>James Sutton (Badbitcoin) – A long time Bitcoin investor, March 2011 is when I first started using Bitcoin and getting interested in the technology, with experience in new technology development. I’m also pretty friendly as BRM’s bitcoin community liaison, I can answer any of your questions.</p>
+    <p>Devin Podgorski - Devin has over 5 years’ experience as a property manager of several local rental properties, founder of several business ventures and is experienced in portfolio management and is our corporate head</p>
+    <p>We also have a shadow partner who has advanced skills in website design and experience in his own successful bitcoin business have been an enormous asset to our team thus far. He is responsible for tech development and integration.</p>
+    <br />
+    <p><b>Q: How can I trust you?</b></p>
+    <p>A: Simply put unlike a significant number of bitcoin companies, your money is protected.</p> 
+    <p>This is a large burden for us, and we understand the risks involved with guaranteeing +$130,000 CAD, which puts additional pressure onto us to make sure that we don’t make any catastrophic mistakes.</p>
+    <p>BRM is the first fully regulated commercial enterprise to use Bitcoins. No other Bitcoin company is fully compliant with international tax, security and anti-money laundering law. Due to the unique nature of our business's legal implications we can offer you this fully compliant lending opportunity while still offering the anonymity and power of the Bitcoin protocol.</p>
+    <p>To protect you further, Devin and I personally guarantee repayment of your loan in our loan agreement. If this isn’t enough, our business is a registered corporation in Canada, looking us up on the Nova Scotia Joint Registry of Stock has all the information you need to get in contact with us.</p>
+    <p>This is a large burden for us, and we understand the risks involved with guaranteeing +$130,000 CAD, which puts additional pressure onto us to make sure that we don’t make any catastrophic mistakes.</p>
+    <br />
+    <p><b>Q: Are you qualified to run a bitcoin financed property management company?</b></p>
+    <p>A: Short answer, yes.</p>
+    <p>Our team has talented, capable people who have extensive experience in portfolio management, property management, and bitcoin investments. We see this as a starting point for future development in this field and will continue developing our collective skillset to become the best at what we do.</p>
+    <br />
+    <p><b>Q: This is a bitcoin funded business, how are you adding to the bitcoin community?</b></p>
+    <p>A: Our Company is supportive of the bitcoin economy and the community as a whole, and wish (just as much as you do) for wider adoption of our currency and payments.
+        We are looking into the developments of syngestic technologies such as bitcoin ATMs and physical bitcoin stores as potential areas of future growth and to focus on our market.</p>
+    <br />
+    <p><b>Q: Will this loan be tied to Canadian dollars?</b></p>
+    <p>A: Yes, unfortunately the bitcoin market depth is nowhere near the point where we can accept rent in constant bitcoin value; repair costs  are in dollars, mortgage payments must be in dollars, and tax must be filed in dollar equivalents.</p>
+    <br />
+    <p><b>Q: So does that mean that if I wanted to pay my rent in bitcoin, I could do that?</b></p>
+    <p>A: At the current CAD/BTC exchange rate, absolutely!</p>
+    <p>If you have any additional questions, I’m available by email at James@</p>
 </div>
