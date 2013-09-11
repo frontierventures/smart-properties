@@ -222,14 +222,41 @@ def reset():
     for currency in definitions.currencies:
         price = db.query(Price).filter(Price.currencyId == currency).first()
         if not price:
-            newPrice = Price(timestamp, currency, 1)
+            data = {
+                'timestamp': timestamp,
+                'currencyId': currency,
+                'last': 1
+                }
+            newPrice = Price(data)
             db.add(newPrice)
 
     user = db.query(User).filter(User.email == '0@0.0').first()
     if not user:
         password = encryptor.hashPassword("0")
-        admin = User('verified', 0, timestamp, '0@0.0', password, 1, '')
-        newProfile = Profile(timestamp, timestamp, 'admin', 'admin', '', '', '', 135000, 0)
+
+        data = {
+            'status': 'verified',
+            'type': 0,
+            'loginTimestamp': timestamp,
+            'email': '0@0.0',
+            'password': password,
+            'isEmailVerified': 1,
+            'ip': ''
+            }
+
+        admin = User(data)
+        data = {            
+            'createTimestamp': timestamp,
+            'updateTimestamp': timestamp,
+            'first': 'admin',
+            'last': 'admin',
+            'token': '',
+            'bitcoinAddress': '',
+            'seed': '',
+            'balance': 135000, 
+            'unreadMessages': 0
+            }
+        newProfile = Profile(data)
         admin.profiles = [newProfile]
         db.add(admin)
 
