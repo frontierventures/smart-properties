@@ -618,6 +618,36 @@ class Register(Element):
             yield newTag
 
 
+class Settings(Element):
+    loader = XMLString(FilePath('templates/forms/settings.xml').getContent())
+
+    def __init__(self, sessionUser, sessionResponse):
+        self.sessionUser = sessionUser
+        self.sessionResponse = sessionResponse
+        self.profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+
+    @renderer
+    def form(self, request, tag):
+        sessionUser = self.sessionUser
+
+        userBitcoinAddress = ''
+        if sessionUser.get('userBitcoinAddress'):
+            userBitcoinAddress = sessionUser['userBitcoinAddress']
+
+        slots = {}
+        slots['htmlBitcoinAddress'] = userBitcoinAddress
+        slots['htmlCountry'] = definitions.countries[self.profile.country]
+        yield tag.fillSlots(**slots)
+
+    @renderer
+    def alert(self, request, tag):
+        sessionResponse = self.sessionResponse
+        if sessionResponse['text']:
+            return elements.Alert(sessionResponse)
+        else:
+            return []
+
+
 class Signature(Element):
     loader = XMLString(FilePath('templates/forms/signature.xml').getContent())
 

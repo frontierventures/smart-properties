@@ -55,41 +55,6 @@ class Main(Resource):
         return renderElement(request, Page)
 
 
-class Form(Element):
-    loader = XMLString(FilePath('templates/forms/settings.xml').getContent())
-
-    def __init__(self, sessionUser, sessionResponse):
-        self.sessionUser = sessionUser
-        self.sessionResponse = sessionResponse
-        self.profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
-
-    @renderer
-    def form(self, request, tag):
-        sessionUser = self.sessionUser
-
-        userBitcoinAddress = ''
-        if sessionUser.get('userBitcoinAddress'):
-            userBitcoinAddress = sessionUser['userBitcoinAddress']
-
-        userSignature = ''
-        if sessionUser.get('userSignature'):
-            userSignature = sessionUser['userSignature']
-
-        slots = {}
-        slots['htmlNonce'] = self.profile.seed
-        slots['htmlBitcoinAddress'] = userBitcoinAddress
-        slots['htmlSignature'] = userSignature
-        yield tag.fillSlots(**slots)
-
-    @renderer
-    def notification(self, request, tag):
-        sessionResponse = self.sessionResponse
-        if not sessionResponse['text']:
-            return []
-        else:
-            return elements.Notification(sessionResponse)
-
-
 class Action(Resource):
     def __init__(self, echoFactory):
         self.echoFactory = echoFactory
@@ -100,23 +65,21 @@ class Action(Resource):
         if not request.args:
             return redirectTo('../settings', request)
 
-        bitcoinAddress = request.args.get('userBitcoinAddress')[0]
-        signature = request.args.get('userSignature')[0]
-
         sessionUser = SessionManager(request).getSessionUser()
+        sessionUser['action'] = 'saveSettings'
+
+        bitcoinAddress = request.args.get('userBitcoinAddress')[0]
+
         sessionUser['userBitcoinAddress'] = bitcoinAddress
-        sessionUser['userSignature'] = signature
 
         if error.bitcoinAddress(request, bitcoinAddress):
-            return redirectTo('../settings', request)
-
-        if error.signature(request, signature):
             return redirectTo('../settings', request)
 
         if request.args.get('button')[0] == 'Verify':
             timestamp = config.createTimestamp()
 
             profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
-            print explorer.summary()
-            print explorer.verifyMessage(bitcoinAddress, signature, profile.seed)
-            return redirectTo('../', request)
+            profile.bitcoinAddress = bitcoinAddress
+
+            db.commit()
+            return redirectTo('../account', request)

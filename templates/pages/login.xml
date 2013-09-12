@@ -25,7 +25,6 @@
     <link rel="shortcut icon" href="../resources/ico/favicon.png" />
 </head>
 <body>
-    <!-- Part 1: Wrap all page content here -->
     <div id="wrap">
         <t:transparent t:render="header" />            
         <div id="push"></div>
@@ -33,9 +32,6 @@
     </div>
     <t:transparent t:render="footer" />            
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
     <script src="../resources/js/jquery.js"></script>
     <script src="../resources/js/bootstrap-transition.js"></script>
     <script src="../resources/js/bootstrap-alert.js"></script>

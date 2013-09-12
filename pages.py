@@ -221,7 +221,7 @@ class Settings(Page):
 
     @renderer
     def settingsForm(self, request, tag):
-        return settings.Form(self.sessionUser, self.sessionResponse)
+        return forms.Settings(self.sessionUser, self.sessionResponse)
 
 
 class Signature(Page):
