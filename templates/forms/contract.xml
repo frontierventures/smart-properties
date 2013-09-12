@@ -75,14 +75,15 @@
         </div>
         <div style="text-align: center;"><b>IN WITNESS WHEREOF</b> the parties have executed this Agreement as of the day and year first above written.</div>
         <div style="text-align: center;">[Note: Date is automatically inserted into loan agreement]</div>
+        <br />
         <div>
             <t:transparent t:render="alert" />
         </div>
         <label class="checkbox">
-            <input type="checkbox" value="remember-me" name="isTermsChecked" />I confirm that I have electronically signed this Loan Agreement, which has the same effect as signing a paper version of this aggreement.
+            <input type="checkbox" value="remember-me" name="isSignatureChecked" />I confirm that I have electronically signed this Loan Agreement, which has the same effect as signing a paper version of this aggreement.
         </label>
         <label class="checkbox">
-            <input type="checkbox" value="remember-me" name="isTermsChecked" />I understand the consequences of clicking here as my electronic signature.
+            <input type="checkbox" value="remember-me" name="isConsequencesChecked" />I understand the consequences of clicking here as my electronic signature.
         </label>
 
         <table>

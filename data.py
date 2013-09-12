@@ -118,6 +118,7 @@ class Profile(Base):
     last = Column(String)
     token = Column(String)
     bitcoinAddress = Column(String)
+    country = Column(String)
     seed = Column(String)
     balance = Column(String)
     unreadMessages = Column(Integer)
@@ -132,6 +133,7 @@ class Profile(Base):
         self.last = data['last']
         self.token = data['token']
         self.bitcoinAddress = data['bitcoinAddress']
+        self.country = data['country']
         self.seed = data['seed']
         self.balance = data['balance']
         self.unreadMessages = data['unreadMessages']
@@ -245,6 +247,7 @@ def reset():
             }
 
         admin = User(data)
+
         data = {            
             'createTimestamp': timestamp,
             'updateTimestamp': timestamp,
@@ -252,14 +255,17 @@ def reset():
             'last': 'admin',
             'token': '',
             'bitcoinAddress': '',
+            'country': 'BE',
             'seed': '',
             'balance': 135000, 
             'unreadMessages': 0
             }
+
         newProfile = Profile(data)
         admin.profiles = [newProfile]
         db.add(admin)
 
     db.commit()
+    print "Database reset!"
 
-reset()
+#reset()

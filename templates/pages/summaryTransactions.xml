@@ -28,8 +28,8 @@
         <t:transparent t:render="header" />            
         <div id="push"></div>
         <t:transparent t:render="transactions" />
+        <div id="push"></div>
     </div>
-    <div id="push"></div>
     <t:transparent t:render="footer" />            
 
     <!-- Le javascript

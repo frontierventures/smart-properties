@@ -595,6 +595,28 @@ class Register(Element):
         else:
             return []
 
+    @renderer
+    def country(self, request, tag):
+        sessionUser = self.sessionUser
+
+        userCountry = 'HE'
+        if sessionUser.get('country'):
+            userCountry = sessionUser['country'] 
+
+        for key in definitions.countries: 
+            thisTagShouldBeSelected = False
+
+            if key == userCountry:
+                thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['inputValue'] = key
+            slots['inputCaption'] = definitions.countries[key]
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
 
 class Signature(Element):
     loader = XMLString(FilePath('templates/forms/signature.xml').getContent())

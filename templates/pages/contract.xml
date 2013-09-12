@@ -30,8 +30,8 @@
         <t:transparent t:render="header" />            
         <div id="push"></div>
         <t:transparent t:render="contractForm" />            
+        <div id="push"></div>
     </div>
-
     <t:transparent t:render="footer" />            
 
     <!-- Le javascript

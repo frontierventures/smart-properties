@@ -16,6 +16,13 @@
         <input type="text" class="input-block-level" placeholder="Bitcoin Address" name="userBitcoinAddress">
             <t:attr name="value"><t:slot name="htmlBitcoinAddress" /></t:attr>
         </input>
+        <select name="userCountry">
+            <option t:render="country">
+                <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                <t:slot name="inputCaption" />
+            </option>
+        </select>
+
         <label class="checkbox">
             <input type="checkbox" value="remember-me" name="isTermsChecked"/> I agree to the <a href="../terms">Terms of Use</a> 
         </label>

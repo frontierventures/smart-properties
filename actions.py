@@ -269,11 +269,13 @@ class Register(Resource):
         password = request.args.get('userPassword')[0]
         repeatPassword = request.args.get('userRepeatPassword')[0]
         bitcoinAddress = request.args.get('userBitcoinAddress')[0]
+        country = request.args.get('userCountry')[0]
 
         sessionUser['email'] = email
         sessionUser['password'] = password
         sessionUser['repeatPassword'] = repeatPassword
         sessionUser['bitcoinAddress'] = repeatPassword
+        sessionUser['country'] = country
 
         if error.email(request, email):
             return redirectTo('../register', request)
@@ -325,6 +327,7 @@ class Register(Resource):
                 'last': '',
                 'token': token,
                 'bitcoinAddress': bitcoinAddress,
+                'country': country,
                 'seed': seed,
                 'balance': 0, 
                 'unreadMessages': 0
@@ -365,6 +368,16 @@ class Finalize(Resource):
 
         signature = request.args.get('contractSignature')[0]
         statement = request.args.get('contractStatement')[0]
+
+        if not request.args.get('isSignatureChecked'):
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.IS_SIGNATURE_CHECKED[0]})
+            return redirectTo('../contract', request)
+
+        if not request.args.get('isConsequencesChecked'):
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.IS_CONSEQUENCES_CHECKED[0]})
+            return redirectTo('../contract', request)
+
+
         if request.args.get('button')[0] == 'Finalize':
             profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
 
