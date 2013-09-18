@@ -35,19 +35,19 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'signature'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'signature'
 
-        if sessionUser['id'] == 0:
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
         Page = pages.Signature('Smart Property Group - Signature', 'signature')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
         Page.sessionResponse = sessionResponse
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
 

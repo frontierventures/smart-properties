@@ -27,10 +27,10 @@ import property
 class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'market'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'market'
 
-        if sessionUser['id'] == 0:
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         try:
@@ -39,9 +39,9 @@ class Main(Resource):
             status = 'pending'
 
         Page = pages.Assets('Assets', 'assets', status)
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         return renderElement(request, Page)
     
 

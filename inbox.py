@@ -24,14 +24,14 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'settings'
-        userId = sessionUser['id']
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'settings'
+        userId = session_user['id']
         if userId == 0:
             return redirectTo('../', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'inbox'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'inbox'
 
         sessionSearch = SessionManager(request).getSessionSearch()
         sessionSearch['isTabOpen'] = False
@@ -41,9 +41,9 @@ class Main(Resource):
         sessionResponse = SessionManager(request).getSessionResponse()
 
         Page = pages.Inbox('Coingig.com - Inbox', 'inbox')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "sessionProduct: %s" % sessionProduct
         print "sessionOrder: %s" % sessionOrder
         print "sessionResponse: %s" % sessionResponse
@@ -54,9 +54,9 @@ class Main(Resource):
 
 
 class Form(Element):
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
-        self.userId = sessionUser['id']
+    def __init__(self, session_user):
+        self.session_user = session_user
+        self.userId = session_user['id']
 
         messages = db.query(Message).filter(and_(
             Message.receiverId == self.userId,
@@ -72,7 +72,7 @@ class Form(Element):
 
     @renderer
     def menu(self, request, tag):
-        return elements.TabCell(self.sessionUser, 3)
+        return elements.TabCell(self.session_user, 3)
 
     @renderer
     def row(self, request, tag):
@@ -156,7 +156,7 @@ class SendMessage(Resource):
         if not request.args:
             return redirectTo('../', request)
 
-        #sessionUser = SessionManager(request).getSessionUser()
+        #session_user = SessionManager(request).getSessionUser()
         receiverId = request.args.get('messageReceiverId')[0]
         senderId = request.args.get('messageSenderId')[0]
         subject = request.args.get('messageSubject')[0]
@@ -194,8 +194,8 @@ class DeleteOne(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userId = sessionUser['id']
+        session_user = SessionManager(request).getSessionUser()
+        userId = session_user['id']
         if userId == 0:
             return redirectTo('../', request)
 
@@ -222,8 +222,8 @@ class DeleteMany(Resource):
         if not request.args:
             return redirectTo('../inbox', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userId = sessionUser['id']
+        session_user = SessionManager(request).getSessionUser()
+        userId = session_user['id']
         if userId == 0:
             return redirectTo('../', request)
 

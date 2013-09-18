@@ -20,28 +20,28 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'account'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'account'
 
-        if sessionUser['id'] == 0:
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         Page = pages.Account('Smart Property Group - Account', 'account')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
 
-        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
 
 
 class Details(Element):
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user):
+        self.session_user = session_user
 
-        self.lender = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+        self.lender = db.query(Profile).filter(Profile.id == session_user['id']).first()
         self.solicitor = db.query(Profile).filter(Profile.id == 1).first()
 
-        if sessionUser['status'] == 'verified':
+        if session_user['status'] == 'verified':
             template = 'templates/elements/account0.xml'
         else:
             template = 'templates/elements/account1.xml'
@@ -71,7 +71,7 @@ class Details(Element):
 
     @renderer
     def transaction(self, request, tag):
-        transactions = db.query(Transaction).filter(Transaction.userId == self.sessionUser['id'])
+        transactions = db.query(Transaction).filter(Transaction.userId == self.session_user['id'])
         transactions = transactions.filter(Transaction.status == 'complete')
         transactions = transactions.order_by(Transaction.createTimestamp.desc())
 

@@ -18,8 +18,8 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userType = sessionUser['type']
+        session_user = SessionManager(request).getSessionUser()
+        userType = session_user['type']
         if userType != 0:
             return redirectTo('../', request)
 
@@ -31,9 +31,9 @@ class Main(Resource):
         filters = {'status': status}
 
         Page = pages.SummaryUsers('User Summary', 'summaryUsers', filters)
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
 
-        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
 
@@ -124,8 +124,8 @@ class Delete(Resource):
         self.topProductCounter = topProductCounter
 
     def render(self, request):
-        sessionUser = SessionManager(request).getSessionUser()
-        userType = sessionUser['type']
+        session_user = SessionManager(request).getSessionUser()
+        userType = session_user['type']
         if userType != 0:
             return redirectTo('../', request)
 
@@ -152,8 +152,8 @@ class Delete(Resource):
 class LoadUser(Resource):
     def render(self, request):
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userType = sessionUser['type']
+        session_user = SessionManager(request).getSessionUser()
+        userType = session_user['type']
         if userType != 0:
             return redirectTo('../', request)
 

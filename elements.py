@@ -35,21 +35,21 @@ class Header(Element):
             XMLString(FilePath('templates/elements/header1.xml').getContent()),
             XMLString(FilePath('templates/elements/header2.xml').getContent())]
 
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user):
+        self.session_user = session_user
         
-        if self.sessionUser['id'] == 0:
+        if self.session_user['id'] == 0:
             self.loader = self.html[0]
         else:
             self.loader = self.html[1]
 
-        if self.sessionUser['type'] == 0:
+        if self.session_user['type'] == 0:
             self.loader = self.html[2]
 
     @renderer
     def first(self, request, tag):
         slots = {}
-        slots['htmlUserFirst'] = self.sessionUser['email']
+        slots['htmlUserFirst'] = self.session_user['email']
         return tag.fillSlots(**slots)
 
 
@@ -87,7 +87,7 @@ class Options(Element):
 
 
 class ServerDownPage(Element):
-    sessionUser = {}
+    session_user = {}
     sessionSearch = {}
 
     def __init__(self, pageTitle):

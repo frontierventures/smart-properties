@@ -280,6 +280,12 @@ restrictedStoreNames = ['addressBook',
                         'verifyToken']
 #%s/, .*/
 
+security_questions = {
+        'AA': 'question_1',
+        'BB': 'question_2',
+        'CC': 'question_3'
+    }
+
 accountTypes = ['admin',
                 'buyer',
                 'seller']

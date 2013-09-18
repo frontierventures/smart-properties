@@ -14,22 +14,22 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'contract'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'contract'
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
-        if sessionUser['id'] == 0:
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
 
         Page = pages.Contract('Smart Property Group - Contract', 'contract')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
         Page.sessionResponse = sessionResponse
         Page.sessionTransaction = sessionTransaction
 
-        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.YELLOW, sessionResponse, config.color.ENDC)
         print "%ssessionTransaction: %s%s" % (config.color.YELLOW, sessionTransaction, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')

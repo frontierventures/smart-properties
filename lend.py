@@ -19,28 +19,28 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
+        session_user = SessionManager(request).getSessionUser()
 
-        if sessionUser['id'] == 0:
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
-        sessionUser['page'] = 'lend'
+        session_user['page'] = 'lend'
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
 
         if not sessionTransaction.get('amount'):
             sessionTransaction['amount'] = 1
 
-        sessionUser['page'] = 'lend'
+        session_user['page'] = 'lend'
 
         Page = pages.Lend('Smart Property Group - Lend', 'lend')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
         Page.sessionResponse = sessionResponse
         Page.sessionTransaction = sessionTransaction
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
         print "%ssessionTransaction: %s%s" % (config.color.BLUE, sessionTransaction, config.color.ENDC)
 

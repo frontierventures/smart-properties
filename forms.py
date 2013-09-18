@@ -30,9 +30,9 @@ D = decimal.Decimal
 
 
 class AddProperty(Element):
-    def __init__(self, sessionUser, sessionProperty, sessionResponse):
-        self.sellerId = sessionUser['id']
-        #self.currencyId = sessionUser['currencyId']
+    def __init__(self, session_user, sessionProperty, sessionResponse):
+        self.sellerId = session_user['id']
+        #self.currencyId = session_user['currencyId']
         self.sessionProperty = sessionProperty
         self.sessionResponse = sessionResponse
         self.loader = XMLString(FilePath('templates/forms/addProperty.xml').getContent())
@@ -132,12 +132,12 @@ class BuyProperty(Element):
 
 
 class Contract(Element):
-    def __init__(self, sessionUser, sessionResponse, sessionTransaction):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user, sessionResponse, sessionTransaction):
+        self.session_user = session_user
         self.sessionResponse = sessionResponse
         self.sessionTransaction = sessionTransaction
 
-        profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+        profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
 
         self.loader = XMLString(FilePath('templates/forms/contract.xml').getContent())
         self.profile = profile
@@ -150,8 +150,8 @@ class Contract(Element):
         slots = {}
         slots['htmlTransactionTimestamp'] = config.convertTimestamp(timestamp)
         slots['htmlTransactionAmount'] = str(self.sessionTransaction['amount'])
-        slots['htmlLenderBitcoinAddress'] = str(self.sessionUser['bitcoinAddress'])
-        slots['htmlLenderEmail'] = str(self.sessionUser['email'])
+        slots['htmlLenderBitcoinAddress'] = str(self.session_user['bitcoinAddress'])
+        slots['htmlLenderEmail'] = str(self.session_user['email'])
         slots['htmlBitcoinAddress'] = str(self.profile.bitcoinAddress)
         slots['htmlContractStatement'] = str(self.profile.seed) 
         return tag.fillSlots(**slots)
@@ -166,9 +166,9 @@ class Contract(Element):
 
 
 class FormEdit(Element):
-    def __init__(self, sessionUser, sessionProduct, sessionResponse):
-        self.sellerId = sessionUser['id']
-        self.currencyId = sessionUser['currencyId']
+    def __init__(self, session_user, sessionProduct, sessionResponse):
+        self.sellerId = session_user['id']
+        self.currencyId = session_user['currencyId']
         self.sessionProduct = sessionProduct
         self.sessionResponse = sessionResponse
         self.productId = sessionProduct['id']
@@ -341,21 +341,21 @@ class LendAmount(Element):
 
 
 class Login(Element):
-    def __init__(self, sessionUser, sessionResponse):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user, sessionResponse):
+        self.session_user = session_user
         self.sessionResponse = sessionResponse
         self.loader = XMLString(FilePath('templates/forms/login.xml').getContent())
 
     @renderer
     def form(self, request, tag):
-        sessionUser = self.sessionUser
+        session_user = self.session_user
         userEmail = ''
-        if sessionUser.get('email'):
-            userEmail = sessionUser['email']
+        if session_user.get('email'):
+            userEmail = session_user['email']
 
         userPassword = ''
-        if sessionUser.get('password'):
-            userPassword = sessionUser['password']
+        if session_user.get('password'):
+            userPassword = session_user['password']
 
         slots = {}
         slots['htmlEmail'] = userEmail
@@ -556,29 +556,29 @@ class ProductImage():
 class Register(Element):
     loader = XMLString(FilePath('templates/forms/register.xml').getContent())
 
-    def __init__(self, sessionUser, sessionResponse):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user, sessionResponse):
+        self.session_user = session_user
         self.sessionResponse = sessionResponse
 
     @renderer
     def form(self, request, tag):
-        sessionUser = self.sessionUser
+        session_user = self.session_user
 
         userEmail = ''
-        if sessionUser.get('email'):
-            userEmail = sessionUser['email']
+        if session_user.get('email'):
+            userEmail = session_user['email']
 
         userPassword = ''
-        if sessionUser.get('password'):
-            userPassword = sessionUser['password']
+        if session_user.get('password'):
+            userPassword = session_user['password']
 
         userRepeatPassword = ''
-        if sessionUser.get('repeatPassword'):
-            userRepeatPassword = sessionUser['repeatPassword']
+        if session_user.get('repeatPassword'):
+            userRepeatPassword = session_user['repeatPassword']
 
         userBitcoinAddress = ''
-        if sessionUser.get('bitcoinAddress'):
-            userBitcoinAddress = sessionUser['bitcoinAddress']
+        if session_user.get('bitcoinAddress'):
+            userBitcoinAddress = session_user['bitcoinAddress']
 
         slots = {}
         slots['htmlEmail'] = userEmail
@@ -597,11 +597,11 @@ class Register(Element):
 
     @renderer
     def country(self, request, tag):
-        sessionUser = self.sessionUser
+        session_user = self.session_user
 
         userCountry = 'HE'
-        if sessionUser.get('country'):
-            userCountry = sessionUser['country'] 
+        if session_user.get('country'):
+            userCountry = session_user['country'] 
 
         for key in definitions.countries: 
             thisTagShouldBeSelected = False
@@ -617,22 +617,76 @@ class Register(Element):
                 newTag(selected='yes')
             yield newTag
 
+    @renderer
+    def security_question_1(self, request, tag):
+        session_user = self.session_user
+
+        for key in definitions.security_questions: 
+            thisTagShouldBeSelected = False
+
+            if key == '':
+                thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['inputValue'] = key
+            slots['inputCaption'] = definitions.security_questions[key]
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+    @renderer
+    def security_question_2(self, request, tag):
+        session_user = self.session_user
+
+        for key in definitions.security_questions: 
+            thisTagShouldBeSelected = False
+
+            if key == '':
+                thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['inputValue'] = key
+            slots['inputCaption'] = definitions.security_questions[key]
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+    @renderer
+    def security_question_3(self, request, tag):
+        session_user = self.session_user
+
+        for key in definitions.security_questions: 
+            thisTagShouldBeSelected = False
+
+            if key == '':
+                thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['inputValue'] = key
+            slots['inputCaption'] = definitions.security_questions[key]
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
 
 class Settings(Element):
     loader = XMLString(FilePath('templates/forms/settings.xml').getContent())
 
-    def __init__(self, sessionUser, sessionResponse):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user, sessionResponse):
+        self.session_user = session_user
         self.sessionResponse = sessionResponse
-        self.profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+        self.profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
 
     @renderer
     def form(self, request, tag):
-        sessionUser = self.sessionUser
+        session_user = self.session_user
 
         userBitcoinAddress = ''
-        if sessionUser.get('userBitcoinAddress'):
-            userBitcoinAddress = sessionUser['userBitcoinAddress']
+        if session_user.get('userBitcoinAddress'):
+            userBitcoinAddress = session_user['userBitcoinAddress']
 
         slots = {}
         slots['htmlBitcoinAddress'] = userBitcoinAddress
@@ -651,22 +705,22 @@ class Settings(Element):
 class Signature(Element):
     loader = XMLString(FilePath('templates/forms/signature.xml').getContent())
 
-    def __init__(self, sessionUser, sessionResponse):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user, sessionResponse):
+        self.session_user = session_user
         self.sessionResponse = sessionResponse
-        self.profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+        self.profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
 
     @renderer
     def form(self, request, tag):
-        sessionUser = self.sessionUser
+        session_user = self.session_user
 
         userBitcoinAddress = ''
-        if sessionUser.get('userBitcoinAddress'):
-            userBitcoinAddress = sessionUser['userBitcoinAddress']
+        if session_user.get('userBitcoinAddress'):
+            userBitcoinAddress = session_user['userBitcoinAddress']
 
         userSignature = ''
-        if sessionUser.get('userSignature'):
-            userSignature = sessionUser['userSignature']
+        if session_user.get('userSignature'):
+            userSignature = session_user['userSignature']
 
         slots = {}
         slots['htmlNonce'] = self.profile.seed

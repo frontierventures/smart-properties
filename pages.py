@@ -32,7 +32,7 @@ class Page(Element):
     sessionProperty = {}
     sessionResponse = {}
     sessionReview = {}
-    sessionUser = {}
+    session_user = {}
 
     def __init__(self, pageTitle, template):
         self.pageTitle = pageTitle
@@ -46,7 +46,7 @@ class Page(Element):
 
     @renderer
     def header(self, request, tag):
-        return elements.Header(self.sessionUser)
+        return elements.Header(self.session_user)
 
     @renderer
     def footer(self, request, tag):
@@ -64,7 +64,7 @@ class Account(Page):
 
     @renderer
     def details(self, request, tag):
-        return account.Details(self.sessionUser)
+        return account.Details(self.session_user)
 
 
 class AddProperty(Page):
@@ -74,7 +74,7 @@ class AddProperty(Page):
 
     @renderer
     def addPropertyForm(self, request, tag):
-        return forms.AddProperty(self.sessionUser, self.sessionProperty, self.sessionResponse)
+        return forms.AddProperty(self.session_user, self.sessionProperty, self.sessionResponse)
 
 
 class Assets(Page):
@@ -105,7 +105,7 @@ class Contract(Page):
 
     @renderer
     def contractForm(self, request, tag):
-        return forms.Contract(self.sessionUser, self.sessionResponse, self.sessionTransaction)
+        return forms.Contract(self.session_user, self.sessionResponse, self.sessionTransaction)
 
 
 class FAQ(Page):
@@ -115,7 +115,7 @@ class FAQ(Page):
 
     @renderer
     def details(self, request, tag):
-        return faq.Details(self.sessionUser)
+        return faq.Details(self.session_user)
 
 
 class Inbox(Page):
@@ -124,7 +124,7 @@ class Inbox(Page):
 
     @renderer
     def messages(self, request, tag):
-        return inbox.Form(self.sessionUser)
+        return inbox.Form(self.session_user)
 
     @renderer
     def messagePopup(self, request, tag):
@@ -132,7 +132,7 @@ class Inbox(Page):
 
     @renderer
     def sendMessagePopup(self, request, tag):
-        return popups.SendMessage(self.sessionUser)
+        return popups.SendMessage(self.session_user)
 
 
 class History(Page):
@@ -142,7 +142,7 @@ class History(Page):
 
     @renderer
     def transactions(self, request, tag):
-        return history.Transactions(self.filters, self.sessionUser)
+        return history.Transactions(self.filters, self.session_user)
 
 
 class Home(Page):
@@ -168,7 +168,7 @@ class Legal(Page):
 
     @renderer
     def details(self, request, tag):
-        return legal.Details(self.sessionUser)
+        return legal.Details(self.session_user)
 
 
 class Login(Page):
@@ -178,7 +178,7 @@ class Login(Page):
 
     @renderer
     def loginForm(self, request, tag):
-        return forms.Login(self.sessionUser, self.sessionResponse)
+        return forms.Login(self.session_user, self.sessionResponse)
 
     @renderer
     def recoverPasswordPopup(self, request, tag):
@@ -192,7 +192,7 @@ class Orders(Page):
 
     @renderer
     def orders(self, request, tag):
-        return orders.Orders(self.sessionUser, self.status)
+        return orders.Orders(self.session_user, self.status)
 
 
 class Profile(Page):
@@ -201,7 +201,7 @@ class Profile(Page):
 
     @renderer
     def details(self, request, tag):
-        return profile.Details(self.sessionUser)
+        return profile.Details(self.session_user)
 
 
 class Register(Page):
@@ -211,7 +211,7 @@ class Register(Page):
 
     @renderer
     def registerForm(self, request, tag):
-        return forms.Register(self.sessionUser, self.sessionResponse)
+        return forms.Register(self.session_user, self.sessionResponse)
 
 
 class Settings(Page):
@@ -221,7 +221,7 @@ class Settings(Page):
 
     @renderer
     def settingsForm(self, request, tag):
-        return forms.Settings(self.sessionUser, self.sessionResponse)
+        return forms.Settings(self.session_user, self.sessionResponse)
 
 
 class Signature(Page):
@@ -231,7 +231,7 @@ class Signature(Page):
 
     @renderer
     def signatureForm(self, request, tag):
-        return forms.Signature(self.sessionUser, self.sessionResponse)
+        return forms.Signature(self.session_user, self.sessionResponse)
 
 
 class Receipt(Page):
@@ -280,7 +280,7 @@ class SummaryTransactions(Page):
 
     @renderer
     def transactions(self, request, tag):
-        return summaryTransactions.Transactions(self.filters, self.sessionUser)
+        return summaryTransactions.Transactions(self.filters, self.session_user)
 
 
 templates = {'inbox': 'templates/pages/inbox.xml',
@@ -292,12 +292,14 @@ templates = {'inbox': 'templates/pages/inbox.xml',
              'account': 'templates/pages/account.xml',
              'history': 'templates/pages/history.xml',
              'home': 'templates/pages/home.xml',
+             #'home': 'templates/pages/home_temp.xml',
              'assets': 'templates/pages/assets.xml',
              'addProperty': 'templates/pages/addProperty.xml',
              'buyProperty': 'templates/pages/buyProperty.xml',
              'orders': 'templates/pages/orders.xml',
              'profile': 'templates/pages/profile.xml',
-             'register': 'templates/pages/register.xml',
+             #'register': 'templates/pages/register.xml',
+             'register': 'templates/pages/register_temp.xml',
              'receipt': 'templates/pages/receipt.xml',
              'settings': 'templates/pages/settings.xml',
              'signature': 'templates/pages/signature.xml',

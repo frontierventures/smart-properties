@@ -24,8 +24,8 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userId = sessionUser['id']
+        session_user = SessionManager(request).getSessionUser()
+        userId = session_user['id']
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
@@ -35,7 +35,7 @@ class Main(Resource):
             action = ''
 
         if not action:
-            sessionUser['page'] = 'buyProperty'
+            session_user['page'] = 'buyProperty'
 
             propertyObject = db.query(Property).filter(Property.id == self.propertyId).first()
 
@@ -47,11 +47,11 @@ class Main(Resource):
 
             Page = pages.BuyProperty('Buy Property - %s' % str(propertyObject.title), 'buyProperty')
             Page.sessionResponse = sessionResponse
-            Page.sessionUser = sessionUser
+            Page.session_user = session_user
             Page.sessionOrder = sessionOrder
 
 
-            print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+            print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
             print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
             print "%ssessionOrder: %s%s" % (config.color.BLUE, sessionOrder, config.color.ENDC)
             SessionManager(request).clearSessionResponse()

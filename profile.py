@@ -19,19 +19,19 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        if sessionUser['id'] == 0:
+        session_user = SessionManager(request).getSessionUser()
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
-        sessionUser['page'] = 'profile'
+        session_user['page'] = 'profile'
 
         Page = pages.Profile('Profile', 'profile')
         Page.sessionResponse = sessionResponse
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
         request.write('<!DOCTYPE html>\n')
@@ -39,10 +39,10 @@ class Main(Resource):
 
 
 class Details(Element):
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user):
+        self.session_user = session_user
 
-        self.profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+        self.profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
         template = 'templates/elements/profile0.xml'
 
         self.loader = XMLString(FilePath(template).getContent())

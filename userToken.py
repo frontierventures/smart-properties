@@ -53,8 +53,8 @@ class Send(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userId = sessionUser['id']
+        session_user = SessionManager(request).getSessionUser()
+        userId = session_user['id']
 
         user = db.query(User).filter(User.id == userId).first()
         profile = db.query(Profile).filter(Profile.userId == userId).first()

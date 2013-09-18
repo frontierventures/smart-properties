@@ -35,19 +35,19 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'settings'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'settings'
 
-        if sessionUser['id'] == 0:
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
         Page = pages.Settings('Settings', 'settings')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
         Page.sessionResponse = sessionResponse
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
 
@@ -65,12 +65,12 @@ class Action(Resource):
         if not request.args:
             return redirectTo('../settings', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['action'] = 'saveSettings'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['action'] = 'saveSettings'
 
         bitcoinAddress = request.args.get('userBitcoinAddress')[0]
 
-        sessionUser['userBitcoinAddress'] = bitcoinAddress
+        session_user['userBitcoinAddress'] = bitcoinAddress
 
         if error.bitcoinAddress(request, bitcoinAddress):
             return redirectTo('../settings', request)
@@ -78,7 +78,7 @@ class Action(Resource):
         if request.args.get('button')[0] == 'Verify':
             timestamp = config.createTimestamp()
 
-            profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+            profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
             profile.bitcoinAddress = bitcoinAddress
 
             db.commit()

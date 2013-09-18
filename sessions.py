@@ -54,7 +54,7 @@ class SessionManager():
     def clearSessionUser(self):
         sessionObject = ISessionObject(self.session)
         sessionObject.user = {'id': 0, 'seed': 0, 'visit': 0, 'type': 1, 'currencyId': 0}
-        print "%ssessionUser cleared%s" % (config.color.BLUE, config.color.ENDC)
+        print "%ssession_user cleared%s" % (config.color.BLUE, config.color.ENDC)
 
     def getSessionStore(self):
         sessionObject = ISessionObject(self.session)
@@ -222,8 +222,8 @@ def disconnect(request, userId):
     buffer = set()
     for session in sessions:
         sessionObject = ISessionObject(session)
-        sessionUser = sessionObject.user
-        if sessionUser['id'] == userId:
+        session_user = sessionObject.user
+        if session_user['id'] == userId:
             buffer.add(session)
 
     for session in buffer:
@@ -243,8 +243,8 @@ class SessionTest(Resource):
         print thing.user
         uid = session.uid
         return uid
-        #sessionUser = SessionManager(request).getSessionUser()
-        #user = json.dumps(sessionUser)
+        #session_user = SessionManager(request).getSessionUser()
+        #user = json.dumps(session_user)
         #return user
 
 

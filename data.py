@@ -117,11 +117,18 @@ class Profile(Base):
     first = Column(String)
     last = Column(String)
     token = Column(String)
+    phone = Column(String)
     bitcoinAddress = Column(String)
     country = Column(String)
     seed = Column(String)
     balance = Column(String)
     unreadMessages = Column(Integer)
+    security_question_1 = Column(Integer)
+    security_answer_1 = Column(String)
+    security_question_2 = Column(Integer)
+    security_answer_2 = Column(String)
+    security_question_3 = Column(Integer)
+    security_answer_3 = Column(String)
 
     userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", backref=backref("profiles", order_by=id))
@@ -132,11 +139,18 @@ class Profile(Base):
         self.first = data['first']
         self.last = data['last']
         self.token = data['token']
+        self.phone = data['phone']
         self.bitcoinAddress = data['bitcoinAddress']
         self.country = data['country']
         self.seed = data['seed']
         self.balance = data['balance']
         self.unreadMessages = data['unreadMessages']
+        self.security_question_1 = data['security_question_1']
+        self.security_answer_1 = data['security_answer_1']
+        self.security_question_2 = data['security_question_2']
+        self.security_answer_2 = data['security_answer_2']
+        self.security_question_3 = data['security_question_3']
+        self.security_answer_3 = data['security_answer_3']
 
 
 class Property(Base):
@@ -254,11 +268,18 @@ def reset():
             'first': 'admin',
             'last': 'admin',
             'token': '',
+            'phone': '',
             'bitcoinAddress': '',
             'country': 'BE',
             'seed': '',
             'balance': 135000, 
-            'unreadMessages': 0
+            'unreadMessages': 0,
+            'security_question_1': 0,
+            'security_answer_1': 0,
+            'security_question_2': 0,
+            'security_answer_2': 0,
+            'security_question_3': 0,
+            'security_answer_3': 0
             }
 
         newProfile = Profile(data)

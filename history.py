@@ -18,9 +18,9 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
+        session_user = SessionManager(request).getSessionUser()
 
-        if sessionUser['id'] == 0:
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
@@ -33,10 +33,10 @@ class Main(Resource):
         filters = {'status': status}
 
         Page = pages.History('Smart Property Group - Transaction History', 'history', filters)
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
         Page.sessionResponse = sessionResponse
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
 
@@ -45,12 +45,12 @@ class Main(Resource):
 
 
 class Transactions(Element):
-    def __init__(self, filters, sessionUser):
+    def __init__(self, filters, session_user):
         self.status = filters['status']
-        self.sessionUser = sessionUser
+        self.session_user = session_user
 
         transactions = db.query(Transaction)
-        transactions = transactions.filter(Transaction.userId == sessionUser['id'])
+        transactions = transactions.filter(Transaction.userId == session_user['id'])
         if self.status == 'pending':
             transactions = transactions.filter(Transaction.status.in_(['open'])).order_by(Transaction.updateTimestamp.desc())
         if self.status == 'canceled':

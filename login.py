@@ -29,10 +29,10 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'login'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'login'
 
-        if sessionUser['id'] >= 1:
+        if session_user['id'] >= 1:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
@@ -42,10 +42,10 @@ class Main(Resource):
                 sessionResponse = {'class': 2, 'form': 0, 'text': definitions.VERIFY_SUCCESS}
 
         Page = pages.Login('Smart Property Group - Login', 'login')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
         Page.sessionResponse = sessionResponse
 
-        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.YELLOW, sessionResponse, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
         request.write('<!DOCTYPE html>\n')
@@ -59,11 +59,11 @@ class RecoverPassword(Resource):
         if not request.args:
             return redirectTo('../', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['userEmail'] = request.args.get('userEmail')[0]
-        #SessionManager(request).setSessionUser(sessionUser)
+        session_user = SessionManager(request).getSessionUser()
+        session_user['userEmail'] = request.args.get('userEmail')[0]
+        #SessionManager(request).setSessionUser(session_user)
 
-        userEmail = sessionUser['userEmail']
+        userEmail = session_user['userEmail']
         #request.setSessionResponseCode(200)
 
         if not userEmail:
@@ -103,13 +103,13 @@ def makeSession(request, userId):
     if isEmailVerified == 1:
         isEmailVerified = True
 
-    sessionUser = SessionManager(request).getSessionUser()
-    sessionUser['id'] = user.id
-    sessionUser['type'] = user.type
-    sessionUser['ip'] = user.ip
-    sessionUser['status'] = user.status 
-    sessionUser['isEmailVerified'] = isEmailVerified
-    sessionUser['first'] = profile.first
-    sessionUser['last'] = profile.last
-    sessionUser['bitcoinAddress'] = profile.bitcoinAddress
-    sessionUser['loginTimestamp'] = config.createTimestamp()
+    session_user = SessionManager(request).getSessionUser()
+    session_user['id'] = user.id
+    session_user['type'] = user.type
+    session_user['ip'] = user.ip
+    session_user['status'] = user.status 
+    session_user['isEmailVerified'] = isEmailVerified
+    session_user['first'] = profile.first
+    session_user['last'] = profile.last
+    session_user['bitcoinAddress'] = profile.bitcoinAddress
+    session_user['loginTimestamp'] = config.createTimestamp()

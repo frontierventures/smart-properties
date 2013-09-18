@@ -41,16 +41,16 @@ class Main(Resource):
 
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'home'
-        sessionUser['ip'] = request.getClientIP()
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'home'
+        session_user['ip'] = request.getClientIP()
 
-        if not sessionUser['seed']:
+        if not session_user['seed']:
             self.serverInfo['visits'] += 1
-            sessionUser['seed'] = random.randint(0, sys.maxint)
+            session_user['seed'] = random.randint(0, sys.maxint)
 
         Page = pages.Home('Welcome to Smart Property Group Website!', 'home')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         return renderElement(request, Page)

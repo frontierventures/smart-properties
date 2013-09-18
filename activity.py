@@ -26,8 +26,8 @@ class Main(Resource):
         request.write("<div><h1>Activity Log</h1></div>")
         request.write("<div id=log></div>")
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userType = sessionUser['type']
+        session_user = SessionManager(request).getSessionUser()
+        userType = session_user['type']
         if userType == 0:
             request.write("<div><h1>History</h1></div>")
             entries = db.query(Log).order_by(Log.timestamp.desc()).limit(10)

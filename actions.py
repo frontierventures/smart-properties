@@ -41,9 +41,9 @@ class AddProperty(Resource):
         if not request.args:
             return redirectTo('../', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
+        session_user = SessionManager(request).getSessionUser()
 
-        if sessionUser['type'] != 0:
+        if session_user['type'] != 0:
             return redirectTo('../', request)
 
         sessionProperty = SessionManager(request).getSessionProperty()
@@ -95,10 +95,10 @@ class BuyProperty(Resource):
         if not request.args:
             return redirectTo('../', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        lenderId = sessionUser['id']
+        session_user = SessionManager(request).getSessionUser()
+        lenderId = session_user['id']
 
-        #if sessionUser['type'] != 0:
+        #if session_user['type'] != 0:
         #    return redirectTo('../', request)
 
         sessionOrder = SessionManager(request).getSessionOrder()
@@ -144,10 +144,10 @@ class Lend(Resource):
         if not request.args:
             return redirectTo('../', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['action'] = 'lend'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['action'] = 'lend'
 
-        lenderId = sessionUser['id']
+        lenderId = session_user['id']
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
 
@@ -203,14 +203,14 @@ class Login(Resource):
         if not request.args:
             return redirectTo('../', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['action'] = 'login'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['action'] = 'login'
 
         userEmail = request.args.get('userEmail')[0]
         userPassword = request.args.get('userPassword')[0]
 
-        sessionUser['email'] = userEmail
-        sessionUser['password'] = userPassword
+        session_user['email'] = userEmail
+        session_user['password'] = userPassword
 
         if error.email(request, userEmail):
             return redirectTo('../login', request)
@@ -262,20 +262,25 @@ class Register(Resource):
         if not request.args:
             return redirectTo('../register', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['action'] = 'register'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['action'] = 'register'
 
         email = request.args.get('userEmail')[0]
         password = request.args.get('userPassword')[0]
         repeatPassword = request.args.get('userRepeatPassword')[0]
         bitcoinAddress = request.args.get('userBitcoinAddress')[0]
         country = request.args.get('userCountry')[0]
+        country = request.args.get('userCountry')[0]
+        country = request.args.get('userCountry')[0]
+        country = request.args.get('userCountry')[0]
+        country = request.args.get('userCountry')[0]
+        country = request.args.get('userCountry')[0]
 
-        sessionUser['email'] = email
-        sessionUser['password'] = password
-        sessionUser['repeatPassword'] = repeatPassword
-        sessionUser['bitcoinAddress'] = repeatPassword
-        sessionUser['country'] = country
+        session_user['email'] = email
+        session_user['password'] = password
+        session_user['repeatPassword'] = repeatPassword
+        session_user['bitcoinAddress'] = repeatPassword
+        session_user['country'] = country
 
         if error.email(request, email):
             return redirectTo('../register', request)
@@ -358,10 +363,10 @@ class Finalize(Resource):
         if not request.args:
             return redirectTo('../', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['action'] = 'finalizeContract'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['action'] = 'finalizeContract'
 
-        lenderId = sessionUser['id']
+        lenderId = session_user['id']
 
         sessionTransaction = SessionManager(request).getSessionTransaction()
         transactionId = sessionTransaction['id']
@@ -379,7 +384,7 @@ class Finalize(Resource):
 
 
         if request.args.get('button')[0] == 'Finalize':
-            profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+            profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
 
             print explorer.summary()
 
@@ -403,15 +408,15 @@ class Finalize(Resource):
             #    if output['result']:
             #        timestamp = config.createTimestamp()
 
-            #        user = db.query(User).filter(User.id == sessionUser['id']).first()
+            #        user = db.query(User).filter(User.id == session_user['id']).first()
             #        user.status = 'verified'
 
-            #        profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+            #        profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
             #        profile.updateTimestamp = timestamp
             #        profile.bitcoinAddress = bitcoinAddress
             #        
             #        db.commit()
-            #        sessionUser['status'] = 'verified'
+            #        session_user['status'] = 'verified'
 
 
             timestamp = config.createTimestamp()
@@ -445,16 +450,16 @@ class ValidateBitcoinAddress(Resource):
         if not request.args:
             return redirectTo('../settings', request)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['action'] = 'validateOwnership'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['action'] = 'validateOwnership'
 
         nonce = request.args.get('userNonce')[0]
         bitcoinAddress = request.args.get('userBitcoinAddress')[0]
         signature = request.args.get('userSignature')[0]
 
-        sessionUser['userNonce'] = nonce
-        sessionUser['userBitcoinAddress'] = bitcoinAddress
-        sessionUser['userSignature'] = signature
+        session_user['userNonce'] = nonce
+        session_user['userBitcoinAddress'] = bitcoinAddress
+        session_user['userSignature'] = signature
 
         if error.bitcoinAddress(request, bitcoinAddress):
             return redirectTo('../signature', request)
@@ -474,15 +479,15 @@ class ValidateBitcoinAddress(Resource):
             if output['result']:
                 timestamp = config.createTimestamp()
 
-                user = db.query(User).filter(User.id == sessionUser['id']).first()
+                user = db.query(User).filter(User.id == session_user['id']).first()
                 user.status = 'verified'
 
-                profile = db.query(Profile).filter(Profile.id == sessionUser['id']).first()
+                profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
                 profile.updateTimestamp = timestamp
                 profile.bitcoinAddress = bitcoinAddress
                 
                 db.commit()
-                sessionUser['status'] = 'verified'
+                session_user['status'] = 'verified'
             else:
                 SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.SIGNATURE[2]})
 
@@ -492,9 +497,9 @@ class ValidateBitcoinAddress(Resource):
 #POST ACTIONS
 class UpdateTransaction(Resource):
     def render(self, request):
-        sessionUser = SessionManager(request).getSessionUser()
+        session_user = SessionManager(request).getSessionUser()
 
-        if sessionUser['type'] != 0:
+        if session_user['type'] != 0:
             return redirectTo('../', request)
 
         if not request.args:

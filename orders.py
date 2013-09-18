@@ -18,9 +18,9 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
+        session_user = SessionManager(request).getSessionUser()
 
-        if sessionUser['id'] == 0:
+        if session_user['id'] == 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
@@ -32,9 +32,9 @@ class Main(Resource):
             status = 'pending'
 
         Page = pages.Orders('Orders', 'orders', status)
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
 
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "%ssessionProperty: %s%s" % (config.color.BLUE, sessionProperty, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
@@ -44,11 +44,11 @@ class Main(Resource):
 
 
 class Orders(Element):
-    def __init__(self, sessionUser, status):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user, status):
+        self.session_user = session_user
         self.status = status
 
-        orders = db.query(Order).filter(Order.lenderId == sessionUser['id'])
+        orders = db.query(Order).filter(Order.lenderId == session_user['id'])
         if status == 'pending':
             orders = orders.filter(Order.status.in_(['open', 'paid'])).order_by(Order.updateTimestamp.desc())
         if status == 'canceled':

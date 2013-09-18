@@ -97,14 +97,14 @@ class Address(Element):
 
 
 class BecomeAffiliate(Element):
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user):
+        self.session_user = session_user
         self.loader = XMLString(FilePath(templates['becomeAffiliate']).getContent())
 
     @renderer
     def form(self, request, tag):
         slots = {}
-        slots['htmlPublisherId'] = str(self.sessionUser['id'])
+        slots['htmlPublisherId'] = str(self.session_user['id'])
         yield tag.fillSlots(**slots)
 
 
@@ -273,29 +273,29 @@ class SellerInfo(Element):
 
 
 class SendMessage(Element):
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
-        self.profile = db.query(Profile).filter(Profile.userId == sessionUser['id']).first()
+    def __init__(self, session_user):
+        self.session_user = session_user
+        self.profile = db.query(Profile).filter(Profile.userId == session_user['id']).first()
         self.loader = XMLString(FilePath(templates['sendMessage']).getContent())
 
     @renderer
     def form(self, request, tag):
         slots = {}
-        #slots['htmlSenderId'] = str(self.sessionUser['id'])
+        #slots['htmlSenderId'] = str(self.session_user['id'])
         slots['htmlSenderName'] = str(self.profile.first)
         yield tag.fillSlots(**slots)
 
 
 class StoreInfo(Element):
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user):
+        self.session_user = session_user
         self.loader = XMLString(FilePath(templates['storeInfo']).getContent())
 
     @renderer
     def currency(self, request, tag):
-        sessionUser = self.sessionUser
+        session_user = self.session_user
 
-        userCurrency = sessionUser['currencyId']
+        userCurrency = session_user['currencyId']
 
         for currency in definitions.currencies:
             thisTagShouldBeSelected = False
@@ -311,8 +311,8 @@ class StoreInfo(Element):
 
     @renderer
     def bitcoinAddress(self, request, tag):
-        sessionUser = self.sessionUser
-        userId = sessionUser['id']
+        session_user = self.session_user
+        userId = session_user['id']
 
         #profile = profileData.get_By_Id(userId)
         profile = db.query(Profile).filter(Profile.userId == userId).first()

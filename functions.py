@@ -18,8 +18,8 @@ class SessionUser(Resource):
     def render(self, request):
         print "%s%s %s%s" % (config.color.RED, __name__, inspect.stack()[0][3], config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        user = json.dumps(sessionUser)
+        session_user = SessionManager(request).getSessionUser()
+        user = json.dumps(session_user)
         return user
 
 

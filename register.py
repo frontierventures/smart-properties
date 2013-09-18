@@ -34,19 +34,19 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'register'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'register'
 
-        if sessionUser['id'] >= 1:
+        if session_user['id'] >= 1:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
 
         Page = pages.Register('Smart Property Group - Register', 'register')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
         Page.sessionResponse = sessionResponse
 
-        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.YELLOW, sessionResponse, config.color.ENDC)
 
         SessionManager(request).clearSessionResponse()

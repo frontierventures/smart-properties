@@ -18,9 +18,9 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
+        session_user = SessionManager(request).getSessionUser()
 
-        if sessionUser['type'] != 0:
+        if session_user['type'] != 0:
             return redirectTo('../', request)
 
         sessionResponse = SessionManager(request).getSessionResponse()
@@ -32,8 +32,8 @@ class Main(Resource):
             status = 'pending'
 
         Page = pages.SummaryOrders('Orders Summary', 'summaryOrders', status)
-        Page.sessionUser = sessionUser
-        print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+        Page.session_user = session_user
+        print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "%ssessionProperty: %s%s" % (config.color.BLUE, sessionProperty, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
         SessionManager(request).clearSessionResponse()

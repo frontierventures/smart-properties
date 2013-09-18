@@ -18,8 +18,8 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        userType = sessionUser['type']
+        session_user = SessionManager(request).getSessionUser()
+        userType = session_user['type']
 
         if userType != 0:
             return redirectTo('../', request)
@@ -39,16 +39,16 @@ class Main(Resource):
 
         if not action:
             Page = pages.SummaryProperties('Property Summary', 'summaryProperties', status)
-            Page.sessionUser = sessionUser
-            print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+            Page.session_user = session_user
+            print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
 
         if action == 'add':
             Page = pages.AddProperty('Add Property', 'addProperty')
-            Page.sessionUser = sessionUser
+            Page.session_user = session_user
             Page.sessionResponse = sessionResponse
             Page.sessionProperty = sessionProperty
 
-            print "%ssessionUser: %s%s" % (config.color.BLUE, sessionUser, config.color.ENDC)
+            print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
             print "%ssessionProperty: %s%s" % (config.color.BLUE, sessionProperty, config.color.ENDC)
             print "%ssessionResponse: %s%s" % (config.color.BLUE, sessionResponse, config.color.ENDC)
             SessionManager(request).clearSessionResponse()
@@ -145,8 +145,8 @@ class Delete(Resource):
         self.topProductCounter = topProductCounter
 
     def render(self, request):
-        sessionUser = SessionManager(request).getSessionUser()
-        userType = sessionUser['type']
+        session_user = SessionManager(request).getSessionUser()
+        userType = session_user['type']
         if userType != 0:
             return redirectTo('../', request)
 

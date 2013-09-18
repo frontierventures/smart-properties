@@ -1,4 +1,4 @@
-<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="form">
+<div xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="form">
     <form class="form-register" action="../registerAction" method="POST" enctype="application/x-www-form-urlencoded">
         <h2 class="form-register-heading">Account Details</h2>
         <div>
@@ -23,6 +23,41 @@
             </option>
         </select>
 
+        <select name="security_question_1">
+            <option t:render="security_question_1">
+                <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                <t:slot name="inputCaption" />
+            </option>
+        </select>
+        <input type="text" class="input-block-level" placeholder="Security Answer 1" name="security_answer_1">
+        </input>
+
+        <select name="security_question_2">
+            <option t:render="security_question_2">
+                <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                <t:slot name="inputCaption" />
+            </option>
+        </select>
+        <input type="text" class="input-block-level" placeholder="Security Answer 2" name="security_answer_2">
+        </input>
+
+        <select name="security_question_3">
+            <option t:render="security_question_3">
+                <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                <t:slot name="inputCaption" />
+            </option>
+        </select>
+        <input type="text" class="input-block-level" placeholder="Security Answer 3" name="security_answer_3">
+        </input>
+
+        Optional
+        <input type="text" class="input-block-level" placeholder="First Name" name="first">
+        </input>
+        <input type="text" class="input-block-level" placeholder="Last Name" name="last">
+        </input>
+        <input type="text" class="input-block-level" placeholder="Phone Number" name="phone">
+        </input>
+        This additional information will be stored for security reasons only, in the event of a loss of your account, this information will be used for recovery.
         <label class="checkbox">
             <input type="checkbox" value="remember-me" name="isTermsChecked"/> I agree to the <a href="../terms">Terms of Use</a> 
         </label>

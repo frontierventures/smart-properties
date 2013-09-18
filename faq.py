@@ -14,19 +14,19 @@ class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
-        sessionUser = SessionManager(request).getSessionUser()
-        sessionUser['page'] = 'legal'
+        session_user = SessionManager(request).getSessionUser()
+        session_user['page'] = 'legal'
 
         Page = pages.FAQ('Smart Property Group - FAQ', 'faq')
-        Page.sessionUser = sessionUser
+        Page.session_user = session_user
 
-        print "%ssessionUser: %s%s" % (config.color.YELLOW, sessionUser, config.color.ENDC)
+        print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)
 
 
 class Details(Element):
-    def __init__(self, sessionUser):
-        self.sessionUser = sessionUser
+    def __init__(self, session_user):
+        self.session_user = session_user
         template = 'templates/elements/faq.xml'
         self.loader = XMLString(FilePath(template).getContent())
