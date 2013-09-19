@@ -17,13 +17,13 @@ D = decimal.Decimal
 class Main(Resource):
     def render(self, request):
 
-        sessionTransaction = SessionManager(request).getSessionTransaction()
-        #transactionId = sessionTransaction['id']
+        session_transaction = SessionManager(request).getSessionTransaction()
+        #transactionId = session_transaction['id']
 
-        if sessionTransaction['id'] == 0:
+        if session_transaction['id'] == 0:
             return redirectTo('../', request)
 
-        #lenderId = sessionTransaction['lenderId']
+        #lenderId = session_transaction['lenderId']
 
         #transaction = db.query(Transaction).filter(Transaction.id == transactionId).first()
 
@@ -32,10 +32,10 @@ class Main(Resource):
 
         Page = pages.Receipt('Smart Property Group - Receipt', 'receipt')
         Page.session_user = session_user
-        Page.sessionTransaction = sessionTransaction
+        Page.session_transaction = session_transaction
 
         print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)
-        print "%ssessionTransaction: %s%s" % (config.color.YELLOW, sessionTransaction, config.color.ENDC)
+        print "%ssession_transaction: %s%s" % (config.color.YELLOW, session_transaction, config.color.ENDC)
         SessionManager(request).clearSessionResponse()
 
         request.write('<!DOCTYPE html>\n')
@@ -43,15 +43,15 @@ class Main(Resource):
 
 
 class Receipt(Element):
-    def __init__(self, sessionTransaction):
-        self.sessionTransaction = sessionTransaction
+    def __init__(self, session_transaction):
+        self.session_transaction = session_transaction
         self.loader = XMLString(FilePath('templates/elements/receipt.xml').getContent())
 
     @renderer
     def details(self, request, tag):
         slots = {}
-        slots['htmlTotal'] = str(self.sessionTransaction['amount'])
-        slots['htmlPaymentAddress'] = str(self.sessionTransaction['bitcoinAddress'])
-        slots['htmlSignature'] = str(self.sessionTransaction['signature'])
-        slots['htmlContractUrl'] = '../files/contract-%s.pdf' % str(self.sessionTransaction['id'])
+        slots['htmlTotal'] = str(self.session_transaction['amount'])
+        slots['htmlPaymentAddress'] = str(self.session_transaction['bitcoinAddress'])
+        slots['htmlSignature'] = str(self.session_transaction['signature'])
+        slots['htmlContractUrl'] = '../files/contract-%s.pdf' % str(self.session_transaction['id'])
         yield tag.fillSlots(**slots)

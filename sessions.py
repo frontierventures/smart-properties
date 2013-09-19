@@ -120,7 +120,7 @@ class SessionManager():
     def clearSessionTransaction(self):
         sessionObject = ISessionObject(self.session)
         sessionObject.transaction = {'id': 0}
-        print "%ssessionTransaction cleared%s" % (config.color.BLUE, config.color.ENDC)
+        print "%ssession_transaction cleared%s" % (config.color.BLUE, config.color.ENDC)
 
     def getSessionReview(self):
         sessionObject = ISessionObject(self.session)

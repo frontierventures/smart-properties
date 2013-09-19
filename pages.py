@@ -28,7 +28,7 @@ import summaryTransactions
 
 class Page(Element):
     sessionOrder = {}
-    sessionTransaction = {}
+    session_transaction = {}
     sessionProperty = {}
     sessionResponse = {}
     sessionReview = {}
@@ -105,7 +105,7 @@ class Contract(Page):
 
     @renderer
     def contractForm(self, request, tag):
-        return forms.Contract(self.session_user, self.sessionResponse, self.sessionTransaction)
+        return forms.Contract(self.session_user, self.sessionResponse, self.session_transaction)
 
 
 class FAQ(Page):
@@ -158,7 +158,7 @@ class Lend(Page):
 
     @renderer
     def loanAmountForm(self, request, tag):
-        return forms.LendAmount(self.sessionResponse, self.sessionTransaction)
+        return forms.LendAmount(self.sessionResponse, self.session_transaction)
 
 
 class Legal(Page):
@@ -240,7 +240,7 @@ class Receipt(Page):
 
     @renderer
     def receipt(self, request, tag):
-        return receipt.Receipt(self.sessionTransaction)
+        return receipt.Receipt(self.session_transaction)
 
 
 class SummaryProperties(Page):
@@ -283,27 +283,28 @@ class SummaryTransactions(Page):
         return summaryTransactions.Transactions(self.filters, self.session_user)
 
 
-templates = {'inbox': 'templates/pages/inbox.xml',
-             'contract': 'templates/pages/contract.xml',
-             'legal': 'templates/pages/legal.xml',
-             'faq': 'templates/pages/faq.xml',
-             'lend': 'templates/pages/lend.xml',
-             'login': 'templates/pages/login.xml',
-             'account': 'templates/pages/account.xml',
-             'history': 'templates/pages/history.xml',
-             'home': 'templates/pages/home.xml',
-             #'home': 'templates/pages/home_temp.xml',
-             'assets': 'templates/pages/assets.xml',
-             'addProperty': 'templates/pages/addProperty.xml',
-             'buyProperty': 'templates/pages/buyProperty.xml',
-             'orders': 'templates/pages/orders.xml',
-             'profile': 'templates/pages/profile.xml',
-             #'register': 'templates/pages/register.xml',
-             'register': 'templates/pages/register_temp.xml',
-             'receipt': 'templates/pages/receipt.xml',
-             'settings': 'templates/pages/settings.xml',
-             'signature': 'templates/pages/signature.xml',
-             'summaryProperties': 'templates/pages/summaryProperties.xml',
-             'summaryOrders': 'templates/pages/summaryOrders.xml',
-             'summaryTransactions': 'templates/pages/summaryTransactions.xml',
-             'summaryUsers': 'templates/pages/summaryUsers.xml'}
+templates = {
+    'inbox': 'templates/pages/inbox.xml',
+    'contract': 'templates/pages/contract.xml',
+    'legal': 'templates/pages/legal.xml',
+    'faq': 'templates/pages/faq.xml',
+    'lend': 'templates/pages/lend.xml',
+    'login': 'templates/pages/login.xml',
+    'account': 'templates/pages/account.xml',
+    'history': 'templates/pages/history.xml',
+    'home': 'templates/pages/home.xml',
+    #'home': 'templates/pages/home_temp.xml',
+    'assets': 'templates/pages/assets.xml',
+    'addProperty': 'templates/pages/addProperty.xml',
+    'buyProperty': 'templates/pages/buyProperty.xml',
+    'orders': 'templates/pages/orders.xml',
+    'profile': 'templates/pages/profile.xml',
+    'register': 'templates/pages/register.xml',
+    'receipt': 'templates/pages/receipt.xml',
+    'settings': 'templates/pages/settings.xml',
+    'signature': 'templates/pages/signature.xml',
+    'summaryProperties': 'templates/pages/summaryProperties.xml',
+    'summaryOrders': 'templates/pages/summaryOrders.xml',
+    'summaryTransactions': 'templates/pages/summaryTransactions.xml',
+    'summaryUsers': 'templates/pages/summaryUsers.xml'
+}

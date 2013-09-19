@@ -22,15 +22,15 @@ class Main(Resource):
         if session_user['id'] == 0:
             return redirectTo('../', request)
 
-        sessionTransaction = SessionManager(request).getSessionTransaction()
+        session_transaction = SessionManager(request).getSessionTransaction()
 
         Page = pages.Contract('Smart Property Group - Contract', 'contract')
         Page.session_user = session_user
         Page.sessionResponse = sessionResponse
-        Page.sessionTransaction = sessionTransaction
+        Page.session_transaction = session_transaction
 
         print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)
         print "%ssessionResponse: %s%s" % (config.color.YELLOW, sessionResponse, config.color.ENDC)
-        print "%ssessionTransaction: %s%s" % (config.color.YELLOW, sessionTransaction, config.color.ENDC)
+        print "%ssession_transaction: %s%s" % (config.color.YELLOW, session_transaction, config.color.ENDC)
         request.write('<!DOCTYPE html>\n')
         return renderElement(request, Page)

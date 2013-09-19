@@ -1,10 +1,10 @@
-<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
-    <form class="form-contract" action="../contractAction" method="POST" enctype="application/x-www-form-urlencoded">
+<div class="container-fluid" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <div class="row-fluid">
         <h2 class="form-contract-heading">Loan Agreement</h2>
         <div class="frame-contract">
             <p><b>THIS LOAN AGREEMENT</b> made as of <b><t:slot name="htmlTransactionTimestamp" /></b></p> 
             <p><p>between</p></p>
-            <p><b>BITCOIN REALTY MANAGEMENT LIMITED</b>, a body corporate incorporated under the laws of the Province of Nova Scotia, Canada (the \"Borrower\") OF THE FIRST PART</p>
+            <p><b>BITCOIN REALTY MANAGEMENT LIMITED</b>, a body corporate incorporated under the laws of the Province of Nova Scotia, Canada (the "Borrower") OF THE FIRST PART</p>
             <p>   and</p>
             <p><b>[LENDER]</b> (the "Lender") OF THE SECOND PART</p> 
             <p>   and</p>
@@ -64,42 +64,45 @@
             <p>(v) Survival. The representations and warranties herein, and the covenants to act by the parties post-closing shall survive the closing and loan advances contemplated in this Agreement.</p>
             <p>(w) Entire Agreement. This Agreement shall constitute the entire agreement between the parties hereto with respect to all of the matters herein and this Agreement shall not be amended except by a memorandum in writing signed by all of the parties hereto and any amendment hereof shall be null and void and shall not be binding upon any party which has not given its consent as aforesaid.</p> 
             <p>(x) Enurement. This Agreement shall enure to the benefit of and be binding upon the parties hereto and their respective heirs, executors, administrators, personal representatives, successors and assigns.</p>
-            <p>IN WITNESS WHEREOF the parties have executed this Agreement as of the day and year first above written.</p>
-            <p>SIGNED, SEALED AND DELIVERED in the presence of</p>
-            <p><b>BITCOIN REALTY MANAGEMENT LIMITED</b></p>
-            <p>Lender: <b><t:slot name="htmlLenderEmail" /></b></p>
-            <p>Bitcoin Address: <b><t:slot name="htmlLenderBitcoinAddress" /></b></p>
-            <p>GPG Signature: <b>[LENDER]</b></p>
-            <p>Devin Podgorski</p>
-            <p>James Sutton</p>
         </div>
+    </div>
+    <div class="row-fluid">
         <div style="text-align: center;"><b>IN WITNESS WHEREOF</b> the parties have executed this Agreement as of the day and year first above written.</div>
         <div style="text-align: center;">[Note: Date is automatically inserted into loan agreement]</div>
-        <br />
-        <div>
-            <t:transparent t:render="alert" />
+    </div>
+    <div class="row-fluid">
+        <t:transparent t:render="alert" />
+    </div>
+    <form class="" action="../contractAction" method="POST" enctype="application/x-www-form-urlencoded">
+        <div class="row-fluid">
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me" name="isSignatureChecked" />I confirm that I have electronically signed this Loan Agreement, which has the same effect as signing a paper version of this aggreement.
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me" name="isConsequencesChecked" />I understand the consequences of clicking here as my electronic signature.
+            </label>
         </div>
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me" name="isSignatureChecked" />I confirm that I have electronically signed this Loan Agreement, which has the same effect as signing a paper version of this aggreement.
-        </label>
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me" name="isConsequencesChecked" />I understand the consequences of clicking here as my electronic signature.
-        </label>
-
-        <table>
-            <tr>
-                <td><b>SIGNED, SEALED AND DELIVERED</b> in presence of [ACCOUNT NAME SERVER]</td>
-                <td><b>BITCOIN REALTY MANAGEMENT LIMIT</b> Per: {} Name: {} Title: {}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Devin Podgorki, James Sutton</td>
-            </tr>
-        </table>
-
-        <p><b>Bitcoin Address:</b> <t:slot name="htmlBitcoinAddress" /></p>
-        <p><b>Statement:</b> <input type="text" name="contractStatement"><t:attr name="value"><t:slot name="htmlContractStatement" /></t:attr></input></p>
-        <p><b>Signature:</b> <input type="text" name="contractSignature"></input></p>
-        <button name="button" value="Finalize" class="btn btn-large btn-primary" type="submit">Finalize</button>
+        <hr />
+        <div class="row-fluid">
+            <div class="span6" style="text-align: center;">
+                <p><b>SIGNED, SEALED AND DELIVERED</b> in presence of <b>BITCOIN REALTY MANAGEMENT LIMITED</b></p> 
+                <p>James Sutton</p> 
+                <p>Chief Executive Officer</p>
+            </div>
+            <div class="span6" style="text-align: center;">
+                <p><b>GUARANTORS</b></p>
+                <p>James Sutton</p>
+                <p>Devin Podgorki</p>
+            </div>
+        </div>
+        <hr />
+        <div class="row-fluid" style="text-align: center;">
+            <p><b>Statement:</b> <input type="text" name="contractStatement" style="width: 800px" readonly="readonly"><t:attr name="value"><t:slot name="htmlContractStatement" /></t:attr></input></p>
+            <p>Please sign the statement above with <b><t:slot name="htmlBitcoinAddress" /></b> and paste the signature below to finalize the contract.</p>
+            <p><b>Signature:</b> <input type="text" name="contractSignature" style="width: 800px"></input></p>
+        </div>
+        <div class="row-fluid">
+            <button name="button" value="Finalize" class="btn btn-large btn-primary" type="submit">Finalize</button>
+        </div>
     </form>
 </div>

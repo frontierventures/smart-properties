@@ -139,60 +139,6 @@ class BuyProperty(Resource):
             return redirectTo('../receipt', request)
 
 
-class Lend(Resource):
-    def render(self, request):
-        if not request.args:
-            return redirectTo('../', request)
-
-        session_user = SessionManager(request).getSessionUser()
-        session_user['action'] = 'lend'
-
-        lenderId = session_user['id']
-
-        sessionTransaction = SessionManager(request).getSessionTransaction()
-
-        amount = request.args.get('loanAmountFiat')[0]
-
-        sessionTransaction['lenderId'] = lenderId
-        sessionTransaction['amount'] = amount
-        bitcoinAddress = explorer.getNewAddress('')['result']
-
-        if error.amount(request, amount):
-            return redirectTo('../lend', request)
-
-        amount = float(amount)
-
-        if request.args.get('button')[0] == 'Get Address':
-            timestamp = config.createTimestamp()
-
-            data = {
-                'status': 'open',
-                'createTimestamp': timestamp,
-                'updateTimestamp': timestamp,
-                'userId': lenderId,
-                'amount': amount,
-                'bitcoinAddress': bitcoinAddress,
-                'statement': '',
-                'signature': ''    
-                }
-
-            newTransaction = Transaction(data)
-            
-            db.add(newTransaction)
-
-            db.commit()
-
-            report.createPdf(newTransaction)
-
-            sessionTransaction['id'] = newTransaction.id
-            sessionTransaction['amount'] = newTransaction.amount
-            sessionTransaction['createTimestamp'] = timestamp
-            sessionTransaction['bitcoinAddress'] = newTransaction.bitcoinAddress
-            sessionTransaction['isSigned'] = 0 
-
-            return redirectTo('../contract', request)
-
-
 class Login(Resource):
     def __init__(self, echoFactory):
         self.echoFactory = echoFactory
@@ -380,8 +326,8 @@ class Finalize(Resource):
 
         lenderId = session_user['id']
 
-        sessionTransaction = SessionManager(request).getSessionTransaction()
-        transactionId = sessionTransaction['id']
+        session_transaction = SessionManager(request).getSessionTransaction()
+        transactionId = session_transaction['id']
 
         signature = request.args.get('contractSignature')[0]
         statement = request.args.get('contractStatement')[0]
@@ -447,7 +393,7 @@ class Finalize(Resource):
             Email(mailer.noreply, user.email, 'Your have a pending Smart Property Group transaction!', plain, html).send()
             Email(mailer.noreply, 'transactions@sptrust.co', 'Your have a pending Smart Property Group transaction!', plain, html).send()
 
-            sessionTransaction['signature'] = transaction.signature
+            session_transaction['signature'] = transaction.signature
 
             return redirectTo('../receipt', request)
 

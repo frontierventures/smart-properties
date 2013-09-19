@@ -75,6 +75,7 @@ wsService.setServiceParent(application)
 
 root = home.Main(echoFactory)
 root.putChild('', root)
+root = lend.assemble(root)
 
 def assemble(root):
     #PAGES
@@ -89,7 +90,6 @@ def assemble(root):
     root.putChild('loginAction', actions.Login(echoFactory))
     root.putChild('registerAction', actions.Register(echoFactory))
     root.putChild('validateBitcoinAddress', actions.ValidateBitcoinAddress(echoFactory))
-    root.putChild('lendAction', actions.Lend())
 
     #GET ACTIONS
     root.putChild('sendToken', userToken.Send())
@@ -98,7 +98,6 @@ def assemble(root):
 
     root.putChild('legal', legal.Main())
     root.putChild('faq', faq.Main())
-    root.putChild('lend', lend.Main())
     root.putChild('logout', logout.Main())
     root.putChild('register', register.Main())
     root.putChild('settings', settings.Main())

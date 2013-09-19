@@ -132,28 +132,28 @@ class BuyProperty(Element):
 
 
 class Contract(Element):
-    def __init__(self, session_user, sessionResponse, sessionTransaction):
+    def __init__(self, session_user, sessionResponse, session_transaction):
         self.session_user = session_user
         self.sessionResponse = sessionResponse
-        self.sessionTransaction = sessionTransaction
+        self.session_transaction = session_transaction
 
         profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
 
         self.loader = XMLString(FilePath('templates/forms/contract.xml').getContent())
         self.profile = profile
 
-        print self.sessionTransaction
+        print self.session_transaction
 
     @renderer
     def details(self, request, tag):
-        timestamp = self.sessionTransaction['createTimestamp']
+        timestamp = self.session_transaction['createTimestamp']
         slots = {}
         slots['htmlTransactionTimestamp'] = config.convertTimestamp(timestamp)
-        slots['htmlTransactionAmount'] = str(self.sessionTransaction['amount'])
+        slots['htmlTransactionAmount'] = str(self.session_transaction['amount'])
         slots['htmlLenderBitcoinAddress'] = str(self.session_user['bitcoinAddress'])
         slots['htmlLenderEmail'] = str(self.session_user['email'])
         slots['htmlBitcoinAddress'] = str(self.profile.bitcoinAddress)
-        slots['htmlContractStatement'] = str(self.profile.seed) 
+        slots['htmlContractStatement'] = 'I wish to sign this loan agreement with address [%s] to finalize. (#%s)' % (self.profile.bitcoinAddress, self.profile.seed) 
         return tag.fillSlots(**slots)
 
     @renderer
@@ -309,9 +309,9 @@ class FormEditImage(Element):
 
 
 class LendAmount(Element):
-    def __init__(self, sessionResponse, sessionTransaction):
+    def __init__(self, sessionResponse, session_transaction):
         self.sessionResponse = sessionResponse
-        self.sessionTransaction = sessionTransaction
+        self.session_transaction = session_transaction
         self.loader = XMLString(FilePath('templates/forms/lend.xml').getContent())
 
     @renderer
