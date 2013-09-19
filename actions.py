@@ -270,11 +270,16 @@ class Register(Resource):
         repeatPassword = request.args.get('userRepeatPassword')[0]
         bitcoinAddress = request.args.get('userBitcoinAddress')[0]
         country = request.args.get('userCountry')[0]
-        country = request.args.get('userCountry')[0]
-        country = request.args.get('userCountry')[0]
-        country = request.args.get('userCountry')[0]
-        country = request.args.get('userCountry')[0]
-        country = request.args.get('userCountry')[0]
+        security_question_1 = request.args.get('security_question_1')[0]
+        security_question_2 = request.args.get('security_question_2')[0]
+        security_question_3 = request.args.get('security_question_3')[0]
+        security_answer_1 = request.args.get('security_answer_1')[0]
+        security_answer_2 = request.args.get('security_answer_2')[0]
+        security_answer_3 = request.args.get('security_answer_3')[0]
+
+        first = request.args.get('first')[0]
+        last = request.args.get('last')[0]
+        phone = request.args.get('phone')[0]
 
         session_user['email'] = email
         session_user['password'] = password
@@ -328,14 +333,21 @@ class Register(Resource):
             data = {            
                 'createTimestamp': timestamp,
                 'updateTimestamp': timestamp,
-                'first': '',
-                'last': '',
+                'first': last,
+                'last': first,
+                'phone': phone,
                 'token': token,
                 'bitcoinAddress': bitcoinAddress,
                 'country': country,
                 'seed': seed,
                 'balance': 0, 
-                'unreadMessages': 0
+                'unreadMessages': 0,
+                'security_question_1': security_question_1, 
+                'security_answer_1': security_question_1,
+                'security_question_2': security_question_2,
+                'security_answer_2': security_question_2,
+                'security_question_3': security_question_3,
+                'security_answer_3': security_answer_3
                 }
             newProfile = Profile(data)
 

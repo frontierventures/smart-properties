@@ -10,7 +10,6 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li class="active"><a href="../account">Account</a></li>
-                    <li><a href="../legal">Legal</a></li>
                     <li><a href="../faq">FAQ</a></li>
                     <li><a href="../logout">Logout</a></li>
                 </ul>
