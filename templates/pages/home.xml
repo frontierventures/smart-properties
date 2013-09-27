@@ -69,26 +69,6 @@
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
-    <div class="container marketing">
-        <!-- Three columns of text below the carousel -->
-        <div class="row">
-            <div class="span4">
-                <h2>What We Need</h2>
-                <p>We’re requesting personal loans from interested lenders. These personal loans will be guaranteed by us, of which our personal financial information will be available here. We’re seeking $135,000 CAD denominated in bitcoins at the current exchange rate to purchase a mortgage on a Multi-Unit Residential Property.</p>
-                <p><a class="btn" href="#">View details </a></p>
-            </div><!-- /.span4 -->
-            <div class="span4">
-                <h2>How You Profit</h2>
-                <p>In exchange for this loan, you will receive a monthly coupon of 0.85% of your loan in perpetuity. The principal will be returned at a date to be determined by us. What this means for you is you will get a return of 10.2% APR anonymously in a safe, controlled manner.</p>
-                <p><a class="btn" href="#">View details </a></p>
-            </div><!-- /.span4 -->
-            <div class="span4">
-                <h2>How We Secure</h2>
-                <p>Investment security is our top priority, we follow all required regulations for personal loans and property management to make sure that anything that could happen to your loan will be taken care of. In the event of corporate insolvency, we are personally liable to repay the principal + 3% APR, and we’ll personally make sure that you can sue us if need be.</p>
-                <p><a class="btn" href="#">View details </a></p>
-            </div><!-- /.span4 -->
-        </div><!-- /.row -->
-    </div><!-- /.container -->
     <br />
     <t:transparent t:render="footer" />            
 

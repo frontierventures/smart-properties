@@ -8,6 +8,7 @@ from twisted.python import log
 
 import account
 import actions
+import api
 import contract
 import config
 import exchange
@@ -79,6 +80,7 @@ root = lend.assemble(root)
 
 def assemble(root):
     #PAGES
+    root.putChild('callback', api.Receiver())
     root.putChild('account', account.Main())
     root.putChild('contract', contract.Main())
     root.putChild('history', history.Main())
